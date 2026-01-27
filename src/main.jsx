@@ -9,13 +9,31 @@ import { preloadCriticalResources } from '@/utils/preload';
 // Remove static content from DOM when React loads to prevent duplicate H1 tags and reduce rendering percentage
 const removeStaticContent = () => {
   // Remove immediately to prevent any rendering conflicts
-  const staticElements = document.querySelectorAll('#static-header, #static-content, #static-footer');
-  staticElements.forEach(el => {
-    if (el) {
-      el.style.display = 'none'; // Hide first for instant visual removal
-      setTimeout(() => el.remove(), 0); // Then remove from DOM
-    }
-  });
+  // Use requestAnimationFrame to ensure DOM is ready
+  if (typeof requestAnimationFrame !== 'undefined') {
+    requestAnimationFrame(() => {
+      const staticElements = document.querySelectorAll('#static-header, #static-content, #static-footer');
+      staticElements.forEach(el => {
+        if (el && el.parentNode) {
+          el.style.display = 'none'; // Hide first for instant visual removal
+          setTimeout(() => {
+            if (el.parentNode) el.remove(); // Then remove from DOM
+          }, 0);
+        }
+      });
+    });
+  } else {
+    // Fallback for older browsers
+    const staticElements = document.querySelectorAll('#static-header, #static-content, #static-footer');
+    staticElements.forEach(el => {
+      if (el && el.parentNode) {
+        el.style.display = 'none';
+        setTimeout(() => {
+          if (el.parentNode) el.remove();
+        }, 0);
+      }
+    });
+  }
 };
 
 // Initialize analytics

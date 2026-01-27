@@ -70,6 +70,21 @@ noscript nav a {
   margin: 0 auto;
 }
 
+#static-content > section:first-of-type > div > div:first-of-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+#static-content > section:first-of-type > div > div:first-of-type span {
+  font-size: 0.875rem;
+  color: #e5e7eb;
+}
+
 #static-content > section:first-of-type h2 {
   font-size: 3rem;
   font-weight: bold;

@@ -8,7 +8,11 @@ import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const HomePage = () => {
   const heroImageUrl = "https://images.unsplash.com/photo-1504983875-d3b163aba9e6";
-  const optimizedHeroImage = optimizeImageUrl(heroImageUrl, 300, 40); // Extremely small for fastest LCP on mobile
+  // Use responsive image sizing: smaller for mobile, larger for desktop
+  // Desktop has better bandwidth, so we can use a slightly larger image for better quality
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const heroImageWidth = isMobile ? 300 : 500; // 300px mobile, 500px desktop
+  const optimizedHeroImage = optimizeImageUrl(heroImageUrl, heroImageWidth, 40);
 
   // Preload hero image for better LCP (immediate, not deferred)
   useEffect(() => {

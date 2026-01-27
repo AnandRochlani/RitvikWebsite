@@ -44,8 +44,10 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://images.unsplash.com" crossorigin />
 		
-		<!-- Preload critical hero image for homepage LCP - extremely small for fastest mobile load -->
-		<link rel="preload" as="image" href="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=300&q=40&fm=webp&fit=crop" fetchpriority="high" crossorigin="anonymous" />
+		<!-- Preload critical hero image for homepage LCP - responsive sizing -->
+		<!-- Use picture element with media queries for responsive preload -->
+		<link rel="preload" as="image" href="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=500&q=40&fm=webp&fit=crop" fetchpriority="high" crossorigin="anonymous" media="(min-width: 768px)" />
+		<link rel="preload" as="image" href="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=300&q=40&fm=webp&fit=crop" fetchpriority="high" crossorigin="anonymous" media="(max-width: 767px)" />
 		
 		<!-- Inline critical hero image in static HTML for instant LCP -->
 		<style>
@@ -53,10 +55,15 @@
 				position: absolute;
 				inset: 0;
 				z-index: 0;
-				background-image: url('https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=300&q=40&fm=webp&fit=crop');
+				background-image: url('https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=500&q=40&fm=webp&fit=crop');
 				background-size: cover;
 				background-position: center;
 				background-repeat: no-repeat;
+			}
+			@media (max-width: 767px) {
+				#static-hero-bg {
+					background-image: url('https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=300&q=40&fm=webp&fit=crop');
+				}
 			}
 		</style>
 		

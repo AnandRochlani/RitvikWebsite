@@ -94,7 +94,7 @@ const CourseDetail = () => {
             transition={{ duration: 0.6 }}
           >
             <Button
-              onClick={() => navigate('/courses', { replace: false })}
+              onClick={() => navigate('/courses', { replace: true })}
               variant="outline"
               className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
             >

@@ -279,6 +279,312 @@ function MyComponent() {
     readTime: "6 min read",
     featuredImage: "https://images.unsplash.com/photo-1516116216624-53e697fedbea",
     featured: false
+  },
+  // System Design Blog Series - Ordered Tutorial
+  {
+    id: 9,
+    title: "System Design Fundamentals: Introduction to Scalable Architecture",
+    description: "Learn the fundamentals of system design and how to build scalable, reliable systems from the ground up.",
+    content: `
+      <h2>What is System Design?</h2>
+      <p>System design is the process of defining the architecture, components, modules, interfaces, and data for a system to satisfy specified requirements. It's a crucial skill for software engineers working on large-scale applications.</p>
+      
+      <h3>Why System Design Matters</h3>
+      <p>As applications grow, they face challenges like handling millions of users, processing terabytes of data, and maintaining high availability. System design helps you create solutions that can scale effectively.</p>
+      
+      <h3>Key Concepts</h3>
+      <p>In this series, we'll cover:</p>
+      <ul>
+        <li>Scalability and performance</li>
+        <li>Reliability and availability</li>
+        <li>Load balancing and caching</li>
+        <li>Database design and replication</li>
+        <li>Microservices architecture</li>
+        <li>Distributed systems</li>
+      </ul>
+      
+      <h2>Getting Started</h2>
+      <p>Before diving into complex architectures, it's essential to understand the basic building blocks. In the next blog, we'll explore scalability patterns and how to design systems that can handle growth.</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "8 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 1,
+    series: "System Design Tutorial"
+  },
+  {
+    id: 10,
+    title: "Scalability Patterns: Horizontal vs Vertical Scaling",
+    description: "Understand the difference between horizontal and vertical scaling, and when to use each approach in your system design.",
+    content: `
+      <h2>Understanding Scalability</h2>
+      <p>Scalability is the ability of a system to handle a growing amount of work by adding resources. There are two main approaches: horizontal and vertical scaling.</p>
+      
+      <h3>Vertical Scaling (Scale Up)</h3>
+      <p>Vertical scaling involves adding more power (CPU, RAM, storage) to your existing machines. It's simpler to implement but has limitations:</p>
+      <ul>
+        <li>Limited by hardware constraints</li>
+        <li>Single point of failure</li>
+        <li>Can be expensive at scale</li>
+      </ul>
+      
+      <h3>Horizontal Scaling (Scale Out)</h3>
+      <p>Horizontal scaling involves adding more machines to your system. It's more complex but offers better scalability:</p>
+      <ul>
+        <li>Can scale almost infinitely</li>
+        <li>Better fault tolerance</li>
+        <li>More cost-effective at scale</li>
+      </ul>
+      
+      <h2>Choosing the Right Approach</h2>
+      <p>Most modern systems use horizontal scaling for better flexibility. However, you might start with vertical scaling and migrate to horizontal as you grow.</p>
+      
+      <h2>Next Steps</h2>
+      <p>Once you understand scaling, the next step is learning how to distribute traffic effectively. In the next blog, we'll explore load balancing strategies.</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "10 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 2,
+    series: "System Design Tutorial"
+  },
+  {
+    id: 11,
+    title: "Load Balancing: Distributing Traffic Across Servers",
+    description: "Learn about load balancing algorithms and how to distribute incoming requests efficiently across multiple servers.",
+    content: `
+      <h2>What is Load Balancing?</h2>
+      <p>Load balancing is the process of distributing incoming network traffic across multiple servers to ensure no single server is overwhelmed. It's essential for horizontal scaling.</p>
+      
+      <h3>Load Balancing Algorithms</h3>
+      <p>Different algorithms serve different purposes:</p>
+      <ul>
+        <li><strong>Round Robin:</strong> Distributes requests sequentially</li>
+        <li><strong>Least Connections:</strong> Routes to server with fewest active connections</li>
+        <li><strong>IP Hash:</strong> Routes based on client IP for session persistence</li>
+        <li><strong>Weighted Round Robin:</strong> Distributes based on server capacity</li>
+      </ul>
+      
+      <h3>Types of Load Balancers</h3>
+      <p>Load balancers can operate at different layers:</p>
+      <ul>
+        <li><strong>Layer 4 (Transport):</strong> Routes based on IP and port</li>
+        <li><strong>Layer 7 (Application):</strong> Routes based on HTTP headers, URLs, etc.</li>
+      </ul>
+      
+      <h2>Implementation Strategies</h2>
+      <p>You can implement load balancing using hardware, software, or cloud services. Popular solutions include NGINX, HAProxy, AWS ELB, and Google Cloud Load Balancer.</p>
+      
+      <h2>Next Steps</h2>
+      <p>After distributing traffic, you need to optimize data access. In the next blog, we'll explore caching strategies to improve performance.</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "12 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 3,
+    series: "System Design Tutorial"
+  },
+  {
+    id: 12,
+    title: "Caching Strategies: Improving Performance with Smart Data Storage",
+    description: "Master caching techniques including cache-aside, write-through, write-behind, and refresh-ahead patterns.",
+    content: `
+      <h2>Why Caching Matters</h2>
+      <p>Caching stores frequently accessed data in fast storage to reduce latency and database load. It's one of the most effective ways to improve system performance.</p>
+      
+      <h3>Cache-Aside Pattern</h3>
+      <p>The application checks the cache first. If data exists (cache hit), it's returned. If not (cache miss), data is fetched from the database and stored in cache.</p>
+      
+      <h3>Write-Through Pattern</h3>
+      <p>Data is written to both cache and database simultaneously. Ensures consistency but may be slower for write operations.</p>
+      
+      <h3>Write-Behind (Write-Back) Pattern</h3>
+      <p>Data is written to cache first, then asynchronously written to database. Faster writes but risk of data loss if cache fails.</p>
+      
+      <h3>Refresh-Ahead Pattern</h3>
+      <p>Cache automatically refreshes data before it expires, reducing cache misses for frequently accessed data.</p>
+      
+      <h2>Cache Eviction Policies</h2>
+      <p>When cache is full, you need to decide what to remove:</p>
+      <ul>
+        <li><strong>LRU (Least Recently Used):</strong> Remove least recently accessed items</li>
+        <li><strong>LFU (Least Frequently Used):</strong> Remove least frequently accessed items</li>
+        <li><strong>FIFO (First In First Out):</strong> Remove oldest items</li>
+      </ul>
+      
+      <h2>Next Steps</h2>
+      <p>Now that you understand caching, let's explore database design. In the next blog, we'll cover database replication and sharding strategies.</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "15 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 4,
+    series: "System Design Tutorial"
+  },
+  {
+    id: 13,
+    title: "Database Design: Replication, Sharding, and Consistency",
+    description: "Learn about database replication strategies, sharding techniques, and how to maintain data consistency in distributed systems.",
+    content: `
+      <h2>Database Replication</h2>
+      <p>Replication involves copying data across multiple database servers to improve availability, reliability, and read performance.</p>
+      
+      <h3>Master-Slave Replication</h3>
+      <p>One master handles writes, multiple slaves handle reads. Simple but master is a single point of failure.</p>
+      
+      <h3>Master-Master Replication</h3>
+      <p>Multiple masters can handle both reads and writes. Better availability but requires conflict resolution.</p>
+      
+      <h2>Database Sharding</h2>
+      <p>Sharding partitions data across multiple databases based on a shard key. Each shard operates independently.</p>
+      
+      <h3>Sharding Strategies</h3>
+      <ul>
+        <li><strong>Range-based:</strong> Partition by value ranges</li>
+        <li><strong>Hash-based:</strong> Partition using hash function</li>
+        <li><strong>Directory-based:</strong> Use lookup table to find shard</li>
+      </ul>
+      
+      <h2>CAP Theorem</h2>
+      <p>In distributed systems, you can only guarantee two of three properties:</p>
+      <ul>
+        <li><strong>Consistency:</strong> All nodes see same data</li>
+        <li><strong>Availability:</strong> System remains operational</li>
+        <li><strong>Partition Tolerance:</strong> System works despite network failures</li>
+      </ul>
+      
+      <h2>Next Steps</h2>
+      <p>Understanding databases is crucial, but modern systems often use microservices. In the next blog, we'll explore microservices architecture and its benefits.</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "18 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 5,
+    series: "System Design Tutorial"
+  },
+  {
+    id: 14,
+    title: "Microservices Architecture: Building Distributed Systems",
+    description: "Explore microservices architecture, service communication patterns, and how to design loosely coupled, independently deployable services.",
+    content: `
+      <h2>What are Microservices?</h2>
+      <p>Microservices architecture breaks applications into small, independent services that communicate over well-defined APIs. Each service owns its data and can be developed, deployed, and scaled independently.</p>
+      
+      <h3>Benefits of Microservices</h3>
+      <ul>
+        <li>Independent deployment and scaling</li>
+        <li>Technology diversity (use best tool for each service)</li>
+        <li>Fault isolation (one service failure doesn't bring down entire system)</li>
+        <li>Team autonomy</li>
+      </ul>
+      
+      <h3>Challenges</h3>
+      <ul>
+        <li>Increased complexity in communication</li>
+        <li>Data consistency across services</li>
+        <li>Network latency</li>
+        <li>Service discovery and configuration</li>
+      </ul>
+      
+      <h2>Service Communication</h2>
+      <p>Services can communicate via:</p>
+      <ul>
+        <li><strong>Synchronous:</strong> REST, gRPC (request-response)</li>
+        <li><strong>Asynchronous:</strong> Message queues, event streaming (Kafka, RabbitMQ)</li>
+      </ul>
+      
+      <h2>API Gateway Pattern</h2>
+      <p>An API gateway acts as a single entry point, handling routing, authentication, rate limiting, and request aggregation.</p>
+      
+      <h2>Next Steps</h2>
+      <p>Microservices are powerful but require careful design. In the next blog, we'll put it all together by designing a complete system from scratch.</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "20 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 6,
+    series: "System Design Tutorial"
+  },
+  {
+    id: 15,
+    title: "Designing a URL Shortener: Complete System Design Case Study",
+    description: "Put your system design knowledge to practice by designing a URL shortener like bit.ly from scratch, covering all aspects from requirements to implementation.",
+    content: `
+      <h2>Problem Statement</h2>
+      <p>Design a URL shortener service like bit.ly that can shorten long URLs and redirect users to original URLs when they access the short link.</p>
+      
+      <h2>Requirements Gathering</h2>
+      <h3>Functional Requirements</h3>
+      <ul>
+        <li>Shorten long URLs</li>
+        <li>Redirect short URLs to original URLs</li>
+        <li>Custom aliases (optional)</li>
+        <li>Link expiration (optional)</li>
+      </ul>
+      
+      <h3>Non-Functional Requirements</h3>
+      <ul>
+        <li>High availability</li>
+        <li>Low latency (redirect should be fast)</li>
+        <li>Scalable to billions of URLs</li>
+        <li>URLs should be as short as possible</li>
+      </ul>
+      
+      <h2>Capacity Estimation</h2>
+      <p>Assume 100M new URLs per month. That's about 40 URLs per second for writes. For reads, assume 100:1 read:write ratio = 4,000 reads/second.</p>
+      
+      <h2>System Design</h2>
+      <h3>URL Encoding</h3>
+      <p>Use base62 encoding (a-z, A-Z, 0-9) to generate short URLs. With 6 characters, we can store 62^6 = 56.8 billion URLs.</p>
+      
+      <h3>Database Schema</h3>
+      <p>Store mappings of short URL to original URL. Use NoSQL for better scalability or SQL with proper indexing.</p>
+      
+      <h3>Architecture</h3>
+      <ul>
+        <li>Load balancer to distribute traffic</li>
+        <li>Application servers to handle requests</li>
+        <li>Database to store URL mappings</li>
+        <li>Cache (Redis) for frequently accessed URLs</li>
+      </ul>
+      
+      <h2>Key Design Decisions</h2>
+      <ul>
+        <li>Use hash function or counter for URL generation</li>
+        <li>Cache popular URLs to reduce database load</li>
+        <li>Use database sharding for scale</li>
+        <li>Implement rate limiting to prevent abuse</li>
+      </ul>
+      
+      <h2>Conclusion</h2>
+      <p>This case study demonstrates how to apply all the concepts we've learned: scalability, load balancing, caching, database design, and more. Practice designing other systems like Twitter, Instagram, or Uber to master system design!</p>
+    `,
+    author: "System Design Expert",
+    date: "2026-01-28",
+    category: "System Design",
+    readTime: "25 min read",
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    featured: false,
+    order: 7,
+    series: "System Design Tutorial"
   }
 ];
 

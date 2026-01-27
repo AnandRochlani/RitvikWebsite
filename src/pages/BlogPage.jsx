@@ -23,7 +23,20 @@ const BlogPage = () => {
       ? allBlogPosts 
       : allBlogPosts.filter(post => post.category === selectedCategory);
 
-    if (sortBy === 'date') {
+    // For System Design category, sort by order if available, otherwise by date
+    if (selectedCategory === 'System Design') {
+      posts = [...posts].sort((a, b) => {
+        // If both have order, sort by order
+        if (a.order !== undefined && b.order !== undefined) {
+          return a.order - b.order;
+        }
+        // If only one has order, prioritize it
+        if (a.order !== undefined) return -1;
+        if (b.order !== undefined) return 1;
+        // Otherwise sort by date
+        return new Date(b.date) - new Date(a.date);
+      });
+    } else if (sortBy === 'date') {
       posts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
@@ -189,7 +202,17 @@ const BlogPage = () => {
                       <div className="absolute inset-0 bg-gradient-to-r from-purple-900/50 to-transparent" />
                     </div>
                     <div className="p-8 flex flex-col justify-center">
-                      <span className="text-purple-400 text-sm font-medium mb-2">{featuredPost.category}</span>
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-purple-400 text-sm font-medium">{featuredPost.category}</span>
+                        {featuredPost.order && featuredPost.series && (
+                          <span className="px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold">
+                            Part {featuredPost.order}
+                          </span>
+                        )}
+                      </div>
+                      {featuredPost.series && (
+                        <p className="text-sm text-purple-300 mb-2 font-medium">{featuredPost.series}</p>
+                      )}
                       <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors duration-300">
                         {featuredPost.title}
                       </h2>
@@ -278,14 +301,26 @@ const BlogPage = () => {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
-                      <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-purple-500/80 backdrop-blur-sm text-white text-xs font-medium">
-                        {post.category}
-                      </span>
+                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2">
+                        <span className="px-3 py-1 rounded-full bg-purple-500/80 backdrop-blur-sm text-white text-xs font-medium">
+                          {post.category}
+                        </span>
+                        {post.order && post.series && (
+                          <span className="px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500/80 to-orange-500/80 backdrop-blur-sm text-white text-xs font-bold">
+                            Part {post.order}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300 line-clamp-2">
-                        {post.title}
-                      </h3>
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors duration-300 line-clamp-2 flex-1">
+                          {post.title}
+                        </h3>
+                      </div>
+                      {post.series && (
+                        <p className="text-xs text-purple-400 mb-2 font-medium">{post.series}</p>
+                      )}
                       <p className="text-gray-400 text-sm mb-4 line-clamp-3">
                         {post.description}
                       </p>

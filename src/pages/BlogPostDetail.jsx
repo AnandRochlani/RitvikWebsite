@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, Facebook, Twitter, Linkedin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getAllBlogPosts } from '@/data/blogPosts';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
@@ -41,6 +41,25 @@ const BlogPostDetail = () => {
     return allBlogPosts
       .filter(p => p.category === post.category && p.id !== post.id)
       .slice(0, 3);
+  }, [allBlogPosts, post]);
+
+  // Get previous and next posts for ordered series (System Design)
+  const { previousPost, nextPost } = useMemo(() => {
+    if (!post || !post.series || !post.order) {
+      return { previousPost: null, nextPost: null };
+    }
+
+    // Get all posts in the same series, sorted by order
+    const seriesPosts = allBlogPosts
+      .filter(p => p.series === post.series && p.order !== undefined)
+      .sort((a, b) => a.order - b.order);
+
+    const currentIndex = seriesPosts.findIndex(p => p.id === post.id);
+    
+    return {
+      previousPost: currentIndex > 0 ? seriesPosts[currentIndex - 1] : null,
+      nextPost: currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 1] : null
+    };
   }, [allBlogPosts, post]);
 
   // Prefetch related post routes on mount
@@ -208,6 +227,68 @@ const BlogPostDetail = () => {
             className="prose prose-invert prose-lg max-w-none mb-16 text-slate-300 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {/* Series Navigation - Previous/Next */}
+          {post.series && (previousPost || nextPost) && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="border-t border-white/10 pt-8 mb-12"
+            >
+              <div className="mb-4">
+                <span className="text-sm text-purple-400 font-medium">{post.series}</span>
+                <span className="text-sm text-gray-400 ml-2">Part {post.order}</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Previous Post */}
+                {previousPost ? (
+                  <Link
+                    to={`/blog/${previousPost.id}`}
+                    className="group block p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                  >
+                    <div className="flex items-center text-purple-400 text-sm font-medium mb-2">
+                      <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
+                      Previous
+                    </div>
+                    <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors line-clamp-2">
+                      {previousPost.title}
+                    </h3>
+                    {previousPost.order && (
+                      <span className="text-xs text-gray-400 mt-2 inline-block">Part {previousPost.order}</span>
+                    )}
+                  </Link>
+                ) : (
+                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 opacity-50">
+                    <div className="text-gray-500 text-sm">No previous post</div>
+                  </div>
+                )}
+
+                {/* Next Post */}
+                {nextPost ? (
+                  <Link
+                    to={`/blog/${nextPost.id}`}
+                    className="group block p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300 text-right md:text-left"
+                  >
+                    <div className="flex items-center justify-end md:justify-start text-purple-400 text-sm font-medium mb-2">
+                      Next
+                      <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors line-clamp-2">
+                      {nextPost.title}
+                    </h3>
+                    {nextPost.order && (
+                      <span className="text-xs text-gray-400 mt-2 inline-block">Part {nextPost.order}</span>
+                    )}
+                  </Link>
+                ) : (
+                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 opacity-50 text-right">
+                    <div className="text-gray-500 text-sm">No next post</div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (

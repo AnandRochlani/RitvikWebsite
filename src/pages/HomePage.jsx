@@ -47,6 +47,7 @@ const HomePage = () => {
               alt="Learning Background"
               fetchPriority="high"
               loading="eager"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </div>

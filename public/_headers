@@ -10,6 +10,14 @@
 
 /*.js
   Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/javascript; charset=utf-8
+
+/*.mjs
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/javascript; charset=utf-8
+
+/src/*.jsx
+  Content-Type: application/javascript; charset=utf-8
 
 /*.css
   Cache-Control: public, max-age=31536000, immutable

@@ -9,10 +9,11 @@ const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('date');
 
-  // Get dynamic blog posts
-  const allBlogPosts = getAllBlogPosts();
+  // Memoize blog posts to prevent unnecessary recalculations
+  const allBlogPosts = useMemo(() => getAllBlogPosts(), []);
 
-  const categories = ['All', ...new Set(allBlogPosts.map(post => post.category))];
+  // Memoize categories to prevent recalculation on every render
+  const categories = useMemo(() => ['All', ...new Set(allBlogPosts.map(post => post.category))], [allBlogPosts]);
 
   const filteredAndSortedPosts = useMemo(() => {
     let posts = selectedCategory === 'All' 
@@ -26,7 +27,8 @@ const BlogPage = () => {
     return posts;
   }, [selectedCategory, sortBy, allBlogPosts]);
 
-  const featuredPost = allBlogPosts.find(post => post.featured);
+  // Memoize featured post to prevent recalculation
+  const featuredPost = useMemo(() => allBlogPosts.find(post => post.featured), [allBlogPosts]);
 
   return (
       <>

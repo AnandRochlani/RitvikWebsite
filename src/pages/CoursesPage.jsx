@@ -11,11 +11,12 @@ const CoursesPage = () => {
   const [selectedLevel, setSelectedLevel] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Get dynamic courses
-  const allCourses = getAllCourses();
+  // Memoize courses to prevent unnecessary recalculations
+  const allCourses = useMemo(() => getAllCourses(), []);
 
-  const categories = ['All', ...new Set(allCourses.map(course => course.category))];
-  const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
+  // Memoize categories and levels to prevent recalculation on every render
+  const categories = useMemo(() => ['All', ...new Set(allCourses.map(course => course.category))], [allCourses]);
+  const levels = useMemo(() => ['All', 'Beginner', 'Intermediate', 'Advanced'], []);
 
   const filteredCourses = useMemo(() => {
     return allCourses.filter(course => {
@@ -28,7 +29,8 @@ const CoursesPage = () => {
     });
   }, [selectedCategory, selectedLevel, searchQuery, allCourses]);
 
-  const featuredCourses = allCourses.filter(course => course.featured);
+  // Memoize featured courses to prevent recalculation
+  const featuredCourses = useMemo(() => allCourses.filter(course => course.featured), [allCourses]);
 
   return (
       <>

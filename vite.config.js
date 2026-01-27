@@ -63,11 +63,22 @@ export default defineConfig({
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
     exclude: [],
+    esbuildOptions: {
+      target: 'esnext',
+    },
   },
   // Server configuration for development
   server: {
     headers: {
       'Cache-Control': 'public, max-age=31536000',
     },
+    fs: {
+      strict: false,
+    },
+  },
+  // Optimize for faster response times
+  esbuild: {
+    target: 'esnext',
+    format: 'esm',
   },
 })

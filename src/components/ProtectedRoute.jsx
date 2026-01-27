@@ -7,6 +7,7 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
+  // Show loading state while checking authentication
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
@@ -15,11 +16,14 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
+  // Only redirect if not authenticated and not already on login page
+  // This prevents redirect loops and multiple redirects
   if (!isAuthenticated) {
     // Use replace to avoid adding to history stack (reduces redirect overhead)
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
+  // If authenticated, render children
   return children;
 };
 

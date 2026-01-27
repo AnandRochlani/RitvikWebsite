@@ -7,24 +7,38 @@ export const initAnalytics = () => {
     const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Replace with your GA4 ID
     
     // Only initialize if we have a valid ID (not placeholder)
+    // Defer loading to avoid blocking initial render
     if (typeof window !== 'undefined' && GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
-      // Load Google Analytics script
-      const script1 = document.createElement('script');
-      script1.async = true;
-      script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-      script1.onerror = () => {
-        // Silently fail if GA script fails to load
-      };
-      document.head.appendChild(script1);
+      // Use requestIdleCallback or setTimeout to defer loading
+      const loadGA = () => {
+        try {
+          const script1 = document.createElement('script');
+          script1.async = true;
+          script1.defer = true;
+          script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+          script1.onerror = () => {
+            // Silently fail if GA script fails to load
+          };
+          document.head.appendChild(script1);
 
-      const script2 = document.createElement('script');
-      script2.innerHTML = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${GA_MEASUREMENT_ID}');
-      `;
-      document.head.appendChild(script2);
+          const script2 = document.createElement('script');
+          script2.innerHTML = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `;
+          document.head.appendChild(script2);
+        } catch (e) {
+          // Silently fail
+        }
+      };
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGA, { timeout: 2000 });
+      } else {
+        setTimeout(loadGA, 100);
+      }
     }
   } catch (error) {
     // Silently fail - analytics should not break the site

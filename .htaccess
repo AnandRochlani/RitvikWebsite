@@ -11,6 +11,13 @@
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
+# MIME Types for JavaScript modules
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType application/javascript .mjs
+  AddType application/javascript .jsx
+</IfModule>
+
 # Security Headers
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
@@ -18,6 +25,11 @@
   Header set X-XSS-Protection "1; mode=block"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  
+  # Ensure correct MIME type for JavaScript modules
+  <FilesMatch "\.(js|mjs|jsx)$">
+    Header set Content-Type "application/javascript; charset=utf-8"
+  </FilesMatch>
 </IfModule>
 
 # Cache Control for Static Assets

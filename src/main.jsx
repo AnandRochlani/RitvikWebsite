@@ -36,28 +36,7 @@ const removeStaticContent = () => {
   }
 };
 
-// Initialize analytics (with error handling)
-try {
-  initAnalytics();
-} catch (error) {
-  // Analytics errors should not break the site
-}
-
-// Preload critical resources (with error handling)
-try {
-  preloadCriticalResources();
-} catch (error) {
-  // Preload errors should not break the site
-}
-
-// Remove static content before React renders to prevent duplicate H1 tags
-try {
-  removeStaticContent();
-} catch (error) {
-  // Static content removal errors should not break the site
-}
-
-// Render React app with error boundary
+// Render React app immediately (highest priority)
 try {
   const rootElement = document.getElementById('root');
   if (rootElement) {
@@ -75,4 +54,45 @@ try {
   if (import.meta.env.DEV) {
     console.error('Failed to render React app:', error);
   }
+}
+
+// Remove static content after React starts rendering (non-blocking)
+try {
+  removeStaticContent();
+} catch (error) {
+  // Static content removal errors should not break the site
+}
+
+// Defer non-critical operations to avoid blocking initial render
+if (typeof requestIdleCallback !== 'undefined') {
+  requestIdleCallback(() => {
+    // Initialize analytics (non-blocking)
+    try {
+      initAnalytics();
+    } catch (error) {
+      // Analytics errors should not break the site
+    }
+
+    // Preload critical resources (non-blocking)
+    try {
+      preloadCriticalResources();
+    } catch (error) {
+      // Preload errors should not break the site
+    }
+  }, { timeout: 2000 });
+} else {
+  // Fallback: use setTimeout for older browsers
+  setTimeout(() => {
+    try {
+      initAnalytics();
+    } catch (error) {
+      // Analytics errors should not break the site
+    }
+
+    try {
+      preloadCriticalResources();
+    } catch (error) {
+      // Preload errors should not break the site
+    }
+  }, 100);
 }

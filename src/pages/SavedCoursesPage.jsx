@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,14 +9,20 @@ import { Button } from '@/components/ui/button';
 
 const SavedCoursesPage = () => {
   const { getSavedCourses, removeSavedCourse } = useSavedCourses();
-  const savedCourses = getSavedCourses();
   const [filter, setFilter] = useState('All');
 
-  const categories = ['All', ...new Set(savedCourses.map(course => course.category))];
+  // Get saved courses (function is stable from context)
+  const savedCourses = getSavedCourses();
 
-  const filteredCourses = filter === 'All' 
-    ? savedCourses 
-    : savedCourses.filter(course => course.category === filter);
+  // Memoize categories to prevent recalculation on every render
+  const categories = useMemo(() => ['All', ...new Set(savedCourses.map(course => course.category))], [savedCourses]);
+
+  // Memoize filtered courses to prevent recalculation
+  const filteredCourses = useMemo(() => {
+    return filter === 'All' 
+      ? savedCourses 
+      : savedCourses.filter(course => course.category === filter);
+  }, [savedCourses, filter]);
 
   return (
     <>

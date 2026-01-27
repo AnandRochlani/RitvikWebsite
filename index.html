@@ -36,21 +36,26 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		<meta name="apple-mobile-web-app-title" content="AnandRochlani" />
 		
-		<!-- Preconnect for Performance -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://images.unsplash.com" />
+		<!-- HTTP/2 Optimizations: Preconnect for early DNS resolution and connection setup -->
+		<!-- HTTP/2 multiplexing allows multiple requests over a single connection -->
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 		<link rel="dns-prefetch" href="https://images.unsplash.com" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+		<link rel="preconnect" href="https://images.unsplash.com" crossorigin />
 		
-		<!-- Preload critical resources -->
+		<!-- HTTP/2 Optimizations: Preload critical resources for faster initial render -->
+		<!-- HTTP/2 server push can be used for these resources (configured on server) -->
 		<link rel="modulepreload" href="/src/main.jsx" />
-		<link rel="preload" as="style" href="/src/index.css" />
 		<link rel="preload" as="style" href="/src/static-content.css" />
+		<link rel="preload" as="style" href="/src/index.css" />
 		
-		<!-- Static content styles (loaded before React) -->
+		<!-- Static content styles (loaded synchronously for first paint) -->
 		<link rel="stylesheet" href="/src/static-content.css" />
 		
-		<!-- Performance hints -->
+		<!-- Main CSS (loaded synchronously - needed for React) -->
+		<link rel="stylesheet" href="/src/index.css" />
+		
+		<!-- Performance hints for HTTP/2 -->
 		<meta http-equiv="x-dns-prefetch-control" content="on" />
 	</head>
 	<body>
@@ -203,36 +208,39 @@
 		</div>
 		
 		<script>
-			// Remove static content when React loads to prevent duplicate H1 tags and reduce rendering percentage
+			// Remove static content when React loads (deferred to avoid blocking)
 			(function() {
 				try {
-					// Remove immediately when React starts loading
 					const removeStatic = () => {
 						try {
 							const staticElements = document.querySelectorAll('#static-header, #static-content, #static-footer');
 							staticElements.forEach(el => {
 								if (el && el.parentNode) {
-									el.style.display = 'none'; // Hide instantly
-									setTimeout(() => {
-										if (el.parentNode) {
-											el.remove(); // Remove from DOM
-										}
-									}, 0);
+									el.style.display = 'none';
+									if (requestAnimationFrame) {
+										requestAnimationFrame(() => {
+											if (el.parentNode) el.remove();
+										});
+									} else {
+										setTimeout(() => {
+											if (el.parentNode) el.remove();
+										}, 0);
+									}
 								}
 							});
 						} catch (e) {
-							// Silently fail - static content removal should not break the site
+							// Silently fail
 						}
 					};
 					
-					// Try to remove as early as possible
+					// Defer removal to avoid blocking initial render
 					if (document.readyState === 'loading') {
-						document.addEventListener('DOMContentLoaded', removeStatic);
+						document.addEventListener('DOMContentLoaded', removeStatic, { once: true });
 					} else {
-						removeStatic();
+						setTimeout(removeStatic, 0);
 					}
 				} catch (error) {
-					// Silently fail - script should not break the site
+					// Silently fail
 				}
 			})();
 		</script>

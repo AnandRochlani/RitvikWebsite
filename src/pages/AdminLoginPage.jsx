@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Lock, User, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -14,15 +14,19 @@ const AdminLoginPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const hasRedirected = useRef(false); // Prevent multiple redirects
 
   useEffect(() => {
-    // Only redirect if authenticated and not already on admin page
+    // Only redirect if authenticated, on login page, and haven't redirected yet
     // Use replace to avoid adding to history stack (reduces redirect overhead)
-    if (isAuthenticated) {
+    if (isAuthenticated && location.pathname === '/admin/login' && !hasRedirected.current) {
+      hasRedirected.current = true;
+      // Immediate redirect without setTimeout to reduce delay
       navigate('/admin', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, location.pathname, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

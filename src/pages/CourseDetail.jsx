@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users, Star, ArrowLeft, BookOpen, CheckCircle, PlayCircle, ExternalLink, Award, Sparkles } from 'lucide-react';
-import { courses } from '@/data/courses';
+import { getAllCourses } from '@/data/courses';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import SaveButton from '@/components/SaveButton';
@@ -12,7 +12,13 @@ const CourseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const course = courses.find(c => c.id === parseInt(id));
+  
+  // Memoize courses lookup to prevent unnecessary recalculations
+  const allCourses = useMemo(() => getAllCourses(), []);
+  const course = useMemo(() => {
+    if (!id) return null;
+    return allCourses.find(c => c.id === parseInt(id));
+  }, [allCourses, id]);
 
   if (!course) {
     return (
@@ -40,11 +46,15 @@ const CourseDetail = () => {
     }
   };
 
-  const relatedCourses = courses
-    .filter(c => c.category === course.category && c.id !== course.id)
-    .slice(0, 3);
+  // Memoize related courses to prevent recalculation
+  const relatedCourses = useMemo(() => {
+    if (!course) return [];
+    return allCourses
+      .filter(c => c.category === course.category && c.id !== course.id)
+      .slice(0, 3);
+  }, [allCourses, course]);
     
-  const isSystemDesign = course.category === 'System Design';
+  const isSystemDesign = useMemo(() => course?.category === 'System Design', [course]);
 
   return (
     <>
@@ -66,7 +76,7 @@ const CourseDetail = () => {
             transition={{ duration: 0.6 }}
           >
             <Button
-              onClick={() => navigate('/courses')}
+              onClick={() => navigate('/courses', { replace: false })}
               variant="outline"
               className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
             >

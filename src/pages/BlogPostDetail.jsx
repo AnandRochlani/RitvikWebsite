@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
-import { blogPosts } from '@/data/blogPosts';
+import { getAllBlogPosts } from '@/data/blogPosts';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import SEOHead from '@/components/SEOHead';
@@ -11,7 +11,13 @@ const BlogPostDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const post = blogPosts.find(p => p.id === parseInt(id));
+  
+  // Memoize blog posts lookup to prevent unnecessary recalculations
+  const allBlogPosts = useMemo(() => getAllBlogPosts(), []);
+  const post = useMemo(() => {
+    if (!id) return null;
+    return allBlogPosts.find(p => p.id === parseInt(id));
+  }, [allBlogPosts, id]);
 
   if (!post) {
     return (
@@ -28,9 +34,13 @@ const BlogPostDetail = () => {
     );
   }
 
-  const relatedPosts = blogPosts
-    .filter(p => p.category === post.category && p.id !== post.id)
-    .slice(0, 3);
+  // Memoize related posts to prevent recalculation
+  const relatedPosts = useMemo(() => {
+    if (!post) return [];
+    return allBlogPosts
+      .filter(p => p.category === post.category && p.id !== post.id)
+      .slice(0, 3);
+  }, [allBlogPosts, post]);
 
   const handleShare = (platform) => {
     toast({
@@ -60,7 +70,7 @@ const BlogPostDetail = () => {
             className="mb-8"
           >
             <Button
-              onClick={() => navigate('/blog')}
+              onClick={() => navigate('/blog', { replace: false })}
               variant="outline"
               className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
             >

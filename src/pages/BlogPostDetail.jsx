@@ -42,6 +42,44 @@ const BlogPostDetail = () => {
       .slice(0, 3);
   }, [allBlogPosts, post]);
 
+  // Prefetch related post routes on mount
+  useEffect(() => {
+    if (relatedPosts.length > 0) {
+      // Prefetch related post routes on idle
+      const schedulePrefetch = (callback) => {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(callback, { timeout: 2000 });
+        } else {
+          setTimeout(callback, 100);
+        }
+      };
+
+      schedulePrefetch(() => {
+        relatedPosts.forEach(relatedPost => {
+          try {
+            const route = `/blog/${relatedPost.id}`;
+            if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem(`prefetched_${route}`)) {
+              const link = document.createElement('link');
+              link.rel = 'prefetch';
+              link.href = route;
+              link.as = 'document';
+              document.head.appendChild(link);
+              sessionStorage.setItem(`prefetched_${route}`, 'true');
+            } else if (typeof sessionStorage === 'undefined') {
+              const link = document.createElement('link');
+              link.rel = 'prefetch';
+              link.href = route;
+              link.as = 'document';
+              document.head.appendChild(link);
+            }
+          } catch (e) {
+            // Silently fail for individual posts
+          }
+        });
+      });
+    }
+  }, [relatedPosts]);
+
   const handleShare = (platform) => {
     toast({
       title: `Sharing on ${platform}`,

@@ -78,6 +78,45 @@ const BlogPage = () => {
     }
   }, [featuredPost]);
 
+  // Prefetch blog post detail routes dynamically (first 3 visible posts)
+  useEffect(() => {
+    if (filteredAndSortedPosts.length > 0) {
+      // Prefetch first 3 blog post detail routes on idle
+      const schedulePrefetch = (callback) => {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(callback, { timeout: 2000 });
+        } else {
+          setTimeout(callback, 100);
+        }
+      };
+
+      schedulePrefetch(() => {
+        const postsToPrefetch = filteredAndSortedPosts.slice(0, 3);
+        postsToPrefetch.forEach(post => {
+          try {
+            const route = `/blog/${post.id}`;
+            if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem(`prefetched_${route}`)) {
+              const link = document.createElement('link');
+              link.rel = 'prefetch';
+              link.href = route;
+              link.as = 'document';
+              document.head.appendChild(link);
+              sessionStorage.setItem(`prefetched_${route}`, 'true');
+            } else if (typeof sessionStorage === 'undefined') {
+              const link = document.createElement('link');
+              link.rel = 'prefetch';
+              link.href = route;
+              link.as = 'document';
+              document.head.appendChild(link);
+            }
+          } catch (e) {
+            // Silently fail for individual posts
+          }
+        });
+      });
+    }
+  }, [filteredAndSortedPosts]);
+
   return (
       <>
       <SEOHead 

@@ -50,7 +50,7 @@ const AdminLoginPage = () => {
   return (
     <>
       <Helmet>
-        <title>Admin Login - LearnHub</title>
+        <title>Admin Login - AnandRochlani</title>
       </Helmet>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 flex items-center justify-center p-4 pt-20">
         <motion.div 

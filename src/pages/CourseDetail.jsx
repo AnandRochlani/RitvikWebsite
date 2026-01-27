@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users, Star, ArrowLeft, BookOpen, CheckCircle, PlayCircle, ExternalLink, Award, Sparkles } from 'lucide-react';
@@ -7,6 +6,7 @@ import { courses } from '@/data/courses';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import SaveButton from '@/components/SaveButton';
+import SEOHead from '@/components/SEOHead';
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -48,10 +48,14 @@ const CourseDetail = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{course.name} - LearnHub</title>
-        <meta name="description" content={course.description} />
-      </Helmet>
+      <SEOHead 
+        title={course.name}
+        description={`${course.description} Learn ${course.name} with ${course.instructor}. ${course.level} level course. ${course.duration} of content. ${course.rating} star rating. Enroll now!`}
+        image={course.featuredImage}
+        keywords={`${course.name}, ${course.category}, ${course.level} course, ${course.instructor}, online course, learn ${course.category.toLowerCase()}`}
+        canonical={`https://www.anandrochlani.com/courses/${course.id}`}
+        type="Course"
+      />
 
       <div className={`min-h-screen pt-24 pb-16 ${isSystemDesign ? 'bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900' : 'bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900'}`}>
         {/* Back Button */}

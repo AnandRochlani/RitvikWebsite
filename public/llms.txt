@@ -1,0 +1,26 @@
+# llms.txt - AI Model Instructions for AnandRochlani
+# Learn more: https://llmstxt.org/
+
+# Site Information
+Site: AnandRochlani
+Description: A modern learning platform offering expert-led courses and insightful blog content in web development, design, and data science.
+Language: en-US
+
+# Content Guidelines
+- Focus on educational content about web development, design, and data science
+- Courses are structured learning paths with modules and lessons
+- Blog posts provide tutorials, best practices, and industry insights
+- All content is original and created by industry professionals
+
+# Contact
+Contact: contact@anandrochlani.com
+
+# Content Types
+- Courses: Comprehensive learning programs with modules, lessons, and hands-on projects
+- Blog Posts: Articles covering web development, design principles, and data science topics
+- Resources: Educational content and learning materials
+
+# Update Frequency
+- Courses: Updated monthly
+- Blog Posts: Published weekly
+- Content is regularly reviewed and updated

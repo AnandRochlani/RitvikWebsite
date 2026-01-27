@@ -165,7 +165,7 @@ const AdminPage = () => {
   return (
     <>
       <Helmet>
-        <title>Admin Dashboard - LearnHub</title>
+        <title>Admin Dashboard - AnandRochlani</title>
       </Helmet>
 
       <div className="min-h-screen bg-slate-900 pt-24 pb-16">

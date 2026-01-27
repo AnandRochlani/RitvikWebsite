@@ -1,17 +1,19 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, GraduationCap, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import SEOHead from '@/components/SEOHead';
 
 const HomePage = () => {
   return (
     <>
-      <Helmet>
-        <title>LearnHub - Empower Your Learning Journey</title>
-        <meta name="description" content="Discover cutting-edge courses and insightful blog posts to accelerate your learning in web development, design, and data science." />
-      </Helmet>
+      <SEOHead 
+        title="Empower Your Learning Journey - Expert-Led Online Courses & Tech Blog"
+        description="Discover cutting-edge courses and insightful blog posts to accelerate your learning in web development, design, and data science. Join thousands of students mastering new skills with AnandRochlani."
+        keywords="online courses, web development courses, react courses, javascript tutorials, UI/UX design courses, data science courses, programming courses, tech blog, learn coding online"
+        canonical="https://www.anandrochlani.com/"
+      />
 
       <div className="min-h-screen">
         {/* Hero Section */}

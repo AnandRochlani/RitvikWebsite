@@ -43,7 +43,7 @@ const Footer = () => {
                 <Code2 className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                LearnHub
+                AnandRochlani
               </span>
             </div>
             <p className="text-gray-400 text-sm">
@@ -110,7 +110,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="pt-8 border-t border-white/10">
           <p className="text-center text-gray-400 text-sm">
-            © 2026 LearnHub. All rights reserved. Built with React and TailwindCSS.
+            © 2026 AnandRochlani. All rights reserved. Built with React and TailwindCSS.
           </p>
         </div>
       </div>

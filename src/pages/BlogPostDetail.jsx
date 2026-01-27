@@ -1,11 +1,11 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { blogPosts } from '@/data/blogPosts';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import SEOHead from '@/components/SEOHead';
 
 const BlogPostDetail = () => {
   const { id } = useParams();
@@ -41,10 +41,14 @@ const BlogPostDetail = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{post.title} - LearnHub Blog</title>
-        <meta name="description" content={post.description} />
-      </Helmet>
+      <SEOHead 
+        title={post.title}
+        description={post.description}
+        image={post.featuredImage}
+        keywords={`${post.category}, ${post.title}, tech blog, programming tutorial, web development, ${post.author}`}
+        canonical={`https://www.anandrochlani.com/blog/${post.id}`}
+        type="article"
+      />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, Filter, Star } from 'lucide-react';
 import { getAllBlogPosts } from '@/data/blogPosts';
+import SEOHead from '@/components/SEOHead';
 
 const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -29,11 +29,13 @@ const BlogPage = () => {
   const featuredPost = allBlogPosts.find(post => post.featured);
 
   return (
-    <>
-      <Helmet>
-        <title>Blog - LearnHub | Latest Tech Insights & Tutorials</title>
-        <meta name="description" content="Explore our collection of articles on web development, design, data science, and more. Stay updated with the latest tech trends and best practices." />
-      </Helmet>
+      <>
+      <SEOHead 
+        title="Tech Blog - Latest Web Development, Design & Data Science Insights"
+        description="Explore our comprehensive collection of articles, tutorials, and insights on web development, UI/UX design, data science, and programming. Stay updated with the latest tech trends, best practices, and industry news from expert developers and designers."
+        keywords="web development blog, react tutorials, javascript tutorials, programming blog, UI/UX design articles, data science blog, tech tutorials, coding blog, software development articles"
+        canonical="https://www.anandrochlani.com/blog"
+      />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

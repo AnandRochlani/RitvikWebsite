@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users, TrendingUp, Search, Filter, Star, BookOpen, Crown, ExternalLink } from 'lucide-react';
 import { getAllCourses } from '@/data/courses';
 import SaveButton from '@/components/SaveButton';
+import SEOHead from '@/components/SEOHead';
 
 const CoursesPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -31,11 +31,13 @@ const CoursesPage = () => {
   const featuredCourses = allCourses.filter(course => course.featured);
 
   return (
-    <>
-      <Helmet>
-        <title>Courses - LearnHub | Expert-Led Online Learning</title>
-        <meta name="description" content="Browse our collection of expert-led courses in web development, design, and data science. Learn at your own pace with comprehensive curriculum and hands-on projects." />
-      </Helmet>
+      <>
+      <SEOHead 
+        title="Expert-Led Online Courses - Web Development, Design & Data Science"
+        description="Browse our comprehensive collection of expert-led courses in web development, design, and data science. Learn React, JavaScript, Node.js, UI/UX design, machine learning, and more. Start your learning journey today with hands-on projects and real-world applications."
+        keywords="web development courses, react courses, javascript courses, node.js courses, UI/UX design courses, data science courses, machine learning courses, programming courses, online coding courses"
+        canonical="https://www.anandrochlani.com/courses"
+      />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

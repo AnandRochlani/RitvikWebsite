@@ -21,7 +21,7 @@ const SavedCoursesPage = () => {
   return (
     <>
       <Helmet>
-        <title>Saved Courses - LearnHub</title>
+        <title>Saved Courses - AnandRochlani</title>
         <meta name="description" content="View and manage your saved courses." />
       </Helmet>
 

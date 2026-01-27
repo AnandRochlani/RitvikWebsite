@@ -43,7 +43,14 @@ export function optimizeImageUrl(url, width = 500, quality = 35) {
  * @param {string} url - Original Unsplash image URL
  * @returns {string} - srcset string with multiple sizes
  */
-export function generateImageSrcset(url) {
+/**
+ * Generate responsive image srcset for Unsplash images
+ * Optimized for both mobile (small, low quality) and desktop (larger, better quality)
+ * @param {string} url - Original Unsplash image URL
+ * @param {boolean} isHero - Whether this is a hero image (needs more sizes)
+ * @returns {string} - srcset string with multiple sizes
+ */
+export function generateImageSrcset(url, isHero = false) {
 	if (!url || !url.includes('unsplash.com')) return undefined;
 	
 	// Extract photo ID (including dashes and underscores)
@@ -51,7 +58,33 @@ export function generateImageSrcset(url) {
 	if (!photoMatch || !photoMatch[1]) return undefined;
 	
 	const photoId = photoMatch[1];
-	// Use extremely small sizes for maximum compression: 150, 300, 450, 600
-	const sizes = [150, 300, 450, 600];
-	return sizes.map(size => `https://images.unsplash.com/photo-${photoId}?w=${size}&q=40&fm=webp&fit=crop ${size}w`).join(', ');
+	
+	// Hero images: wider range for better desktop quality
+	// Regular images: smaller range for faster load
+	if (isHero) {
+		// Hero images: mobile (200, 400), tablet (800), desktop (1200, 1600)
+		// Quality increases with size: mobile=35%, tablet=50%, desktop=60-70%
+		const sizes = [
+			{ w: 200, q: 35 },
+			{ w: 400, q: 40 },
+			{ w: 800, q: 50 },
+			{ w: 1200, q: 60 },
+			{ w: 1600, q: 70 }
+		];
+		return sizes.map(({ w, q }) => 
+			`https://images.unsplash.com/photo-${photoId}?w=${w}&q=${q}&fm=webp&fit=crop ${w}w`
+		).join(', ');
+	} else {
+		// Regular images: smaller sizes for faster load
+		// Quality: 35% for mobile, 40% for larger
+		const sizes = [
+			{ w: 200, q: 35 },
+			{ w: 400, q: 40 },
+			{ w: 600, q: 45 },
+			{ w: 800, q: 50 }
+		];
+		return sizes.map(({ w, q }) => 
+			`https://images.unsplash.com/photo-${photoId}?w=${w}&q=${q}&fm=webp&fit=crop ${w}w`
+		).join(', ');
+	}
 }

@@ -8,8 +8,9 @@ import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const HomePage = () => {
   const heroImageUrl = "https://images.unsplash.com/photo-1504983875-d3b163aba9e6";
-  // Use 200px for fastest mobile LCP, srcset handles desktop responsiveness
-  // Mobile is the critical path, so prioritize extremely small size for instant load
+  // Use 200px for fastest mobile LCP (base image)
+  // Desktop will use larger images from srcset (400px, 800px, 1200px, 1600px)
+  // Quality increases with size: mobile=35%, desktop=50-70% for better quality
   const optimizedHeroImage = optimizeImageUrl(heroImageUrl, 200, 35);
 
   // Preload hero image for better LCP (immediate, not deferred)
@@ -44,7 +45,7 @@ const HomePage = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-slate-900/95 to-pink-900/90 z-10" />
             <img
               src={optimizedHeroImage}
-              srcSet={generateImageSrcset(heroImageUrl)}
+              srcSet={generateImageSrcset(heroImageUrl, true)}
               sizes="100vw"
               alt="Learning Background"
               fetchPriority="high"

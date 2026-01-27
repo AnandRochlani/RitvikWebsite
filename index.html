@@ -44,7 +44,10 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://images.unsplash.com" crossorigin />
 		
-		<!-- Hero image preload removed - gradient is the LCP element, image loads lazily -->
+		<!-- Responsive hero image preload - different sizes for mobile vs desktop -->
+		<!-- Mobile: small image for fast load, Desktop: larger for better quality -->
+		<link rel="preload" as="image" href="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=200&q=35&fm=webp&fit=crop" fetchpriority="high" crossorigin="anonymous" media="(max-width: 767px)" />
+		<link rel="preload" as="image" href="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=800&q=50&fm=webp&fit=crop" fetchpriority="high" crossorigin="anonymous" media="(min-width: 768px)" />
 		
 		<!-- Hero image styles moved to static-content.css to avoid inline styles -->
 		
@@ -106,6 +109,8 @@
 						<div class="static-hero-gradient-fallback"></div>
 						<img 
 							src="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=200&q=35&fm=webp&fit=crop" 
+							srcset="https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=200&q=35&fm=webp&fit=crop 200w, https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=400&q=40&fm=webp&fit=crop 400w, https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=800&q=50&fm=webp&fit=crop 800w, https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=1200&q=60&fm=webp&fit=crop 1200w, https://images.unsplash.com/photo-1504983875-d3b163aba9e6?w=1600&q=70&fm=webp&fit=crop 1600w"
+							sizes="100vw"
 							alt="Learning Background"
 							class="static-hero-img"
 							loading="lazy"

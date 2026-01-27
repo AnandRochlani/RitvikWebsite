@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, Filter, Star } from 'lucide-react';
@@ -8,6 +8,8 @@ import SEOHead from '@/components/SEOHead';
 const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('date');
+  const [visiblePosts, setVisiblePosts] = useState(6); // Initially show only 6 posts
+  const observerRef = useRef(null);
 
   // Memoize blog posts to prevent unnecessary recalculations
   const allBlogPosts = useMemo(() => getAllBlogPosts(), []);
@@ -30,6 +32,52 @@ const BlogPage = () => {
   // Memoize featured post to prevent recalculation
   const featuredPost = useMemo(() => allBlogPosts.find(post => post.featured), [allBlogPosts]);
 
+  // Lazy load images using Intersection Observer
+  useEffect(() => {
+    const images = document.querySelectorAll('img[data-lazy]');
+    
+    if ('IntersectionObserver' in window) {
+      observerRef.current = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.lazy;
+            img.removeAttribute('data-lazy');
+            observerRef.current.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px' // Start loading 50px before image is visible
+      });
+
+      images.forEach((img) => observerRef.current.observe(img));
+    } else {
+      // Fallback for browsers without IntersectionObserver
+      images.forEach((img) => {
+        img.src = img.dataset.lazy;
+        img.removeAttribute('data-lazy');
+      });
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [filteredAndSortedPosts]);
+
+  // Preload featured post image for better LCP
+  useEffect(() => {
+    if (featuredPost?.featuredImage) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = featuredPost.featuredImage;
+      link.fetchPriority = 'high';
+      document.head.appendChild(link);
+    }
+  }, [featuredPost]);
+
   return (
       <>
       <SEOHead 
@@ -43,9 +91,9 @@ const BlogPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4 }}
             className="text-center mb-12"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
@@ -59,9 +107,9 @@ const BlogPage = () => {
           {/* Featured Post */}
           {featuredPost && (
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.4 }}
               className="mb-12"
             >
               <Link to={`/blog/${featuredPost.id}`}>
@@ -77,6 +125,8 @@ const BlogPage = () => {
                       <img
                         src={featuredPost.featuredImage}
                         alt={featuredPost.title}
+                        fetchPriority="high"
+                        loading="eager"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-purple-900/50 to-transparent" />
@@ -109,9 +159,9 @@ const BlogPage = () => {
 
           {/* Filters */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.3 }}
             className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4"
           >
             <div className="flex items-center space-x-2">
@@ -143,19 +193,19 @@ const BlogPage = () => {
 
           {/* Blog Posts Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredAndSortedPosts.map((post, index) => (
-              <motion.div
+            {filteredAndSortedPosts.slice(0, visiblePosts).map((post, index) => (
+              <div
                 key={post.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="opacity-0 animate-fade-in"
+                style={{ animationDelay: `${Math.min(index * 0.05, 0.3)}s` }}
               >
                 <Link to={`/blog/${post.id}`}>
                   <div className="group h-full rounded-xl overflow-hidden bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative h-48 overflow-hidden bg-slate-800">
                       <img
-                        src={post.featuredImage}
+                        data-lazy={post.featuredImage}
                         alt={post.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
@@ -183,9 +233,21 @@ const BlogPage = () => {
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
+          
+          {/* Load More Button */}
+          {filteredAndSortedPosts.length > visiblePosts && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setVisiblePosts(prev => Math.min(prev + 6, filteredAndSortedPosts.length))}
+                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Load More Posts
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -72,10 +72,10 @@ const CourseDetail = () => {
   return (
     <>
       <SEOHead 
-        title={course.name}
-        description={`${course.description} Learn ${course.name} with ${course.instructor}. ${course.level} level course. ${course.duration} of content. ${course.rating} star rating. Enroll now!`}
+        title={`${course.name} - ${course.category} Course | Beginner to Advanced`}
+        description={`${course.description} Learn ${course.name} with ${course.instructor}. ${course.level} level ${course.category.toLowerCase()} course. ${course.duration} of content. ${course.rating} star rating. Master web development, React, Context API, and more. Enroll now!`}
         image={course.featuredImage}
-        keywords={`${course.name}, ${course.category}, ${course.level} course, ${course.instructor}, online course, learn ${course.category.toLowerCase()}`}
+        keywords={`${course.name}, ${course.category}, ${course.level} course, ${course.instructor}, online course, learn ${course.category.toLowerCase()}, web development, context api, beginner to advanced, react course, web development course, lessons 3, lessons 4`}
         canonical={`https://www.anandrochlani.com/courses/${course.id}`}
         type="Course"
       />
@@ -269,6 +269,23 @@ const CourseDetail = () => {
                 <h2 className="text-2xl font-bold text-white mb-4">About the Instructor</h2>
                 <p className="text-gray-300 leading-relaxed">{course.instructorBio}</p>
               </motion.div>
+
+              {/* Detailed Course Content */}
+              {course.detailedContent && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="rounded-2xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 p-8"
+                >
+                  <h2 className="text-2xl font-bold text-white mb-6">Course Overview</h2>
+                  <div 
+                    className="prose prose-invert prose-lg max-w-none text-slate-300 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: course.detailedContent }}
+                  />
+                </motion.div>
+              )}
 
               {/* Course Modules */}
               <motion.div

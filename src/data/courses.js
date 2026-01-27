@@ -4,7 +4,7 @@ export const defaultCourses = [
     name: "Complete React Developer Bootcamp",
     description: "Master React from beginner to advanced. Build real-world applications using React, Hooks, Context API, and more.",
     instructor: "Sarah Johnson",
-    instructorBio: "Senior Frontend Developer with 8+ years of experience building scalable web applications.",
+    instructorBio: "Senior Frontend Developer with 8+ years of experience building scalable web applications. Sarah has worked with major tech companies and has taught thousands of students through her comprehensive web development courses. She specializes in React, JavaScript, and modern frontend frameworks, helping developers transition from beginner to advanced levels.",
     level: "Beginner to Advanced",
     duration: "40 hours",
     price: "$99",
@@ -22,7 +22,38 @@ export const defaultCourses = [
       { id: 7, title: "Advanced Patterns", lessons: 12, duration: "4 hours" },
       { id: 8, title: "Building Real Projects", lessons: 20, duration: "8 hours" }
     ],
-    featured: true
+    featured: true,
+    detailedContent: `
+      <h2>Complete React Developer Bootcamp: Master Web Development from Beginner to Advanced</h2>
+      <p>Welcome to the Complete React Developer Bootcamp, the most comprehensive web development course designed to take you from beginner to advanced React developer. This course covers everything you need to master React, including React Hooks, Context API, and modern web development practices.</p>
+      
+      <h3>Why Choose This Web Development Course?</h3>
+      <p>This web development course is perfect for anyone looking to build modern, scalable web applications. Whether you're a beginner starting your journey in web development or an experienced developer looking to master React, this course provides comprehensive coverage from beginner to advanced concepts.</p>
+      
+      <h3>What You'll Learn in This Web Development Bootcamp</h3>
+      <p>Throughout this web development course, you'll learn how to build real-world applications using React. The course starts with fundamental concepts and progresses to advanced topics, ensuring you have a solid foundation in web development.</p>
+      
+      <h3>Understanding React and Web Development</h3>
+      <p>React is one of the most popular libraries for building user interfaces in web development. This course teaches you how to use React effectively, from basic components to advanced patterns. You'll learn how React fits into the broader web development ecosystem and how to build applications that scale.</p>
+      
+      <h3>Context API: Managing Global State in Web Development</h3>
+      <p>The Context API is a powerful feature in React that allows you to share state across your web development projects without prop drilling. In this course, you'll learn how to use the Context API to manage global state in your web development applications, making your code more maintainable and efficient.</p>
+      
+      <h3>Course Structure: From Beginner to Advanced</h3>
+      <p>This course is structured to take you from beginner to advanced levels. Each module builds upon the previous one, ensuring you understand each concept before moving to the next. The course includes hands-on projects that reinforce your learning and help you build a portfolio of web development projects.</p>
+      
+      <h3>Lessons 3 and 4: Deep Dive into React Fundamentals</h3>
+      <p>Lessons 3 and 4 focus on React fundamentals, including components, props, and state management. These lessons are crucial for understanding how React works and how to build effective web development solutions. You'll learn how to create reusable components and manage application state effectively.</p>
+      
+      <h3>Building Real-World Web Development Projects</h3>
+      <p>Throughout the course, you'll build real-world web development projects that demonstrate your skills. These projects cover various aspects of web development, from simple applications to complex, scalable solutions. By the end of the course, you'll have a portfolio of web development projects that showcase your abilities.</p>
+      
+      <h3>Join Our Web Development Community</h3>
+      <p>When you enroll in this web development course, you join a community of over 12,500 students who are learning and growing together. Our web development community provides support, resources, and networking opportunities to help you succeed in your web development career.</p>
+      
+      <h3>Enroll Today and Start Your Web Development Journey</h3>
+      <p>Don't miss this opportunity to master web development with React. This comprehensive course takes you from beginner to advanced, covering all the essential concepts you need to succeed in web development. Enroll today and start building amazing web applications!</p>
+    `
   },
   {
     id: 2,

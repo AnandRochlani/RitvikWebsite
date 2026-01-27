@@ -49,6 +49,12 @@ const HomePage = () => {
               loading="eager"
               decoding="async"
               className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to original URL if optimized fails
+                if (e.target.src !== heroImageUrl) {
+                  e.target.src = heroImageUrl;
+                }
+              }}
             />
           </div>
 

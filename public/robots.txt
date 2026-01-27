@@ -2,20 +2,10 @@
 # https://www.anandrochlani.com/robots.txt
 
 User-agent: *
-Allow: /
 
 # Disallow admin pages from search engines
 Disallow: /admin/
 Disallow: /admin/login
 
-# Allow important pages
-Allow: /
-Allow: /courses
-Allow: /blog
-Allow: /saved-courses
-
 # Sitemap location
 Sitemap: https://www.anandrochlani.com/sitemap.xml
-
-# Crawl-delay (optional, helps prevent server overload)
-Crawl-delay: 1

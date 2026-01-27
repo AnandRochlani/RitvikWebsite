@@ -86,7 +86,7 @@ const Navigation = () => {
                   : 'text-gray-300 hover:text-white'
               }`}
             >
-              <span>Saved</span>
+              <span>My Courses</span>
               {savedCourseIds.length > 0 && (
                 <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-pink-500 rounded-full">
                   {savedCourseIds.length}
@@ -188,7 +188,7 @@ const Navigation = () => {
               >
                 <div className="flex items-center">
                   <Heart className="w-4 h-4 mr-2" />
-                  Saved Courses
+                  My Courses
                 </div>
                 {savedCourseIds.length > 0 && (
                   <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-pink-500 rounded-full">

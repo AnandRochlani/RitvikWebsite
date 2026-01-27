@@ -27,7 +27,7 @@ const SavedCoursesPage = () => {
   return (
     <>
       <SEOHead 
-        title="Saved Courses"
+        title="My Courses"
         description="View and manage your saved courses. Access your personal learning wishlist and continue your learning journey."
         canonical="https://www.anandrochlani.com/saved-courses"
       />
@@ -41,10 +41,10 @@ const SavedCoursesPage = () => {
             className="mb-12"
           >
             <h1 className="text-4xl font-bold text-white mb-4">
-              Saved <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Courses</span>
+              My <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Courses</span>
             </h1>
             <p className="text-xl text-gray-300">
-              Manage your personal learning wishlist
+              Your personal learning wishlist
             </p>
           </motion.div>
 
@@ -149,11 +149,11 @@ const SavedCoursesPage = () => {
               className="text-center py-16 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm"
             >
               <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-2">No saved courses yet</h3>
-              <p className="text-gray-400 mb-6">Start exploring courses and save them for later!</p>
+              <h3 className="text-2xl font-bold text-white mb-2">No courses saved yet</h3>
+              <p className="text-gray-400 mb-6">Start exploring and save courses for later!</p>
               <Link to="/courses">
                 <Button className="bg-gradient-to-r from-purple-500 to-pink-500">
-                  Browse Courses
+                  Explore Courses
                 </Button>
               </Link>
             </motion.div>

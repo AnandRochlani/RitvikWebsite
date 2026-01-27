@@ -27,7 +27,7 @@ const CourseDetail = () => {
           <h1 className="text-4xl font-bold text-white mb-4">Course Not Found</h1>
           <Link to="/courses">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500">
-              Back to Courses
+              View All Courses
             </Button>
           </Link>
         </div>
@@ -81,7 +81,7 @@ const CourseDetail = () => {
               className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Courses
+              All Courses
             </Button>
           </motion.div>
         </div>
@@ -174,7 +174,7 @@ const CourseDetail = () => {
                 >
                   {course.isExternal ? (
                     <span className="flex items-center">
-                      Access on Udemy <ExternalLink className="w-5 h-5 ml-2" />
+                      Enroll on Udemy <ExternalLink className="w-5 h-5 ml-2" />
                     </span>
                   ) : (
                     "Enroll Now"

@@ -64,7 +64,7 @@ const HomePage = () => {
                     className="group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300"
                   >
                     <BookOpen className="w-5 h-5 mr-2" />
-                    Explore Blog
+                    View Blog
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                   </Button>
                 </Link>
@@ -76,7 +76,7 @@ const HomePage = () => {
                     className="group bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
                   >
                     <GraduationCap className="w-5 h-5 mr-2" />
-                    Browse Courses
+                    View Courses
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                   </Button>
                 </Link>
@@ -124,7 +124,7 @@ const HomePage = () => {
                     Stay updated with the latest trends, tutorials, and best practices in technology and design. Our insightful blog posts cover cutting-edge topics in web development, UI/UX design, and data science to help you stay ahead in your career.
                   </p>
                   <span className="inline-flex items-center text-purple-400 font-medium group-hover:gap-2 transition-all duration-300">
-                    Read Articles
+                    View Blog Posts
                     <ArrowRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
                 </motion.div>
@@ -143,7 +143,7 @@ const HomePage = () => {
                     Master new skills with comprehensive cutting-edge courses taught by industry professionals. Explore our collection of expert-led courses covering web development, design, and data science with hands-on projects and real-world applications.
                   </p>
                   <span className="inline-flex items-center text-pink-400 font-medium group-hover:gap-2 transition-all duration-300">
-                    Explore Courses
+                    View All Courses
                     <ArrowRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
                 </motion.div>

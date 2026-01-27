@@ -26,7 +26,7 @@ const BlogPostDetail = () => {
           <h1 className="text-4xl font-bold text-white mb-4">Post Not Found</h1>
           <Link to="/blog">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500">
-              Back to Blog
+              View All Articles
             </Button>
           </Link>
         </div>
@@ -75,7 +75,7 @@ const BlogPostDetail = () => {
               className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Blog
+              All Articles
             </Button>
           </motion.div>
 

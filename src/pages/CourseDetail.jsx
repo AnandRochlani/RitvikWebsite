@@ -330,8 +330,11 @@ const CourseDetail = () => {
                         <div className="group rounded-lg overflow-hidden bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/50 transition-all duration-300">
                           <div className="relative h-32 overflow-hidden">
                             <img
-                              src={relatedCourse.featuredImage}
+                              src={optimizeImageUrl(relatedCourse.featuredImage, 400, 70)}
+                              srcSet={generateImageSrcset(relatedCourse.featuredImage)}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                               alt={relatedCourse.name}
+                              loading="lazy"
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
                             {/* Small save button on related courses for convenience */}

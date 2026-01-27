@@ -55,7 +55,7 @@ const BlogPostDetail = () => {
         title={post.title}
         description={post.description}
         image={post.featuredImage}
-        keywords={`${post.category}, ${post.title}, tech blog, programming tutorial, web development, ${post.author}`}
+        keywords={`react hooks, useState hook, useEffect hook, custom hooks, functional components, learn how to use react hooks, react hooks tutorial, ${post.category}, ${post.title}, tech blog, programming tutorial, web development, ${post.author}`}
         canonical={`https://www.anandrochlani.com/blog/${post.id}`}
         type="article"
       />

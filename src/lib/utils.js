@@ -18,8 +18,9 @@ export function optimizeImageUrl(url, width = 500, quality = 40) {
 	
 	// If it's an Unsplash URL, use Unsplash Source API for optimization
 	if (url.includes('unsplash.com')) {
-		// Extract photo ID from URL (format: photo-{id})
-		const photoMatch = url.match(/photo-([a-zA-Z0-9]+)/);
+		// Extract photo ID from URL (format: photo-{id} where id can include dashes and underscores)
+		// Example: photo-1504983875-d3b163aba9e6
+		const photoMatch = url.match(/photo-([a-zA-Z0-9_-]+)/);
 		if (photoMatch && photoMatch[1]) {
 			const photoId = photoMatch[1];
 			// Use Unsplash Source API with extremely aggressive optimization
@@ -45,8 +46,8 @@ export function optimizeImageUrl(url, width = 500, quality = 40) {
 export function generateImageSrcset(url) {
 	if (!url || !url.includes('unsplash.com')) return undefined;
 	
-	// Extract photo ID
-	const photoMatch = url.match(/photo-([a-zA-Z0-9]+)/);
+	// Extract photo ID (including dashes and underscores)
+	const photoMatch = url.match(/photo-([a-zA-Z0-9_-]+)/);
 	if (!photoMatch || !photoMatch[1]) return undefined;
 	
 	const photoId = photoMatch[1];

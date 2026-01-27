@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users, TrendingUp, Search, Filter, Star, BookOpen, Crown, ExternalLink } from 'lucide-react';
 import { getAllCourses } from '@/data/courses';
 import SaveButton from '@/components/SaveButton';
 import SEOHead from '@/components/SEOHead';
+import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const CoursesPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -31,6 +32,57 @@ const CoursesPage = () => {
 
   // Memoize featured courses to prevent recalculation
   const featuredCourses = useMemo(() => allCourses.filter(course => course.featured), [allCourses]);
+  
+  const observerRef = useRef(null);
+
+  // Preload featured course images for better LCP
+  useEffect(() => {
+    if (featuredCourses.length > 0) {
+      featuredCourses.slice(0, 3).forEach(course => {
+        if (course.featuredImage) {
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.href = optimizeImageUrl(course.featuredImage, 600, 75);
+          link.fetchPriority = 'high';
+          document.head.appendChild(link);
+        }
+      });
+    }
+  }, [featuredCourses]);
+
+  // Lazy load images using Intersection Observer
+  useEffect(() => {
+    const images = document.querySelectorAll('img[data-lazy]');
+    
+    if ('IntersectionObserver' in window) {
+      observerRef.current = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.lazy;
+            img.removeAttribute('data-lazy');
+            observerRef.current.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px'
+      });
+
+      images.forEach((img) => observerRef.current.observe(img));
+    } else {
+      images.forEach((img) => {
+        img.src = img.dataset.lazy;
+        img.removeAttribute('data-lazy');
+      });
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [filteredCourses]);
 
   return (
       <>
@@ -110,8 +162,12 @@ const CoursesPage = () => {
 
                           <div className="relative h-48 overflow-hidden">
                             <img
-                              src={course.featuredImage}
+                              src={optimizeImageUrl(course.featuredImage, 600, 75)}
+                              srcSet={generateImageSrcset(course.featuredImage)}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               alt={course.name}
+                              fetchPriority={index < 3 ? "high" : "auto"}
+                              loading={index < 3 ? "eager" : "lazy"}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
@@ -247,8 +303,11 @@ const CoursesPage = () => {
                   <div className={cardClassName}>
                     <div className="relative h-48 overflow-hidden">
                       <img
-                        src={course.featuredImage}
+                        data-lazy={optimizeImageUrl(course.featuredImage, 600, 70)}
+                        srcSet={generateImageSrcset(course.featuredImage)}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt={course.name}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />

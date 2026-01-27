@@ -6,6 +6,7 @@ import { useSavedCourses } from '@/context/SavedCoursesContext';
 import SaveButton from '@/components/SaveButton';
 import { Button } from '@/components/ui/button';
 import SEOHead from '@/components/SEOHead';
+import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const SavedCoursesPage = () => {
   const { getSavedCourses, removeSavedCourse } = useSavedCourses();

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users, Star, ArrowLeft, BookOpen, CheckCircle, PlayCircle, ExternalLink, Award, Sparkles } from 'lucide-react';
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import SaveButton from '@/components/SaveButton';
 import SEOHead from '@/components/SEOHead';
+import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -144,8 +145,12 @@ const CourseDetail = () => {
 
               <div className="relative h-96 rounded-2xl overflow-hidden mb-8 shadow-2xl border border-white/10 group">
                 <img
-                  src={course.featuredImage}
+                  src={optimizeImageUrl(course.featuredImage, 1200, 80)}
+                  srcSet={generateImageSrcset(course.featuredImage)}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                   alt={course.name}
+                  fetchPriority="high"
+                  loading="eager"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent flex items-center justify-center">

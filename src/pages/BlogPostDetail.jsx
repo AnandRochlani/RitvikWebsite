@@ -177,7 +177,18 @@ const BlogPostDetail = () => {
               <h2 className="text-3xl font-bold text-white mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {relatedPosts.map((relatedPost) => (
-                  <Link key={relatedPost.id} to={`/blog/${relatedPost.id}`}>
+                  <Link 
+                    key={relatedPost.id} 
+                    to={`/blog/${relatedPost.id}`}
+                    onMouseEnter={() => {
+                      // Prefetch related post detail route on hover
+                      const link = document.createElement('link');
+                      link.rel = 'prefetch';
+                      link.href = `/blog/${relatedPost.id}`;
+                      link.as = 'document';
+                      document.head.appendChild(link);
+                    }}
+                  >
                     <div className="group rounded-xl overflow-hidden bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
                       <div className="relative h-40 overflow-hidden">
                         <img

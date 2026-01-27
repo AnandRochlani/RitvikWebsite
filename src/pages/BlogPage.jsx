@@ -199,7 +199,17 @@ const BlogPage = () => {
                 className="opacity-0 animate-fade-in"
                 style={{ animationDelay: `${Math.min(index * 0.05, 0.3)}s` }}
               >
-                <Link to={`/blog/${post.id}`}>
+                <Link 
+                  to={`/blog/${post.id}`}
+                  onMouseEnter={() => {
+                    // Prefetch blog post detail route on hover
+                    const link = document.createElement('link');
+                    link.rel = 'prefetch';
+                    link.href = `/blog/${post.id}`;
+                    link.as = 'document';
+                    document.head.appendChild(link);
+                  }}
+                >
                   <div className="group h-full rounded-xl overflow-hidden bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
                     <div className="relative h-48 overflow-hidden bg-slate-800">
                       <img

@@ -14,7 +14,7 @@ export const preloadCriticalResources = () => {
   // Prefetch routes on idle (non-blocking)
   schedulePrefetch(() => {
     try {
-      const routesToPrefetch = ['/courses', '/blog'];
+      const routesToPrefetch = ['/courses', '/blog', '/blog/1'];
       routesToPrefetch.forEach(route => {
         try {
           // Only prefetch if not already in cache

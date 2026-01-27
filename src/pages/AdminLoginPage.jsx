@@ -21,10 +21,18 @@ const AdminLoginPage = () => {
   useEffect(() => {
     // Only redirect if authenticated, on login page, and haven't redirected yet
     // Use replace to avoid adding to history stack (reduces redirect overhead)
+    // Skip redirect during initial loading to prevent redirect chains
     if (isAuthenticated && location.pathname === '/admin/login' && !hasRedirected.current) {
       hasRedirected.current = true;
-      // Immediate redirect without setTimeout to reduce delay
-      navigate('/admin', { replace: true });
+      // Use requestAnimationFrame for immediate but non-blocking redirect
+      if (typeof requestAnimationFrame !== 'undefined') {
+        requestAnimationFrame(() => {
+          navigate('/admin', { replace: true });
+        });
+      } else {
+        // Fallback for older browsers
+        navigate('/admin', { replace: true });
+      }
     }
   }, [isAuthenticated, location.pathname, navigate]);
 

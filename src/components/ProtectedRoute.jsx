@@ -18,9 +18,16 @@ const ProtectedRoute = ({ children }) => {
 
   // Only redirect if not authenticated and not already on login page
   // This prevents redirect loops and multiple redirects
-  if (!isAuthenticated) {
+  // Check location.pathname to avoid redirecting if already on login page
+  if (!isAuthenticated && location.pathname !== '/admin/login') {
     // Use replace to avoid adding to history stack (reduces redirect overhead)
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  }
+
+  // If not authenticated but already on login page, don't render children
+  // This prevents ProtectedRoute from rendering anything on login page
+  if (!isAuthenticated) {
+    return null;
   }
 
   // If authenticated, render children

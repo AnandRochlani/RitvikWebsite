@@ -77,6 +77,7 @@ const AdminPage = () => {
   // Blog Post Form State
   const initialBlogState = {
     title: '',
+    slug: '', // Auto-generated from title, but can be manually edited
     description: '',
     content: '',
     author: '',
@@ -319,6 +320,7 @@ const AdminPage = () => {
 
     setBlogForm({
       title: post.title || '',
+      slug: post.slug || generateSlug(post.title || ''),
       description: post.description || '',
       content: post.content || '',
       author: post.author || '',
@@ -917,10 +919,29 @@ const AdminPage = () => {
                     <input
                       type="text"
                       value={blogForm.title}
-                      onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })}
+                      onChange={(e) => {
+                        const newTitle = e.target.value;
+                        // Auto-generate slug from title if slug is empty or matches old title
+                        const newSlug = blogForm.slug && blogForm.slug === generateSlug(blogForm.title)
+                          ? generateSlug(newTitle)
+                          : (blogForm.slug || generateSlug(newTitle));
+                        setBlogForm({ ...blogForm, title: newTitle, slug: newSlug });
+                      }}
                       className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none"
                     />
                     {errors.title && <span className="text-red-400 text-sm flex items-center"><AlertCircle className="w-3 h-3 mr-1"/>{errors.title}</span>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">URL Slug (SEO-friendly)</label>
+                    <input
+                      type="text"
+                      value={blogForm.slug}
+                      onChange={(e) => setBlogForm({ ...blogForm, slug: generateSlug(e.target.value) || e.target.value })}
+                      className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                      placeholder="Auto-generated from title"
+                    />
+                    <p className="text-xs text-gray-400">URL: /blog/{blogForm.slug || 'blog-post-slug'}</p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">

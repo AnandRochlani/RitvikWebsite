@@ -73,11 +73,12 @@ const generateSitemap = () => {
   <!-- Blog Post Pages -->
 `;
 
-  // Add all blog posts
+  // Add all blog posts (use slug if available, fallback to ID)
   blogPosts.forEach(post => {
     const postDate = post.date ? new Date(post.date).toISOString().split('T')[0] : TODAY;
+    const postSlug = post.slug || post.id;
     xml += `  <url>
-    <loc>${SITE_URL}/blog/${post.id}</loc>
+    <loc>${SITE_URL}/blog/${postSlug}</loc>
     <lastmod>${postDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

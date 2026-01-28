@@ -8,41 +8,44 @@ import { useToast } from '@/components/ui/use-toast';
 import SEOHead from '@/components/SEOHead';
 import SchemaCode from '@/components/SchemaCode';
 import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
+import { findPostBySlug, findPostById } from '@/lib/slug';
 
 const BlogPostDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   
   // Memoize blog posts lookup to prevent unnecessary recalculations
   const allBlogPosts = useMemo(() => getAllBlogPosts(), []);
   const post = useMemo(() => {
-    if (!id) return null;
-    // Try both parseInt and string comparison to handle different ID formats
-    const numericId = parseInt(id, 10);
-    if (isNaN(numericId)) return null;
+    if (!slug) return null;
     
-    const foundPost = allBlogPosts.find(p => {
-      // Try multiple matching strategies
-      return p.id === numericId || 
-             p.id === id || 
-             String(p.id) === String(id) ||
-             String(p.id) === String(numericId);
-    });
+    // First try to find by slug (SEO-friendly URL)
+    let foundPost = findPostBySlug(allBlogPosts, slug);
+    
+    // If not found by slug, try by ID (backward compatibility)
+    if (!foundPost) {
+      const numericId = parseInt(slug, 10);
+      if (!isNaN(numericId)) {
+        foundPost = findPostById(allBlogPosts, numericId);
+        
+        // If found by ID, redirect to slug URL for SEO
+        if (foundPost && foundPost.slug) {
+          navigate(`/blog/${foundPost.slug}`, { replace: true });
+          return foundPost;
+        }
+      }
+    }
     
     return foundPost;
-  }, [allBlogPosts, id]);
+  }, [allBlogPosts, slug, navigate]);
 
   if (!post) {
-    // Debug: Log available posts and the ID we're looking for
-    console.log('Looking for post with id:', id, 'Available posts:', allBlogPosts.map(p => p.id));
-    
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Post Not Found</h1>
-          <p className="text-gray-400 mb-4">Post ID: {id}</p>
-          <p className="text-gray-400 mb-6">Available post IDs: {allBlogPosts.map(p => p.id).join(', ')}</p>
+          <p className="text-gray-400 mb-4">Slug: {slug}</p>
           <Link to="/blog">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500">
               View All Articles
@@ -118,7 +121,7 @@ const BlogPostDetail = () => {
       schedulePrefetch(() => {
         relatedPosts.forEach(relatedPost => {
           try {
-            const route = `/blog/${relatedPost.id}`;
+            const route = `/blog/${relatedPost.slug || relatedPost.id}`;
             if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem(`prefetched_${route}`)) {
               const link = document.createElement('link');
               link.rel = 'prefetch';
@@ -155,7 +158,7 @@ const BlogPostDetail = () => {
         description={post.description}
         image={post.featuredImage}
         keywords={`react hooks, useState hook, useEffect hook, custom hooks, functional components, learn how to use react hooks, react hooks tutorial, ${post.category}, ${post.title}, tech blog, programming tutorial, web development, ${post.author}`}
-        canonical={`https://www.ritvikwebsite.com/blog/${post.id}`}
+        canonical={`https://www.ritvikwebsite.com/blog/${post.slug || post.id}`}
         type="article"
       />
 
@@ -163,7 +166,7 @@ const BlogPostDetail = () => {
         type="Article"
         name={post.title}
         description={post.description}
-        url={`https://www.ritvikwebsite.com/blog/${post.id}`}
+        url={`https://www.ritvikwebsite.com/blog/${post.slug || post.id}`}
         image={post.featuredImage}
       />
 
@@ -189,7 +192,7 @@ const BlogPostDetail = () => {
                         return (
                           <Link
                             key={sidebarPost.id}
-                            to={`/blog/${sidebarPost.id}`}
+                            to={`/blog/${sidebarPost.slug || sidebarPost.id}`}
                             className={`block p-3 rounded-lg transition-all duration-300 ${
                               isActive
                                 ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 border border-purple-500/50'
@@ -355,7 +358,7 @@ const BlogPostDetail = () => {
                 {/* Previous Post */}
                 {previousPost ? (
                   <Link
-                    to={`/blog/${previousPost.id}`}
+                    to={`/blog/${previousPost.slug || previousPost.id}`}
                     className="group block p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300"
                   >
                     <div className="flex items-center text-purple-400 text-sm font-medium mb-2">
@@ -378,7 +381,7 @@ const BlogPostDetail = () => {
                 {/* Next Post */}
                 {nextPost ? (
                   <Link
-                    to={`/blog/${nextPost.id}`}
+                    to={`/blog/${nextPost.slug || nextPost.id}`}
                     className="group block p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300 text-right md:text-left"
                   >
                     <div className="flex items-center justify-end md:justify-start text-purple-400 text-sm font-medium mb-2">
@@ -414,12 +417,12 @@ const BlogPostDetail = () => {
                 {relatedPosts.map((relatedPost) => (
                   <Link 
                     key={relatedPost.id} 
-                    to={`/blog/${relatedPost.id}`}
+                    to={`/blog/${relatedPost.slug || relatedPost.id}`}
                     onMouseEnter={() => {
                       // Prefetch related post detail route on hover
                       const link = document.createElement('link');
                       link.rel = 'prefetch';
-                      link.href = `/blog/${relatedPost.id}`;
+                      link.href = `/blog/${relatedPost.slug || relatedPost.id}`;
                       link.as = 'document';
                       document.head.appendChild(link);
                     }}

@@ -38,11 +38,20 @@ export const preloadCriticalResources = () => {
         }
         
         // Prefetch first 3 blog post routes (most likely to be visited)
-        const topPosts = allPostIds.slice(0, 3);
-        routesToPrefetch.push(...topPosts.map(id => `/blog/${id}`));
+        // Import getAllBlogPosts to get slugs
+        try {
+          const { getAllBlogPosts } = await import('../data/blogPosts');
+          const allPosts = getAllBlogPosts();
+          const topPosts = allPosts.slice(0, 3);
+          routesToPrefetch.push(...topPosts.map(post => `/blog/${post.slug || post.id}`));
+        } catch (e) {
+          // Fallback: use IDs if slug import fails
+          const topPosts = allPostIds.slice(0, 3);
+          routesToPrefetch.push(...topPosts.map(id => `/blog/${id}`));
+        }
       } catch (e) {
         // If localStorage access fails, just prefetch first blog post
-        routesToPrefetch.push('/blog/1');
+        routesToPrefetch.push('/blog/ultimate-guide-professional-poster-design-tips-creating-eye-catching-marketing-materials');
       }
       
       // Prefetch top services (featured services)

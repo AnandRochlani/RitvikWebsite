@@ -114,7 +114,7 @@ const BlogPage = () => {
         const postsToPrefetch = filteredAndSortedPosts.slice(0, 3);
         postsToPrefetch.forEach(post => {
           try {
-            const route = `/blog/${post.id}`;
+            const route = `/blog/${post.slug || post.id}`;
             if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem(`prefetched_${route}`)) {
               const link = document.createElement('link');
               link.rel = 'prefetch';
@@ -180,7 +180,7 @@ const BlogPage = () => {
               className="mb-12"
             >
               <Link 
-                to={`/blog/${featuredPost.id}`}
+                to={`/blog/${featuredPost.slug || featuredPost.id}`}
                 onMouseEnter={() => {
                   // Prefetch featured post detail route on hover
                   const link = document.createElement('link');
@@ -294,12 +294,12 @@ const BlogPage = () => {
                 style={{ animationDelay: `${Math.min(index * 0.05, 0.3)}s` }}
               >
                 <Link 
-                  to={`/blog/${post.id}`}
+                  to={`/blog/${post.slug || post.id}`}
                   onMouseEnter={() => {
                     // Prefetch blog post detail route on hover
                     const link = document.createElement('link');
                     link.rel = 'prefetch';
-                    link.href = `/blog/${post.id}`;
+                    link.href = `/blog/${post.slug || post.id}`;
                     link.as = 'document';
                     document.head.appendChild(link);
                   }}

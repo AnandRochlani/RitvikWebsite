@@ -72,12 +72,21 @@ export const AdminProvider = ({ children }) => {
       const existingPosts = getArray('customBlogPosts');
       const newId = Date.now();
 
+      // Generate slug from title if not provided
+      let slug = postData.slug;
+      if (!slug && postData.title) {
+        // Import slug generator dynamically
+        const { generateSlug } = require('../lib/slug');
+        slug = generateSlug(postData.title);
+      }
+
       const newPost = {
         ...postData,
         id: newId,
-        featuredImage: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 1000000)}?auto=format&fit=crop&w=800&q=80`, // Random placeholder
+        slug: slug || `post-${newId}`, // Fallback slug if title not available
+        featuredImage: postData.featuredImage || `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 1000000)}?auto=format&fit=crop&w=800&q=80`, // Random placeholder
         featured: false,
-        readTime: `${Math.ceil(postData.content.length / 1000)} min read` // Estimate read time
+        readTime: `${Math.ceil((postData.content || '').length / 1000)} min read` // Estimate read time
       };
 
       const updatedPosts = [...existingPosts, newPost];

@@ -1,6 +1,7 @@
 export const defaultBlogPosts = [
   {
     id: 1,
+    slug: 'ultimate-guide-professional-poster-design-tips-creating-eye-catching-marketing-materials',
     title: "The Ultimate Guide to Professional Poster Design: Tips for Creating Eye-Catching Marketing Materials",
     description: "Learn the essential principles of poster design that capture attention and communicate your message effectively. Discover color theory, typography, layout techniques, and best practices for print-ready designs.",
     content: `
@@ -117,6 +118,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 2,
+    slug: 'landing-page-design-best-practices-create-high-converting-pages-drive-results',
     title: "Landing Page Design Best Practices: How to Create High-Converting Pages That Drive Results",
     description: "Discover proven strategies for designing landing pages that convert visitors into customers. Learn about layout, copywriting, visual hierarchy, and conversion optimization techniques.",
     content: `
@@ -271,6 +273,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 3,
+    slug: 'seo-optimization-guide-on-page-off-page-strategies-boost-website-visibility',
     title: "SEO Optimization Guide: On-Page and Off-Page Strategies to Boost Your Website's Visibility",
     description: "Master both on-page and off-page SEO techniques to improve your search engine rankings. Learn about keyword research, content optimization, link building, and technical SEO.",
     content: `
@@ -476,6 +479,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 4,
+    slug: 'building-modern-web-applications-react-frontend-nodejs-backend-development-guide',
     title: "Building Modern Web Applications: React Frontend and Node.js Backend Development Guide",
     description: "Learn how to build scalable web applications using React for the frontend and Node.js for the backend. Explore architecture patterns, API design, state management, and deployment strategies.",
     content: `
@@ -689,6 +693,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 5,
+    slug: 'mobile-app-development-choosing-between-ios-android-cross-platform-solutions',
     title: "Mobile App Development: Choosing Between iOS, Android, and Cross-Platform Solutions",
     description: "Navigate the mobile app development landscape. Learn about native iOS and Android development, React Native, Flutter, and other cross-platform frameworks to choose the best approach for your project.",
     content: `
@@ -945,6 +950,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 6,
+    slug: 'social-media-marketing-strategies-maximizing-reach-facebook-instagram-linkedin',
     title: "Social Media Marketing Strategies: Maximizing Your Reach on Facebook, Instagram, and LinkedIn",
     description: "Learn effective social media marketing strategies for Facebook, Instagram, and LinkedIn. Discover content creation tips, paid advertising techniques, and engagement strategies that drive results.",
     content: `
@@ -1109,6 +1115,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 7,
+    slug: 'email-marketing-newsletter-design-creating-campaigns-convert',
     title: "Email Marketing and Newsletter Design: Creating Campaigns That Convert",
     description: "Master email marketing with professional newsletter designs. Learn about email template creation, segmentation, automation, and best practices for improving open rates and conversions.",
     content: `
@@ -1299,6 +1306,7 @@ export const defaultBlogPosts = [
   },
   {
     id: 8,
+    slug: 'website-performance-optimization-speed-up-site-improve-user-experience',
     title: "Website Performance Optimization: Speed Up Your Site and Improve User Experience",
     description: "Learn proven techniques for optimizing website speed and performance. Discover tools, strategies, and best practices for reducing load times and improving Core Web Vitals.",
     content: `

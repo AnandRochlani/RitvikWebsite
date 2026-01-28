@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, Filter, Star } from 'lucide-react';
 import { getAllBlogPosts } from '@/data/blogPosts';
 import SEOHead from '@/components/SEOHead';
+import SchemaCode from '@/components/SchemaCode';
 import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const BlogPage = () => {
@@ -142,7 +143,15 @@ const BlogPage = () => {
         title="Tech Blog - Web Dev, Design & Data Science"
         description="Explore articles and tutorials on web development, design, and data science. Stay updated with latest tech trends and best practices from experts."
         keywords="web development blog, react tutorials, javascript tutorials, programming blog, UI/UX design articles, data science blog, tech tutorials, coding blog, software development articles"
-        canonical="https://www.anandrochlani.com/blog"
+        canonical="https://www.ritvikwebsite.com/blog"
+      />
+
+      <SchemaCode
+        type="Blog"
+        name="Tech Blog"
+        description="Explore articles and tutorials on web development, design, and data science"
+        url="https://www.ritvikwebsite.com/blog"
+        image="https://www.ritvikwebsite.com/og-image.jpg"
       />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">

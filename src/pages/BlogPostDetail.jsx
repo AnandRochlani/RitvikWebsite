@@ -34,10 +34,15 @@ const BlogPostDetail = () => {
   }, [allBlogPosts, id]);
 
   if (!post) {
+    // Debug: Log available posts and the ID we're looking for
+    console.log('Looking for post with id:', id, 'Available posts:', allBlogPosts.map(p => p.id));
+    
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Post Not Found</h1>
+          <p className="text-gray-400 mb-4">Post ID: {id}</p>
+          <p className="text-gray-400 mb-6">Available post IDs: {allBlogPosts.map(p => p.id).join(', ')}</p>
           <Link to="/blog">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500">
               View All Articles

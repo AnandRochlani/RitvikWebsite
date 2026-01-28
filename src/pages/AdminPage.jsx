@@ -202,7 +202,7 @@ const AdminPage = () => {
       toast({
         title: "Success!",
         description: editingCourseId ? "Course updated successfully" : "Course added successfully",
-        className: "bg-green-600 border-green-700 text-white"
+        variant: "success"
       });
       setCourseForm(initialCourseState);
       setEditingCourseId(null);
@@ -230,7 +230,7 @@ const AdminPage = () => {
       toast({
         title: "Success!",
         description: editingBlogId ? "Blog post updated successfully" : "Blog post added successfully",
-        className: "bg-green-600 border-green-700 text-white"
+        variant: "success"
       });
       setBlogForm(initialBlogState);
       setEditingBlogId(null);

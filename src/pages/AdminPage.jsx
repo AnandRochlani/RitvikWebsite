@@ -114,7 +114,7 @@ const AdminPage = () => {
       order: orderMap[service.id] || 999
     })).sort((a, b) => a.order - b.order);
     setServiceOrderList(servicesWithOrder);
-  }, [allServices, getServiceOrder]);
+  }, [allServices]);
 
   // Schema Form State
   const [schemaForm, setSchemaForm] = useState({

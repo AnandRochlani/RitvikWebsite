@@ -23,6 +23,7 @@ const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
 const TermsAndConditions = lazy(() => import('@/pages/TermsAndConditions'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const CitiesPage = lazy(() => import('@/pages/CitiesPage'));
+const CityDetail = lazy(() => import('@/pages/CityDetail'));
 const PortfolioPage = lazy(() => import('@/pages/PortfolioPage'));
 const PricingPage = lazy(() => import('@/pages/PricingPage'));
 const FAQPage = lazy(() => import('@/pages/FAQPage'));
@@ -54,6 +55,7 @@ function App() {
                     <Route path="/saved-courses" element={<SavedCoursesPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/cities" element={<CitiesPage />} />
+                    <Route path="/cities/:slug" element={<CityDetail />} />
                     <Route path="/portfolio" element={<PortfolioPage />} />
                     <Route path="/pricing" element={<PricingPage />} />
                     <Route path="/faq" element={<FAQPage />} />

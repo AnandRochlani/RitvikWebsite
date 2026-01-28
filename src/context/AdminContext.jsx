@@ -396,6 +396,111 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  // City management functions
+  const addCity = (cityData) => {
+    try {
+      const existingCities = getArray('customCities');
+      const newId = Date.now();
+      
+      // Generate slug from name if not provided
+      let slug = cityData.slug;
+      if (!slug && cityData.name) {
+        slug = generateSlug(cityData.name);
+      }
+      
+      const newCity = {
+        ...cityData,
+        id: newId,
+        slug: slug || `city-${newId}`, // Fallback slug if name not available
+        image: cityData.image || `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 1000000)}?auto=format&fit=crop&w=800&q=80`,
+        featured: cityData.featured || false,
+        services: cityData.services || [],
+        content: cityData.content || cityData.description || ''
+      };
+
+      const updatedCities = [...existingCities, newCity];
+      setArray('customCities', updatedCities);
+      
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message || 'Failed to add city' };
+    }
+  };
+
+  const updateCity = (cityId, cityData) => {
+    try {
+      const id = typeof cityId === 'string' ? parseInt(cityId) : cityId;
+      const customCities = getArray('customCities');
+      const idx = customCities.findIndex((c) => c.id === id || c.id === cityId);
+
+      // Generate slug from name if name changed and slug not provided
+      let updatedData = { ...cityData };
+      if (cityData.name && !cityData.slug) {
+        // If updating existing city, keep existing slug if name hasn't changed
+        if (idx !== -1 && customCities[idx].name === cityData.name && customCities[idx].slug) {
+          updatedData.slug = customCities[idx].slug;
+        } else {
+          // Generate new slug from name
+          updatedData.slug = generateSlug(cityData.name);
+        }
+      } else if (idx !== -1 && customCities[idx].slug && !cityData.slug) {
+        // Keep existing slug if not provided in update
+        updatedData.slug = customCities[idx].slug;
+      }
+
+      if (idx !== -1) {
+        const updated = [...customCities];
+        updated[idx] = { ...updated[idx], ...updatedData, id: customCities[idx].id };
+        setArray('customCities', updated);
+        return { success: true };
+      }
+
+      // Default city: store override (for default cities)
+      const overrides = getMap('cityOverrides');
+      overrides[id] = { ...(overrides[id] || {}), ...updatedData, id: id };
+      setMap('cityOverrides', overrides);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message || 'Failed to update city' };
+    }
+  };
+
+  const deleteCity = (cityId) => {
+    try {
+      const id = typeof cityId === 'string' ? parseInt(cityId) : cityId;
+      const customCities = getArray('customCities');
+      const idx = customCities.findIndex((c) => c.id === id || c.id === cityId);
+
+      if (idx !== -1) {
+        const updated = customCities.filter((c) => c.id !== id && c.id !== cityId);
+        setArray('customCities', updated);
+      } else {
+        // For default cities, mark as deleted
+        const deletedIds = new Set(getArray('deletedCityIds'));
+        deletedIds.add(id);
+        setArray('deletedCityIds', Array.from(deletedIds));
+      }
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message || 'Failed to delete city' };
+    }
+  };
+
+  const getAllCities = () => {
+    try {
+      const customCities = getArray('customCities');
+      const deletedIds = new Set(getArray('deletedCityIds'));
+      const overrides = getMap('cityOverrides');
+      
+      // Import default cities dynamically to avoid circular dependency
+      // For now, we'll return custom cities and let the data file handle defaults
+      return customCities.filter(c => !deletedIds.has(c.id));
+    } catch (error) {
+      return [];
+    }
+  };
+
   return (
     <AdminContext.Provider value={{ 
       addCourse, 
@@ -417,7 +522,11 @@ export const AdminProvider = ({ children }) => {
       updateImageAltTags,
       getImageAltTags,
       getAllImages,
-      addImage
+      addImage,
+      addCity,
+      updateCity,
+      deleteCity,
+      getAllCities
     }}>
       {children}
     </AdminContext.Provider>

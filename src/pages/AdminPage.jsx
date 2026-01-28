@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, FileText, Plus, Trash2, CheckCircle, AlertCircle, LogOut, ArrowUp, ArrowDown, GripVertical, Save, Pencil, Settings, Image as ImageIcon, Star } from 'lucide-react';
+import { BookOpen, FileText, Plus, Trash2, CheckCircle, AlertCircle, LogOut, ArrowUp, ArrowDown, GripVertical, Save, Pencil, Settings, Image as ImageIcon, Star, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useAdmin } from '@/context/AdminContext';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import { getAllBlogPosts } from '@/data/blogPosts';
 import { getAllServices } from '@/data/services';
+import { getAllCities } from '@/data/cities';
 import { generateSlug } from '@/lib/slug';
 
 const AdminPage = () => {
@@ -32,7 +33,10 @@ const AdminPage = () => {
     updateImageAltTags,
     getImageAltTags,
     getAllImages,
-    addImage
+    addImage,
+    addCity,
+    updateCity,
+    deleteCity
   } = useAdmin();
   const { logout } = useAuth();
   const { toast } = useToast();
@@ -41,6 +45,7 @@ const AdminPage = () => {
 
   const [editingCourseId, setEditingCourseId] = useState(null);
   const [editingBlogId, setEditingBlogId] = useState(null);
+  const [editingCityId, setEditingCityId] = useState(null);
   
   // Get all System Design blogs for ordering
   const systemDesignBlogs = useMemo(() => {
@@ -52,6 +57,7 @@ const AdminPage = () => {
 
   const allPosts = useMemo(() => getAllBlogPosts(), []);
   const allServices = useMemo(() => getAllServices(), []);
+  const allCities = useMemo(() => getAllCities(), []);
   
   const [blogOrderList, setBlogOrderList] = useState([]);
   
@@ -138,6 +144,19 @@ const AdminPage = () => {
   const [imageAltTags, setImageAltTags] = useState({});
   const [newImageUrl, setNewImageUrl] = useState('');
   const [newImageAlt, setNewImageAlt] = useState('');
+
+  // City Form State
+  const initialCityState = {
+    name: '',
+    slug: '',
+    state: '',
+    description: '',
+    content: '',
+    image: '',
+    services: [''],
+    featured: false
+  };
+  const [cityForm, setCityForm] = useState(initialCityState);
 
   // Errors State
   const [errors, setErrors] = useState({});
@@ -575,6 +594,90 @@ const AdminPage = () => {
     });
   };
 
+  // City handlers
+  const validateCity = () => {
+    const newErrors = {};
+    if (!cityForm.name) newErrors.name = 'City name is required';
+    if (!cityForm.state) newErrors.state = 'State is required';
+    if (!cityForm.description) newErrors.description = 'Description is required';
+    return newErrors;
+  };
+
+  const handleCitySubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateCity();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+
+    // Auto-generate slug if not provided
+    let slug = cityForm.slug;
+    if (!slug && cityForm.name) {
+      slug = generateSlug(cityForm.name);
+    }
+
+    const formattedCity = {
+      ...cityForm,
+      slug: slug || `city-${Date.now()}`,
+      services: cityForm.services.filter(s => s.trim() !== ''),
+      content: cityForm.content || cityForm.description
+    };
+
+    const result = editingCityId ? updateCity(editingCityId, formattedCity) : addCity(formattedCity);
+    if (result.success) {
+      toast({
+        title: "Success!",
+        description: editingCityId ? "City updated successfully" : "City added successfully",
+        variant: "success"
+      });
+      setCityForm(initialCityState);
+      setEditingCityId(null);
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      toast({
+        title: "Error",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const startEditCity = (city) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCityForm({
+      name: city.name || '',
+      slug: city.slug || '',
+      state: city.state || '',
+      description: city.description || '',
+      content: city.content || city.description || '',
+      image: city.image || '',
+      services: city.services && city.services.length > 0 ? city.services : [''],
+      featured: city.featured || false
+    });
+    setEditingCityId(city.id);
+  };
+
+  const handleDeleteCity = (cityId) => {
+    if (!window.confirm('Are you sure you want to delete this city?')) return;
+    const result = deleteCity(cityId);
+    if (result.success) {
+      toast({
+        title: "Success!",
+        description: "City deleted successfully",
+        variant: "success"
+      });
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      toast({
+        title: "Error",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <>
       <SEOHead 
@@ -684,6 +787,17 @@ const AdminPage = () => {
             >
               <ImageIcon className="w-5 h-5 mr-2" />
               Images
+            </button>
+            <button
+              onClick={() => setActiveTab('cities')}
+              className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                activeTab === 'cities'
+                  ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/20'
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <MapPin className="w-5 h-5 mr-2" />
+              Cities
             </button>
           </div>
 
@@ -2071,6 +2185,237 @@ const AdminPage = () => {
                         Save All Alt Tags
                       </Button>
                     </form>
+                  </div>
+                </motion.div>
+              )}
+              {activeTab === 'cities' && (
+                <motion.div
+                  key="cities-form"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-6"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-2xl font-bold text-white">Manage Cities</h2>
+                    {editingCityId && (
+                      <span className="text-sm text-orange-400">Editing City ID: {editingCityId}</span>
+                    )}
+                  </div>
+                  
+                  {/* City Form */}
+                  <form onSubmit={handleCitySubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          City Name *
+                        </label>
+                        <input
+                          type="text"
+                          value={cityForm.name}
+                          onChange={(e) => {
+                            const newName = e.target.value;
+                            setCityForm({ ...cityForm, name: newName });
+                            // Auto-generate slug if empty or matches old auto-generated value
+                            if (!cityForm.slug || cityForm.slug === generateSlug(cityForm.name)) {
+                              setCityForm(prev => ({ ...prev, slug: generateSlug(newName) }));
+                            }
+                          }}
+                          className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                          placeholder="e.g., Mumbai"
+                        />
+                        {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          URL Slug (SEO-friendly)
+                        </label>
+                        <input
+                          type="text"
+                          value={cityForm.slug}
+                          onChange={(e) => setCityForm({ ...cityForm, slug: e.target.value })}
+                          className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                          placeholder="e.g., mumbai"
+                        />
+                        {cityForm.slug && (
+                          <p className="text-xs text-gray-400 mt-1">
+                            URL: /cities/{cityForm.slug}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        State *
+                      </label>
+                      <input
+                        type="text"
+                        value={cityForm.state}
+                        onChange={(e) => setCityForm({ ...cityForm, state: e.target.value })}
+                        className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        placeholder="e.g., Maharashtra"
+                      />
+                      {errors.state && <p className="text-red-400 text-xs mt-1">{errors.state}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Description *
+                      </label>
+                      <textarea
+                        value={cityForm.description}
+                        onChange={(e) => setCityForm({ ...cityForm, description: e.target.value })}
+                        rows={3}
+                        className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        placeholder="Short description of the city"
+                      />
+                      {errors.description && <p className="text-red-400 text-xs mt-1">{errors.description}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Full Content
+                      </label>
+                      <textarea
+                        value={cityForm.content}
+                        onChange={(e) => setCityForm({ ...cityForm, content: e.target.value })}
+                        rows={5}
+                        className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        placeholder="Detailed content about the city (optional, will use description if not provided)"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Image URL
+                      </label>
+                      <input
+                        type="url"
+                        value={cityForm.image}
+                        onChange={(e) => setCityForm({ ...cityForm, image: e.target.value })}
+                        className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        placeholder="https://images.unsplash.com/photo-..."
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Services (one per line)
+                      </label>
+                      {cityForm.services.map((service, idx) => (
+                        <div key={idx} className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={service}
+                            onChange={(e) => {
+                              const newServices = [...cityForm.services];
+                              newServices[idx] = e.target.value;
+                              setCityForm({ ...cityForm, services: newServices });
+                            }}
+                            className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                            placeholder={`Service ${idx + 1}`}
+                          />
+                          {cityForm.services.length > 1 && (
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                const newServices = cityForm.services.filter((_, i) => i !== idx);
+                                setCityForm({ ...cityForm, services: newServices.length > 0 ? newServices : [''] });
+                              }}
+                              variant="destructive"
+                              className="px-3"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        onClick={() => setCityForm({ ...cityForm, services: [...cityForm.services, ''] })}
+                        className="mt-2 bg-orange-600 hover:bg-orange-700 text-white"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Service
+                      </Button>
+                    </div>
+
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="cityFeatured"
+                        checked={cityForm.featured}
+                        onChange={(e) => setCityForm({ ...cityForm, featured: e.target.checked })}
+                        className="w-4 h-4 rounded bg-black/20 border-white/10 text-orange-600 focus:ring-orange-500"
+                      />
+                      <label htmlFor="cityFeatured" className="ml-2 text-sm text-gray-300">
+                        Featured City
+                      </label>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button
+                        type="submit"
+                        className="flex-1 bg-orange-600 hover:bg-orange-700 text-white"
+                      >
+                        {editingCityId ? 'Update City' : 'Add City'}
+                      </Button>
+                      {editingCityId && (
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setCityForm(initialCityState);
+                            setEditingCityId(null);
+                            setErrors({});
+                          }}
+                          variant="outline"
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
+                  </form>
+
+                  {/* Cities List */}
+                  <div className="mt-8 pt-8 border-t border-white/10">
+                    <h3 className="text-xl font-bold text-white mb-4">All Cities</h3>
+                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                      {allCities.map((city) => (
+                        <div
+                          key={city.id}
+                          className="flex items-center justify-between p-4 rounded-lg bg-black/20 border border-white/10"
+                        >
+                          <div className="flex-1">
+                            <h4 className="text-white font-medium">{city.name}, {city.state}</h4>
+                            <p className="text-gray-400 text-sm truncate">{city.description}</p>
+                            <p className="text-xs text-gray-500 mt-1">Slug: {city.slug || 'N/A'}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              onClick={() => startEditCity(city)}
+                              variant="outline"
+                              size="sm"
+                              className="text-orange-400 border-orange-400/20 hover:bg-orange-400/10"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              onClick={() => handleDeleteCity(city.id)}
+                              variant="destructive"
+                              size="sm"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                      {allCities.length === 0 && (
+                        <p className="text-gray-400 text-center py-8">No cities added yet.</p>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}

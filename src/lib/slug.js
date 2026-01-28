@@ -100,3 +100,42 @@ export function findServiceById(services, id) {
            String(s.id) === String(numericId);
   });
 }
+
+/**
+ * Find city by slug
+ * @param {Array} cities - Array of cities
+ * @param {string} slug - Slug to search for
+ * @returns {Object|null} - Found city or null
+ */
+export function findCityBySlug(cities, slug) {
+  if (!slug || !cities) return null;
+  
+  return cities.find(city => {
+    if (city.slug) {
+      return city.slug === slug;
+    }
+    // Fallback: generate slug from name
+    const nameSlug = city.name.toLowerCase().replace(/\s+/g, '-');
+    return nameSlug === slug;
+  });
+}
+
+/**
+ * Find city by ID
+ * @param {Array} cities - Array of cities
+ * @param {string|number} id - ID to search for
+ * @returns {Object|null} - Found city or null
+ */
+export function findCityById(cities, id) {
+  if (!id || !cities) return null;
+  
+  const numericId = parseInt(id, 10);
+  if (isNaN(numericId)) return null;
+  
+  return cities.find(c => {
+    return c.id === numericId || 
+           c.id === id || 
+           String(c.id) === String(id) ||
+           String(c.id) === String(numericId);
+  });
+}

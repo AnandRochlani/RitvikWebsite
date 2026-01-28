@@ -7,13 +7,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Import data files
 const { getAllServices } = await import('../src/data/services.js');
 const { getAllBlogPosts } = await import('../src/data/blogPosts.js');
+const { getAllCities } = await import('../src/data/cities.js');
 
 const SITE_URL = 'https://www.ritvikwebsite.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
-// Get all services and blog posts
+// Get all services, blog posts, and cities
 const services = getAllServices();
 const blogPosts = getAllBlogPosts();
+const cities = getAllCities();
 
 // Generate sitemap XML
 const generateSitemap = () => {
@@ -136,6 +138,22 @@ const generateSitemap = () => {
   });
 
   xml += `  
+  <!-- City Detail Pages -->
+`;
+
+  // Add all cities (use slug if available, fallback to ID)
+  cities.forEach(city => {
+    const citySlug = city.slug || city.id;
+    xml += `  <url>
+    <loc>${SITE_URL}/cities/${citySlug}</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+`;
+  });
+
+  xml += `  
 </urlset>`;
 
   return xml;
@@ -149,4 +167,5 @@ fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemap, 'utf8');
 console.log(`✅ Sitemap generated successfully!`);
 console.log(`   - ${services.length} services included`);
 console.log(`   - ${blogPosts.length} blog posts included`);
-console.log(`   - Total URLs: ${2 + services.length + blogPosts.length}`);
+console.log(`   - ${cities.length} cities included`);
+console.log(`   - Total URLs: ${10 + services.length + blogPosts.length + cities.length}`);

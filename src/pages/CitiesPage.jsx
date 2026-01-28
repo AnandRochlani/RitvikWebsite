@@ -1,93 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Building2, Users, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import SchemaCode from '@/components/SchemaCode';
+import { getAllCities } from '@/data/cities';
 
 const CitiesPage = () => {
-  const cities = [
-    {
-      id: 1,
-      name: 'Mumbai',
-      state: 'Maharashtra',
-      description: 'India\'s financial capital and a major hub for digital marketing services.',
-      services: ['SEO', 'Social Media Marketing', 'PPC Campaigns'],
-      image: 'https://images.unsplash.com/photo-1529253534310-60dcdc753aaf'
-    },
-    {
-      id: 2,
-      name: 'Delhi',
-      state: 'Delhi NCR',
-      description: 'The capital city with a thriving business ecosystem and growing digital presence.',
-      services: ['Web Development', 'SEO', 'Content Marketing'],
-      image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5'
-    },
-    {
-      id: 3,
-      name: 'Bangalore',
-      state: 'Karnataka',
-      description: 'India\'s Silicon Valley, home to tech startups and digital innovation.',
-      services: ['App Development', 'Web Development', 'Digital Marketing'],
-      image: 'https://images.unsplash.com/photo-1581539250439-c96689b3dd11'
-    },
-    {
-      id: 4,
-      name: 'Hyderabad',
-      state: 'Telangana',
-      description: 'A rapidly growing tech hub with increasing demand for digital services.',
-      services: ['SEO', 'Web Development', 'E-commerce Solutions'],
-      image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144'
-    },
-    {
-      id: 5,
-      name: 'Chennai',
-      state: 'Tamil Nadu',
-      description: 'A major business center in South India with diverse digital marketing needs.',
-      services: ['Social Media Marketing', 'SEO', 'Web Design'],
-      image: 'https://images.unsplash.com/photo-1582573618381-c1163e0cbb38'
-    },
-    {
-      id: 6,
-      name: 'Pune',
-      state: 'Maharashtra',
-      description: 'An emerging IT hub with growing opportunities for digital marketing.',
-      services: ['Web Development', 'SEO', 'Content Writing'],
-      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96'
-    },
-    {
-      id: 7,
-      name: 'Kolkata',
-      state: 'West Bengal',
-      description: 'Eastern India\'s cultural and commercial capital with expanding digital market.',
-      services: ['Digital Marketing', 'SEO', 'Social Media'],
-      image: 'https://images.unsplash.com/photo-1583417319070-4a69db38a482'
-    },
-    {
-      id: 8,
-      name: 'Ahmedabad',
-      state: 'Gujarat',
-      description: 'A major business center with increasing demand for digital transformation.',
-      services: ['Web Development', 'SEO', 'PPC Campaigns'],
-      image: 'https://images.unsplash.com/photo-1583416750470-965b2707b355'
-    },
-    {
-      id: 9,
-      name: 'Jaipur',
-      state: 'Rajasthan',
-      description: 'The Pink City with growing digital marketing and e-commerce opportunities.',
-      services: ['E-commerce Solutions', 'SEO', 'Social Media Marketing'],
-      image: 'https://images.unsplash.com/photo-1561361513-2d0a8be04eae'
-    },
-    {
-      id: 10,
-      name: 'Satna',
-      state: 'Madhya Pradesh',
-      description: 'Our headquarters location, serving businesses across Central India.',
-      services: ['All Digital Marketing Services', 'Web Development', 'Local SEO'],
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4'
-    }
-  ];
+  const cities = useMemo(() => getAllCities(), []);
 
   return (
     <>
@@ -166,10 +86,10 @@ const CitiesPage = () => {
                     </div>
                   </div>
                   <Link
-                    to="/contact"
+                    to={`/cities/${city.slug || city.id}`}
                     className="mt-4 inline-flex items-center text-purple-400 hover:text-purple-300 font-medium text-sm transition-colors duration-300"
                   >
-                    Get Quote for {city.name}
+                    Learn More About {city.name}
                     <span className="ml-2">→</span>
                   </Link>
                 </div>

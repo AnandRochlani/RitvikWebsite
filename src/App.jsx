@@ -16,6 +16,7 @@ const BlogPage = lazy(() => import('@/pages/BlogPage'));
 const BlogPostDetail = lazy(() => import('@/pages/BlogPostDetail'));
 const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
 const ServiceDetail = lazy(() => import('@/pages/ServiceDetail'));
+const CartPage = lazy(() => import('@/pages/CartPage'));
 const SavedCoursesPage = lazy(() => import('@/pages/SavedCoursesPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
 const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
@@ -43,6 +44,7 @@ function App() {
                     <Route path="/blog/:id" element={<BlogPostDetail />} />
                     <Route path="/services" element={<ServicesPage />} />
                     <Route path="/services/:id" element={<ServiceDetail />} />
+                    <Route path="/cart" element={<CartPage />} />
                     <Route path="/saved-courses" element={<SavedCoursesPage />} />
                     <Route path="/admin/login" element={<AdminLoginPage />} />
                     <Route 

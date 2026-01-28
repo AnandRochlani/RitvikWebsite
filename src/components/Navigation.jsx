@@ -103,26 +103,27 @@ const Navigation = () => {
             </Link>
 
             {/* Cart Link */}
-            {getCartItemsCount() > 0 && (
-              <Link
-                to="/services"
-                className="relative flex items-center space-x-1 text-sm font-medium transition-colors duration-300 text-gray-300 hover:text-white"
-                onClick={(e) => {
-                  e.preventDefault();
-                  toast({
-                    title: "Cart Items",
-                    description: `You have ${getCartItemsCount()} item(s) in your cart. Add them when requesting a quote.`,
-                  });
-                }}
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {getCartItemsCount() > 0 && (
-                  <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-purple-500 rounded-full">
-                    {getCartItemsCount()}
-                  </span>
-                )}
-              </Link>
-            )}
+            <Link
+              to="/cart"
+              className={`relative flex items-center space-x-1 text-sm font-medium transition-colors duration-300 ${
+                isActive('/cart')
+                  ? 'text-purple-400'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {getCartItemsCount() > 0 && (
+                <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-purple-500 rounded-full">
+                  {getCartItemsCount()}
+                </span>
+              )}
+              {isActive('/cart') && (
+                <motion.div
+                  layoutId="activeTab"
+                  className="absolute -bottom-6 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
+                />
+              )}
+            </Link>
 
             {/* Admin Section */}
             {isAuthenticated ? (
@@ -217,6 +218,26 @@ const Navigation = () => {
                 {savedCourseIds.length > 0 && (
                   <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-pink-500 rounded-full">
                     {savedCourseIds.length}
+                  </span>
+                )}
+              </Link>
+
+              <Link
+                to="/cart"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  isActive('/cart')
+                    ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400'
+                    : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                }`}
+              >
+                <div className="flex items-center">
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Cart
+                </div>
+                {getCartItemsCount() > 0 && (
+                  <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-purple-500 rounded-full">
+                    {getCartItemsCount()}
                   </span>
                 )}
               </Link>

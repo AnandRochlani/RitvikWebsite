@@ -8,7 +8,6 @@ import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import { getAllBlogPosts } from '@/data/blogPosts';
-import { getAllCourses } from '@/data/courses';
 import { getAllServices } from '@/data/services';
 
 const AdminPage = () => {
@@ -33,7 +32,7 @@ const AdminPage = () => {
   const { logout } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('course');
+  const [activeTab, setActiveTab] = useState('service');
 
   const [editingCourseId, setEditingCourseId] = useState(null);
   const [editingBlogId, setEditingBlogId] = useState(null);
@@ -46,7 +45,6 @@ const AdminPage = () => {
       .sort((a, b) => (a.order || 999) - (b.order || 999));
   }, []);
 
-  const allCourses = useMemo(() => getAllCourses(), []);
   const allPosts = useMemo(() => getAllBlogPosts(), []);
   const allServices = useMemo(() => getAllServices(), []);
   

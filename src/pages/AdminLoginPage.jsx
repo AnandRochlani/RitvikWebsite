@@ -42,22 +42,38 @@ const AdminLoginPage = () => {
 
     if (!username || !password) {
       setError('Username and password are required');
+      toast({
+        title: "Validation Error",
+        description: "Please enter both username and password",
+        variant: "error"
+      });
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      await login(username, password);
-      toast({
-        title: "Welcome back!",
-        description: "Login successful. Redirecting...",
-        className: "bg-green-600 border-green-700 text-white"
-      });
-      // Redirect handled by useEffect
+      const result = await login(username, password);
+      if (result && result.success) {
+        toast({
+          title: "Welcome back!",
+          description: "Login successful. Redirecting...",
+          variant: "success"
+        });
+        // Small delay to show toast before redirect
+        setTimeout(() => {
+          navigate('/admin', { replace: true });
+        }, 500);
+      }
     } catch (err) {
-      setError('Invalid credentials');
+      const errorMessage = err.message || 'Invalid credentials. Please try again.';
+      setError(errorMessage);
       setIsSubmitting(false);
+      toast({
+        title: "Login Failed",
+        description: errorMessage,
+        variant: "error"
+      });
     }
   };
 

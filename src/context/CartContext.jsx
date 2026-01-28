@@ -41,6 +41,7 @@ export const CartProvider = ({ children }) => {
       toast({
         title: "Already in Cart",
         description: "This add-on is already in your cart.",
+        variant: "warning",
       });
       return;
     }
@@ -57,7 +58,7 @@ export const CartProvider = ({ children }) => {
     toast({
       title: "Added to Cart",
       description: `${addOn.name} has been added to your cart.`,
-      className: "bg-green-600 border-green-700 text-white"
+      variant: "success",
     });
   };
 
@@ -66,6 +67,7 @@ export const CartProvider = ({ children }) => {
     toast({
       title: "Removed from Cart",
       description: "Item has been removed from your cart.",
+      variant: "default",
     });
   };
 

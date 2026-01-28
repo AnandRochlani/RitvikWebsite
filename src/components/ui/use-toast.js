@@ -18,9 +18,9 @@ function notify() {
   listeners.forEach(listener => listener())
 }
 
-export function toast({ title, description, variant = 'default' }) {
+export function toast({ title, description, variant = 'default', className }) {
   const id = ++toastCount
-  const newToast = { id, title, description, variant }
+  const newToast = { id, title, description, variant, className }
   toasts.set(id, newToast)
   notify()
   

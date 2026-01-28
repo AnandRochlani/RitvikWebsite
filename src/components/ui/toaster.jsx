@@ -14,6 +14,13 @@ export function Toaster() {
           title={toast.title}
           description={toast.description}
           variant={toast.variant}
+          className={toast.className}
+          onClose={() => {
+            // Remove toast immediately when close is clicked
+            const toastMap = require('./use-toast').toasts || new Map()
+            toastMap.delete(toast.id)
+            require('./use-toast').notify()
+          }}
         />
       ))}
     </div>

@@ -43,6 +43,29 @@ const BlogPostDetail = () => {
       .slice(0, 3);
   }, [allBlogPosts, post]);
 
+  // Get all related posts for sidebar
+  const sidebarPosts = useMemo(() => {
+    if (!post) return [];
+    
+    // If it's part of a series, show all posts in that series
+    if (post.series && post.order !== undefined) {
+      return allBlogPosts
+        .filter(p => p.series === post.series && p.order !== undefined)
+        .sort((a, b) => a.order - b.order);
+    }
+    
+    // Otherwise, show all posts in the same category
+    return allBlogPosts
+      .filter(p => p.category === post.category)
+      .sort((a, b) => {
+        // If posts have order, sort by order, otherwise by date
+        if (a.order !== undefined && b.order !== undefined) {
+          return a.order - b.order;
+        }
+        return new Date(b.date) - new Date(a.date);
+      });
+  }, [allBlogPosts, post]);
+
   // Get previous and next posts for ordered series (System Design)
   const { previousPost, nextPost } = useMemo(() => {
     if (!post || !post.series || !post.order) {
@@ -119,7 +142,68 @@ const BlogPostDetail = () => {
       />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Left Sidebar - Related Blogs */}
+            {sidebarPosts.length > 1 && (
+              <aside className="lg:w-80 flex-shrink-0 order-2 lg:order-1">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="lg:sticky lg:top-24"
+                >
+                  <div className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                    <h3 className="text-xl font-bold text-white mb-4">
+                      {post.series ? post.series : `${post.category} Articles`}
+                    </h3>
+                    <div className="space-y-2 max-h-[60vh] lg:max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
+                      {sidebarPosts.map((sidebarPost) => {
+                        const isActive = sidebarPost.id === post.id;
+                        return (
+                          <Link
+                            key={sidebarPost.id}
+                            to={`/blog/${sidebarPost.id}`}
+                            className={`block p-3 rounded-lg transition-all duration-300 ${
+                              isActive
+                                ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 border border-purple-500/50'
+                                : 'bg-white/5 hover:bg-white/10 border border-transparent hover:border-purple-500/30'
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              {sidebarPost.order && (
+                                <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                                  isActive
+                                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                                    : 'bg-purple-500/20 text-purple-400'
+                                }`}>
+                                  {sidebarPost.order}
+                                </span>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <h4 className={`text-sm font-medium line-clamp-2 ${
+                                  isActive ? 'text-white' : 'text-gray-300 hover:text-purple-400'
+                                } transition-colors`}>
+                                  {sidebarPost.title}
+                                </h4>
+                                {sidebarPost.order && (
+                                  <span className="text-xs text-gray-400 mt-1 block">
+                                    Part {sidebarPost.order}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              </aside>
+            )}
+
+            {/* Main Content */}
+            <article className="flex-1 max-w-4xl order-1 lg:order-2">
           {/* Back Button */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -339,7 +423,9 @@ const BlogPostDetail = () => {
               </div>
             </motion.div>
           )}
-        </article>
+            </article>
+          </div>
+        </div>
       </div>
     </>
   );

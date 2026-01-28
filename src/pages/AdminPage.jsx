@@ -355,7 +355,7 @@ const AdminPage = () => {
       toast({
         title: "Success!",
         description: "Blog order updated successfully. Please refresh the page to see changes.",
-        className: "bg-green-600 border-green-700 text-white"
+        variant: "success"
       });
       // Reload page to apply changes
       setTimeout(() => {
@@ -392,7 +392,7 @@ const AdminPage = () => {
       toast({
         title: "Success!",
         description: editingServiceId ? "Service updated successfully" : "Service added successfully",
-        className: "bg-green-600 border-green-700 text-white"
+        variant: "success"
       });
       setServiceForm(initialServiceState);
       setEditingServiceId(null);
@@ -413,7 +413,7 @@ const AdminPage = () => {
       toast({
         title: "Success!",
         description: "Schema data updated successfully",
-        className: "bg-green-600 border-green-700 text-white"
+        variant: "success"
       });
     } else {
       toast({
@@ -431,7 +431,7 @@ const AdminPage = () => {
       toast({
         title: "Success!",
         description: "Image alt tags updated successfully",
-        className: "bg-green-600 border-green-700 text-white"
+        variant: "success"
       });
     } else {
       toast({

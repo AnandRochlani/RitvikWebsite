@@ -25,12 +25,19 @@ const ServicesPage = () => {
   ], []);
 
   const filteredServices = useMemo(() => {
-    return allServices.filter(service => {
-      const matchesCategory = selectedCategory === 'All' || service.category === selectedCategory;
-      const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           service.description.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
+    return allServices
+      .filter(service => {
+        const matchesCategory = selectedCategory === 'All' || service.category === selectedCategory;
+        const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             service.description.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      })
+      .sort((a, b) => {
+        // Sort by order if available, otherwise maintain original order
+        const orderA = a.order !== undefined ? a.order : 999;
+        const orderB = b.order !== undefined ? b.order : 999;
+        return orderA - orderB;
+      });
   }, [selectedCategory, searchQuery, allServices]);
 
   const featuredServices = useMemo(() => allServices.filter(service => service.featured), [allServices]);

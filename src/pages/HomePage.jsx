@@ -248,8 +248,6 @@ const HomePage = () => {
             <NewsletterSignup />
           </div>
         </section>
-          </div>
-        </section>
       </div>
     </>
   );

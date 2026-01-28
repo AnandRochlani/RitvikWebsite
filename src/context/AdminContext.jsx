@@ -222,9 +222,16 @@ export const AdminProvider = ({ children }) => {
       const existingServices = getArray('customServices');
       const newId = Date.now();
       
+      // Generate slug from name if not provided
+      let slug = serviceData.slug;
+      if (!slug && serviceData.name) {
+        slug = generateSlug(serviceData.name);
+      }
+      
       const newService = {
         ...serviceData,
         id: newId,
+        slug: slug || `service-${newId}`, // Fallback slug if name not available
         featuredImage: serviceData.featuredImage || `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 1000000)}?auto=format&fit=crop&w=800&q=80`,
         featured: false,
         addOns: serviceData.addOns || []
@@ -245,15 +252,30 @@ export const AdminProvider = ({ children }) => {
       const customServices = getArray('customServices');
       const idx = customServices.findIndex((s) => s.id === id || s.id === serviceId);
 
+      // Generate slug from name if name changed and slug not provided
+      let updatedData = { ...serviceData };
+      if (serviceData.name && !serviceData.slug) {
+        // If updating existing service, keep existing slug if name hasn't changed
+        if (idx !== -1 && customServices[idx].name === serviceData.name && customServices[idx].slug) {
+          updatedData.slug = customServices[idx].slug;
+        } else {
+          // Generate new slug from name
+          updatedData.slug = generateSlug(serviceData.name);
+        }
+      } else if (idx !== -1 && customServices[idx].slug && !serviceData.slug) {
+        // Keep existing slug if not provided in update
+        updatedData.slug = customServices[idx].slug;
+      }
+
       if (idx !== -1) {
         const updated = [...customServices];
-        updated[idx] = { ...updated[idx], ...serviceData, id: customServices[idx].id };
+        updated[idx] = { ...updated[idx], ...updatedData, id: customServices[idx].id };
         setArray('customServices', updated);
         return { success: true };
       }
 
       const overrides = getMap('serviceOverrides');
-      overrides[id] = { ...(overrides[id] || {}), ...serviceData, id: id };
+      overrides[id] = { ...(overrides[id] || {}), ...updatedData, id: id };
       setMap('serviceOverrides', overrides);
       return { success: true };
     } catch (error) {

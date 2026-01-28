@@ -82,7 +82,7 @@ const SavedCoursesPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <Link to={`/services/${service.id}`}>
+                    <Link to={`/services/${service.slug || service.id}`}>
                       <div className="group h-full rounded-xl overflow-hidden bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
                         <div className="relative h-48 overflow-hidden">
                           <img

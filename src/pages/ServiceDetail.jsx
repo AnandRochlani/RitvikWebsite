@@ -11,9 +11,10 @@ import SchemaCode from '@/components/SchemaCode';
 import GetQuoteForm from '@/components/GetQuoteForm';
 import { useCart } from '@/context/CartContext';
 import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
+import { findServiceBySlug, findServiceById } from '@/lib/slug';
 
 const ServiceDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { addToCart, isInCart, removeFromCart, cartItems } = useCart();
@@ -21,9 +22,27 @@ const ServiceDetail = () => {
   
   const allServices = useMemo(() => getAllServices(), []);
   const service = useMemo(() => {
-    if (!id) return null;
-    return allServices.find(s => s.id === parseInt(id));
-  }, [allServices, id]);
+    if (!slug) return null;
+    
+    // First try to find by slug (SEO-friendly URL)
+    let foundService = findServiceBySlug(allServices, slug);
+    
+    // If not found by slug, try by ID (backward compatibility)
+    if (!foundService) {
+      const numericId = parseInt(slug, 10);
+      if (!isNaN(numericId)) {
+        foundService = findServiceById(allServices, numericId);
+        
+        // If found by ID, redirect to slug URL for SEO
+        if (foundService && foundService.slug) {
+          navigate(`/services/${foundService.slug}`, { replace: true });
+          return foundService;
+        }
+      }
+    }
+    
+    return foundService;
+  }, [allServices, slug, navigate]);
 
   // Get image alt tags from localStorage
   const getImageAlt = (imageUrl, defaultAlt) => {
@@ -95,7 +114,7 @@ const ServiceDetail = () => {
         description={service.description}
         image={service.featuredImage}
         keywords={`${service.name}, ${service.category}, professional services`}
-        canonical={`https://www.ritvikwebsite.com/services/${service.id}`}
+        canonical={`https://www.ritvikwebsite.com/services/${service.slug || service.id}`}
         type="Service"
       />
 
@@ -103,7 +122,7 @@ const ServiceDetail = () => {
         type="Service"
         name={service.name}
         description={service.description}
-        url={`https://www.ritvikwebsite.com/services/${service.id}`}
+        url={`https://www.ritvikwebsite.com/services/${service.slug || service.id}`}
         image={service.featuredImage}
         serviceType={service.category}
         serviceId={service.id}
@@ -297,7 +316,7 @@ const ServiceDetail = () => {
                   <h2 className="text-xl font-bold text-white mb-6">Related Services</h2>
                   <div className="space-y-4">
                     {relatedServices.map((relatedService) => (
-                      <Link key={relatedService.id} to={`/services/${relatedService.id}`}>
+                      <Link key={relatedService.id} to={`/services/${relatedService.slug || relatedService.id}`}>
                         <div className="group rounded-lg overflow-hidden bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/50 transition-all duration-300">
                           <div className="relative h-32 overflow-hidden">
                             <img

@@ -3,6 +3,7 @@ export const defaultServices = [
   // Graphic Design Services
   {
     id: 1,
+    slug: 'poster-design',
     name: "Poster Design",
     description: "Professional poster design services for events, marketing campaigns, and promotional materials. Eye-catching designs that capture attention and communicate your message effectively.",
     category: "Graphic Design",
@@ -24,6 +25,7 @@ export const defaultServices = [
   },
   {
     id: 2,
+    slug: 'flyer-design',
     name: "Flyer Design",
     description: "Creative flyer designs that stand out and drive action. Perfect for events, sales, and promotions.",
     category: "Graphic Design",
@@ -44,6 +46,7 @@ export const defaultServices = [
   },
   {
     id: 3,
+    slug: 'ebook-design',
     name: "Ebook Design",
     description: "Beautiful ebook layouts and covers that enhance readability and engagement.",
     category: "Graphic Design",
@@ -64,6 +67,7 @@ export const defaultServices = [
   },
   {
     id: 4,
+    slug: 'video-editing',
     name: "Video Editing",
     description: "Professional video editing services for marketing videos, social media content, and promotional materials.",
     category: "Graphic Design",
@@ -84,6 +88,7 @@ export const defaultServices = [
   },
   {
     id: 5,
+    slug: 'image-editing',
     name: "Image Editing",
     description: "Professional image retouching, color correction, and enhancement services.",
     category: "Graphic Design",
@@ -104,6 +109,7 @@ export const defaultServices = [
   },
   {
     id: 6,
+    slug: 'clip-art-design',
     name: "Clip Art Design",
     description: "Custom clip art and illustrations tailored to your brand and needs.",
     category: "Graphic Design",
@@ -124,6 +130,7 @@ export const defaultServices = [
   },
   {
     id: 7,
+    slug: 'social-media-banner',
     name: "Social Media Banner",
     description: "Eye-catching social media banners for all platforms - Facebook, Instagram, Twitter, LinkedIn, and more.",
     category: "Graphic Design",
@@ -144,6 +151,7 @@ export const defaultServices = [
   },
   {
     id: 8,
+    slug: 'website-banner',
     name: "Website Banner",
     description: "Professional website banners and headers that enhance your site's visual appeal.",
     category: "Graphic Design",
@@ -166,6 +174,7 @@ export const defaultServices = [
   // Website Design Services
   {
     id: 9,
+    slug: 'email-template',
     name: "E-mail Template",
     description: "Professional email templates that are responsive, mobile-friendly, and compatible with all major email clients.",
     category: "Website Design",
@@ -186,6 +195,7 @@ export const defaultServices = [
   },
   {
     id: 10,
+    slug: 'newsletter-design',
     name: "Newsletter Design",
     description: "Engaging newsletter designs that improve open rates and reader engagement.",
     category: "Website Design",
@@ -206,6 +216,7 @@ export const defaultServices = [
   },
   {
     id: 11,
+    slug: 'landing-page-design',
     name: "Landing Page Design",
     description: "High-converting landing pages designed to maximize conversions and user engagement.",
     category: "Website Design",
@@ -226,6 +237,7 @@ export const defaultServices = [
   },
   {
     id: 12,
+    slug: 'website-page-design-wordpress',
     name: "Website Page Design in WordPress",
     description: "Custom WordPress page designs that are beautiful, functional, and easy to manage.",
     category: "Website Design",
@@ -246,6 +258,7 @@ export const defaultServices = [
   },
   {
     id: 13,
+    slug: 'website-page-design-wix',
     name: "Website Page Design in Wix",
     description: "Professional Wix website designs tailored to your business needs.",
     category: "Website Design",
@@ -266,6 +279,7 @@ export const defaultServices = [
   },
   {
     id: 14,
+    slug: 'website-page-design-weebly',
     name: "Website Page Design in Weebly",
     description: "Custom Weebly website designs that are professional and easy to maintain.",
     category: "Website Design",
@@ -286,6 +300,7 @@ export const defaultServices = [
   },
   {
     id: 15,
+    slug: 'website-page-design-shopify',
     name: "Website Page Design in Shopify",
     description: "E-commerce focused Shopify store designs that drive sales and conversions.",
     category: "Website Design",
@@ -306,6 +321,7 @@ export const defaultServices = [
   },
   {
     id: 16,
+    slug: 'website-page-design-magento',
     name: "Website Page Design in Magento",
     description: "Enterprise-level Magento store designs for large e-commerce operations.",
     category: "Website Design",
@@ -328,6 +344,7 @@ export const defaultServices = [
   // Web Development Services
   {
     id: 17,
+    slug: 'custom-website-react-frontend-nodejs-backend',
     name: "Custom Website - React Frontend + NodeJS Backend",
     description: "Full-stack web applications built with React frontend and Node.js backend. Scalable, modern, and performant.",
     category: "Web Development",
@@ -349,6 +366,7 @@ export const defaultServices = [
   },
   {
     id: 18,
+    slug: 'custom-website-react-frontend-java-backend',
     name: "Custom Website - React Frontend + Java Backend",
     description: "Enterprise-grade web applications with React frontend and Java backend for maximum reliability and scalability.",
     category: "Web Development",
@@ -369,6 +387,7 @@ export const defaultServices = [
   },
   {
     id: 19,
+    slug: 'website-issue-solved',
     name: "Website Issue Solved",
     description: "Expert troubleshooting and fixing of website issues, bugs, and performance problems.",
     category: "Web Development",
@@ -389,6 +408,7 @@ export const defaultServices = [
   },
   {
     id: 20,
+    slug: 'page-speed-issue-solved',
     name: "Page Speed Issue Solved",
     description: "Optimize your website's loading speed for better user experience and SEO rankings.",
     category: "Web Development",
@@ -409,6 +429,7 @@ export const defaultServices = [
   },
   {
     id: 21,
+    slug: 'contact-us-form-creation',
     name: "Contact Us Form Creation",
     description: "Custom contact forms with spam protection, email notifications, and database storage.",
     category: "Web Development",
@@ -429,6 +450,7 @@ export const defaultServices = [
   },
   {
     id: 22,
+    slug: 'blog-page-creation',
     name: "Blog page Creation",
     description: "Custom blog pages with CMS integration, SEO optimization, and social sharing features.",
     category: "Web Development",
@@ -449,6 +471,7 @@ export const defaultServices = [
   },
   {
     id: 23,
+    slug: 'make-website-seo-friendly',
     name: "Make Website SEO Friendly",
     description: "Comprehensive SEO optimization to improve your website's search engine rankings and visibility.",
     category: "Web Development",
@@ -469,6 +492,7 @@ export const defaultServices = [
   },
   {
     id: 24,
+    slug: 'server-issue-solve',
     name: "Server Issue Solve",
     description: "Expert server troubleshooting, configuration, and optimization services.",
     category: "Web Development",
@@ -491,6 +515,7 @@ export const defaultServices = [
   // Digital Marketing Services
   {
     id: 25,
+    slug: 'seo-on-page-off-page',
     name: "SEO On Page and SEO Off Page",
     description: "Comprehensive SEO services including both on-page and off-page optimization strategies.",
     category: "Digital Marketing",
@@ -511,6 +536,7 @@ export const defaultServices = [
   },
   {
     id: 26,
+    slug: 'social-media-marketing',
     name: "Social Media Marketing",
     description: "Strategic social media marketing to grow your audience and engagement across all platforms.",
     category: "Digital Marketing",
@@ -531,6 +557,7 @@ export const defaultServices = [
   },
   {
     id: 27,
+    slug: 'paid-marketing-facebook-instagram-google-linkedin',
     name: "Paid Marketing (FB, Instagram, Google, LinkedIn)",
     description: "Expert paid advertising campaigns across Facebook, Instagram, Google, and LinkedIn to maximize ROI.",
     category: "Digital Marketing",
@@ -551,6 +578,7 @@ export const defaultServices = [
   },
   {
     id: 28,
+    slug: 'content-writing',
     name: "Content Writing",
     description: "High-quality content writing services for blogs, websites, and marketing materials.",
     category: "Digital Marketing",
@@ -571,6 +599,7 @@ export const defaultServices = [
   },
   {
     id: 29,
+    slug: 'whatsapp-marketing',
     name: "WhatsApp Marketing",
     description: "Strategic WhatsApp marketing campaigns to engage customers and drive conversions.",
     category: "Digital Marketing",
@@ -591,6 +620,7 @@ export const defaultServices = [
   },
   {
     id: 30,
+    slug: 'search-engine-optimisation',
     name: "Search Engine Optimisation",
     description: "Comprehensive SEO services to improve your website's search engine visibility and rankings.",
     category: "Digital Marketing",
@@ -611,6 +641,7 @@ export const defaultServices = [
   },
   {
     id: 31,
+    slug: 'social-media-optimisation',
     name: "Social Media Optimisation",
     description: "Optimize your social media presence across all platforms for maximum engagement and reach.",
     category: "Digital Marketing",
@@ -631,6 +662,7 @@ export const defaultServices = [
   },
   {
     id: 32,
+    slug: 'ppc-campaigns-google-ads',
     name: "PPC Campaigns (Google Ads)",
     description: "Expert Google Ads campaign management to drive targeted traffic and maximize ROI.",
     category: "Digital Marketing",
@@ -651,6 +683,7 @@ export const defaultServices = [
   },
   {
     id: 33,
+    slug: 'email-marketing',
     name: "E-Mail Marketing",
     description: "Professional email marketing campaigns to nurture leads and drive conversions.",
     category: "Digital Marketing",
@@ -671,6 +704,7 @@ export const defaultServices = [
   },
   {
     id: 34,
+    slug: 'youtube-marketing',
     name: "Youtube Marketing",
     description: "Strategic YouTube marketing to grow your channel and reach your target audience.",
     category: "Digital Marketing",
@@ -691,6 +725,7 @@ export const defaultServices = [
   },
   {
     id: 35,
+    slug: 'amazon-flipkart-india-mart-snapdeal-jio-mart-marketing',
     name: "Amazon, Flipkart, India Mart, Snapdeal, Jio Mart - Marketing",
     description: "Comprehensive e-commerce marketplace marketing across all major platforms in India.",
     category: "Digital Marketing",
@@ -713,6 +748,7 @@ export const defaultServices = [
   // Mobile App Development Services
   {
     id: 36,
+    slug: 'app-development-ios',
     name: "App Development for iOS",
     description: "Native iOS app development using Swift and modern iOS frameworks for optimal performance.",
     category: "Mobile App Development",
@@ -733,6 +769,7 @@ export const defaultServices = [
   },
   {
     id: 37,
+    slug: 'app-development-android',
     name: "App Development for Android",
     description: "Native Android app development using Kotlin/Java for seamless performance on all Android devices.",
     category: "Mobile App Development",
@@ -753,6 +790,7 @@ export const defaultServices = [
   },
   {
     id: 38,
+    slug: 'development-bots',
     name: "Development of Bots",
     description: "Custom chatbot and bot development for customer service, automation, and engagement.",
     category: "Mobile App Development",
@@ -773,6 +811,7 @@ export const defaultServices = [
   },
   {
     id: 39,
+    slug: 'development-react-native-apps',
     name: "Development of React Native Apps",
     description: "Cross-platform mobile app development using React Native for iOS and Android.",
     category: "Mobile App Development",
@@ -793,6 +832,7 @@ export const defaultServices = [
   },
   {
     id: 40,
+    slug: 'app-development-ipad',
     name: "App Development for iPad",
     description: "Optimized iPad app development with support for Apple Pencil, multitasking, and iPad-specific features.",
     category: "Mobile App Development",
@@ -813,6 +853,7 @@ export const defaultServices = [
   },
   {
     id: 41,
+    slug: 'app-ibeacon-development',
     name: "App iBeacon Development",
     description: "iBeacon app development for location-based services and proximity marketing.",
     category: "Mobile App Development",
@@ -833,6 +874,7 @@ export const defaultServices = [
   },
   {
     id: 42,
+    slug: 'development-flutter-apps',
     name: "Development of Flutter Apps",
     description: "Cross-platform mobile app development using Flutter for beautiful, fast, and native apps.",
     category: "Mobile App Development",
@@ -853,6 +895,7 @@ export const defaultServices = [
   },
   {
     id: 43,
+    slug: 'iot-app-development',
     name: "IoT App Development",
     description: "IoT application development for connected devices and smart home solutions.",
     category: "Mobile App Development",
@@ -873,6 +916,7 @@ export const defaultServices = [
   },
   {
     id: 44,
+    slug: 'app-development-swift',
     name: "App Development in Swift",
     description: "Native iOS app development using Swift programming language for modern iOS apps.",
     category: "Mobile App Development",
@@ -893,6 +937,7 @@ export const defaultServices = [
   },
   {
     id: 45,
+    slug: 'android-auto-apps',
     name: "Android Auto Apps",
     description: "Android Auto app development for in-car entertainment and navigation systems.",
     category: "Mobile App Development",
@@ -913,6 +958,7 @@ export const defaultServices = [
   },
   {
     id: 46,
+    slug: 'website-development',
     name: "Website Development",
     description: "Complete website development services from design to deployment with modern technologies.",
     category: "Web Development",

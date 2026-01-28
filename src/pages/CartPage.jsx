@@ -159,7 +159,7 @@ const CartPage = () => {
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
                               <Link
-                                to={`/services/${item.serviceId}`}
+                                to={`/services/${item.serviceSlug || item.serviceId}`}
                                 className="text-purple-400 hover:text-purple-300 text-sm font-medium"
                               >
                                 {service ? service.name : 'Service'}

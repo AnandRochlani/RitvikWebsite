@@ -54,28 +54,16 @@ export const preloadCriticalResources = () => {
         routesToPrefetch.push('/blog/ultimate-guide-professional-poster-design-tips-creating-eye-catching-marketing-materials');
       }
       
-      // Prefetch top services (featured services)
-      try {
-        const localServices = localStorage.getItem('customServices');
-        const defaultServiceIds = Array.from({ length: 46 }, (_, i) => i + 1);
-        
-        let allServiceIds = defaultServiceIds;
-        if (localServices) {
-          try {
-            const customServices = JSON.parse(localServices);
-            const customIds = customServices.map(s => s.id);
-            allServiceIds = [...allServiceIds, ...customIds];
-          } catch (e) {
-            // If parsing fails, use default services only
-          }
+        // Prefetch top services (featured services)
+        try {
+          // Import getAllServices to get slugs
+          const { getAllServices } = await import('../data/services');
+          const allServices = getAllServices();
+          const topServices = allServices.slice(0, 3);
+          routesToPrefetch.push(...topServices.map(service => `/services/${service.slug || service.id}`));
+        } catch (e) {
+          // If import fails, skip service prefetching
         }
-        
-        // Prefetch first 3 featured services (most likely to be visited)
-        const topServices = allServiceIds.slice(0, 3);
-        routesToPrefetch.push(...topServices.map(id => `/services/${id}`));
-      } catch (e) {
-        // If localStorage access fails, skip service prefetching
-      }
       
       // Prefetch routes with deduplication
       routesToPrefetch.forEach(route => {

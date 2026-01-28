@@ -58,10 +58,11 @@ const generateSitemap = () => {
   <!-- Service Detail Pages -->
 `;
 
-  // Add all services
+  // Add all services (use slug if available, fallback to ID)
   services.forEach(service => {
+    const serviceSlug = service.slug || service.id;
     xml += `  <url>
-    <loc>${SITE_URL}/services/${service.id}</loc>
+    <loc>${SITE_URL}/services/${serviceSlug}</loc>
     <lastmod>${TODAY}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

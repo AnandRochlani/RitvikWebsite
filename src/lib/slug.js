@@ -61,3 +61,42 @@ export function findPostById(posts, id) {
            String(p.id) === String(numericId);
   });
 }
+
+/**
+ * Find service by slug
+ * @param {Array} services - Array of services
+ * @param {string} slug - Slug to search for
+ * @returns {Object|null} - Found service or null
+ */
+export function findServiceBySlug(services, slug) {
+  if (!slug || !services) return null;
+  
+  return services.find(service => {
+    // Check if service has slug property
+    if (service.slug) {
+      return service.slug === slug;
+    }
+    // Fallback: generate slug from name for backward compatibility
+    return generateSlug(service.name) === slug;
+  });
+}
+
+/**
+ * Find service by ID (for backward compatibility)
+ * @param {Array} services - Array of services
+ * @param {string|number} id - ID to search for
+ * @returns {Object|null} - Found service or null
+ */
+export function findServiceById(services, id) {
+  if (!id || !services) return null;
+  
+  const numericId = parseInt(id, 10);
+  if (isNaN(numericId)) return null;
+  
+  return services.find(s => {
+    return s.id === numericId || 
+           s.id === id || 
+           String(s.id) === String(id) ||
+           String(s.id) === String(numericId);
+  });
+}

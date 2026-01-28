@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import { getAllBlogPosts } from '@/data/blogPosts';
 import { getAllServices } from '@/data/services';
+import { generateSlug } from '@/lib/slug';
 
 const AdminPage = () => {
   const { 
@@ -87,6 +88,7 @@ const AdminPage = () => {
   // Service Form State
   const initialServiceState = {
     name: '',
+    slug: '', // Auto-generated from name, but can be manually edited
     description: '',
     category: 'Graphic Design',
     featuredImage: '',

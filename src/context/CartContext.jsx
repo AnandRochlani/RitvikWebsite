@@ -32,7 +32,7 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (serviceId, addOn) => {
+  const addToCart = (serviceId, addOn, serviceSlug = null) => {
     const existingItem = cartItems.find(
       item => item.serviceId === serviceId && item.addOnId === addOn.id
     );
@@ -48,6 +48,7 @@ export const CartProvider = ({ children }) => {
 
     const newItem = {
       serviceId,
+      serviceSlug: serviceSlug || serviceId, // Store slug for SEO-friendly URLs
       addOnId: addOn.id,
       addOnName: addOn.name,
       addOnPrice: addOn.price,

@@ -164,7 +164,7 @@ const ServicesPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <Link to={`/services/${service.id}`}>
+                    <Link to={`/services/${service.slug || service.id}`}>
                       <div className="group relative h-full rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-slate-900/40 backdrop-blur-sm border border-purple-500/30 hover:border-purple-400/60 shadow-lg hover:shadow-purple-500/20 hover:scale-105 transition-all duration-300">
                         <div className="absolute top-4 left-4 z-10 flex gap-2">
                           <span className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-medium shadow-md">

@@ -50,7 +50,7 @@ export const preloadCriticalResources = () => {
           routesToPrefetch.push(...topPosts.map(id => `/blog/${id}`));
         }
       } catch (e) {
-        // If localStorage access fails, just prefetch first blog post
+        // If localStorage access fails, just prefetch first blog post slug
         routesToPrefetch.push('/blog/ultimate-guide-professional-poster-design-tips-creating-eye-catching-marketing-materials');
       }
       

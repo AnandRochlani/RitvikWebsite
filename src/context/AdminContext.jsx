@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { generateSlug } from '@/lib/slug';
 
 const AdminContext = createContext();
 
@@ -75,8 +76,6 @@ export const AdminProvider = ({ children }) => {
       // Generate slug from title if not provided
       let slug = postData.slug;
       if (!slug && postData.title) {
-        // Import slug generator dynamically
-        const { generateSlug } = require('../lib/slug');
         slug = generateSlug(postData.title);
       }
 

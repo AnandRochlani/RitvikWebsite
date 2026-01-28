@@ -1,4 +1,5 @@
 import { useToast } from "./use-toast"
+import { dismissToast } from "./use-toast"
 import { Toast } from "./toast"
 
 export function Toaster() {
@@ -15,12 +16,7 @@ export function Toaster() {
           description={toast.description}
           variant={toast.variant}
           className={toast.className}
-          onClose={() => {
-            // Remove toast immediately when close is clicked
-            const toastMap = require('./use-toast').toasts || new Map()
-            toastMap.delete(toast.id)
-            require('./use-toast').notify()
-          }}
+          onClose={() => dismissToast(toast.id)}
         />
       ))}
     </div>

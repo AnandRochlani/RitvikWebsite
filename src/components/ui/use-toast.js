@@ -14,8 +14,13 @@ function getToasts() {
   return Array.from(toasts.values())
 }
 
-function notify() {
+export function notify() {
   listeners.forEach(listener => listener())
+}
+
+export function dismissToast(id) {
+  toasts.delete(id)
+  notify()
 }
 
 export function toast({ title, description, variant = 'default', className }) {

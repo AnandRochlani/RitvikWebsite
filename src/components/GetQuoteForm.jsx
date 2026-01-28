@@ -90,15 +90,10 @@ const GetQuoteForm = ({ serviceId, serviceName, onClose }) => {
           </div>
           <div className="space-y-2">
             {cartItems.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm text-gray-300">
+              <div key={item.id} className="text-sm text-gray-300">
                 <span>{item.addOnName}</span>
-                <span className="text-purple-400">${item.addOnPrice}</span>
               </div>
             ))}
-          </div>
-          <div className="mt-3 pt-3 border-t border-white/10 flex justify-between text-white font-bold">
-            <span>Total:</span>
-            <span className="text-purple-400">${getCartTotal()}</span>
           </div>
         </div>
       )}

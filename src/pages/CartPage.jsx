@@ -165,12 +165,9 @@ const CartPage = () => {
                                 {service ? service.name : 'Service'}
                               </Link>
                             </div>
-                            <h3 className="text-white font-semibold text-lg mb-1">
+                            <h3 className="text-white font-semibold text-lg">
                               {item.addOnName}
                             </h3>
-                            <p className="text-purple-400 font-bold text-xl">
-                              ${item.addOnPrice}
-                            </p>
                           </div>
                           <Button
                             onClick={() => handleRemoveItem(item.id)}
@@ -199,15 +196,10 @@ const CartPage = () => {
                     <h2 className="text-xl font-bold text-white mb-4">Cart Summary</h2>
                     <div className="space-y-3 mb-6">
                       {cartItems.map((item) => (
-                        <div key={item.id} className="flex justify-between text-sm text-gray-300">
-                          <span className="truncate flex-1 mr-2">{item.addOnName}</span>
-                          <span className="text-purple-400 font-medium">${item.addOnPrice}</span>
+                        <div key={item.id} className="text-sm text-gray-300">
+                          <span>{item.addOnName}</span>
                         </div>
                       ))}
-                    </div>
-                    <div className="pt-4 border-t border-white/10 flex justify-between items-center">
-                      <span className="text-lg font-bold text-white">Total:</span>
-                      <span className="text-2xl font-bold text-purple-400">${getCartTotal()}</span>
                     </div>
                   </div>
 

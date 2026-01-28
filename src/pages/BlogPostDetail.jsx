@@ -335,7 +335,7 @@ const BlogPostDetail = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="prose prose-invert prose-lg max-w-none mb-16 text-slate-300 leading-relaxed"
+            className="prose prose-invert prose-lg max-w-none mb-16 text-slate-300 leading-relaxed prose-headings:text-white prose-h1:text-4xl prose-h1:font-bold prose-h1:mb-6 prose-h1:mt-8 prose-h2:text-3xl prose-h2:font-bold prose-h2:text-purple-400 prose-h2:mb-4 prose-h2:mt-8 prose-h2:border-b prose-h2:border-purple-500/30 prose-h2:pb-2 prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-purple-300 prose-h3:mb-3 prose-h3:mt-6 prose-p:text-gray-300 prose-p:text-lg prose-p:leading-relaxed prose-p:mb-4 prose-strong:text-purple-300 prose-strong:font-semibold prose-ul:mb-6 prose-ul:ml-6 prose-li:text-gray-300 prose-li:mb-2 prose-a:text-purple-400 prose-a:hover:text-purple-300"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 

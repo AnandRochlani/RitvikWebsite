@@ -288,6 +288,45 @@ export const AdminProvider = ({ children }) => {
     return getMap('schemaData');
   };
 
+  // Service-specific schema management functions
+  const updateServiceSchemaData = (serviceId, schemaData) => {
+    try {
+      const serviceSchemas = getMap('serviceSchemaData');
+      serviceSchemas[serviceId] = { ...(serviceSchemas[serviceId] || {}), ...schemaData };
+      setMap('serviceSchemaData', serviceSchemas);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message || 'Failed to update service schema data' };
+    }
+  };
+
+  const getServiceSchemaData = (serviceId) => {
+    try {
+      const serviceSchemas = getMap('serviceSchemaData');
+      return serviceSchemas[serviceId] || {};
+    } catch (error) {
+      return {};
+    }
+  };
+
+  // Service ordering functions
+  const updateServiceOrder = (serviceOrders) => {
+    try {
+      const orderMap = {};
+      serviceOrders.forEach(({ id, order }) => {
+        orderMap[id] = order;
+      });
+      setMap('serviceOrder', orderMap);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message || 'Failed to update service order' };
+    }
+  };
+
+  const getServiceOrder = () => {
+    return getMap('serviceOrder');
+  };
+
   // Image alt tag management functions
   const updateImageAltTags = (imageAltTags) => {
     try {
@@ -341,6 +380,10 @@ export const AdminProvider = ({ children }) => {
       deleteService,
       updateSchemaData,
       getSchemaData,
+      updateServiceSchemaData,
+      getServiceSchemaData,
+      updateServiceOrder,
+      getServiceOrder,
       updateImageAltTags,
       getImageAltTags,
       getAllImages,

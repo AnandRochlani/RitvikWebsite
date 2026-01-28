@@ -970,10 +970,34 @@ const applyServiceEdits = (servicesList) => {
     .map((service) => (overrides[service.id] ? { ...service, ...overrides[service.id] } : service));
 };
 
+const getServiceOrder = () => {
+  try {
+    const order = localStorage.getItem('serviceOrder');
+    return order ? JSON.parse(order) : {};
+  } catch (e) {
+    return {};
+  }
+};
+
+// Apply service ordering
+const applyServiceOrder = (services) => {
+  const orderMap = getServiceOrder();
+  if (Object.keys(orderMap).length === 0) {
+    return services;
+  }
+
+  return services.map(service => {
+    if (orderMap[service.id] !== undefined) {
+      return { ...service, order: orderMap[service.id] };
+    }
+    return service;
+  });
+};
+
 // Export combined for backward compatibility
-export const services = applyServiceEdits([...defaultServices, ...getLocalServices()]);
+export const services = applyServiceOrder(applyServiceEdits([...defaultServices, ...getLocalServices()]));
 
 // Export function for fresh data
 export const getAllServices = () => {
-  return applyServiceEdits([...defaultServices, ...getLocalServices()]);
+  return applyServiceOrder(applyServiceEdits([...defaultServices, ...getLocalServices()]));
 };

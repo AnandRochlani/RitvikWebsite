@@ -106,6 +106,7 @@ const ServiceDetail = () => {
         url={`https://www.ritvikwebsite.com/services/${service.id}`}
         image={service.featuredImage}
         serviceType={service.category}
+        serviceId={service.id}
       />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">

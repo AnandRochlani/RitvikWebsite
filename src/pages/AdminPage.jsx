@@ -24,6 +24,10 @@ const AdminPage = () => {
     deleteService,
     updateSchemaData,
     getSchemaData,
+    updateServiceSchemaData,
+    getServiceSchemaData,
+    updateServiceOrder,
+    getServiceOrder,
     updateImageAltTags,
     getImageAltTags,
     getAllImages,
@@ -89,10 +93,28 @@ const AdminPage = () => {
     features: [''],
     addOns: [{ name: '', price: '' }],
     membershipPrice: '',
-    generalPrice: ''
+    generalPrice: '',
+    schemaRatingValue: '',
+    schemaBestRating: '',
+    schemaWorstRating: '',
+    schemaRatingCount: '',
+    schemaReviewCount: ''
   };
   const [serviceForm, setServiceForm] = useState(initialServiceState);
   const [editingServiceId, setEditingServiceId] = useState(null);
+
+  // Service Order State
+  const [serviceOrderList, setServiceOrderList] = useState([]);
+  
+  useEffect(() => {
+    const orderMap = getServiceOrder();
+    const servicesWithOrder = allServices.map(service => ({
+      id: service.id,
+      name: service.name,
+      order: orderMap[service.id] || 999
+    })).sort((a, b) => a.order - b.order);
+    setServiceOrderList(servicesWithOrder);
+  }, [allServices, getServiceOrder]);
 
   // Schema Form State
   const [schemaForm, setSchemaForm] = useState({
@@ -387,8 +409,32 @@ const AdminPage = () => {
       generalPrice: serviceForm.generalPrice ? parseFloat(serviceForm.generalPrice) : null
     };
 
-    const result = editingServiceId ? updateService(editingServiceId, formattedService) : addService(formattedService);
+    // Remove schema fields from service data (they're stored separately)
+    const { schemaRatingValue, schemaBestRating, schemaWorstRating, schemaRatingCount, schemaReviewCount, ...serviceData } = formattedService;
+
+    const result = editingServiceId ? updateService(editingServiceId, serviceData) : addService(serviceData);
     if (result.success) {
+      // Save service-specific schema data if provided
+      const serviceId = editingServiceId || result.serviceId || Date.now();
+      if (schemaRatingValue || schemaBestRating || schemaWorstRating || schemaRatingCount || schemaReviewCount) {
+        const serviceSchemaData = {
+          ratingValue: schemaRatingValue ? parseFloat(schemaRatingValue) : undefined,
+          bestRating: schemaBestRating ? parseFloat(schemaBestRating) : undefined,
+          worstRating: schemaWorstRating ? parseFloat(schemaWorstRating) : undefined,
+          ratingCount: schemaRatingCount ? parseInt(schemaRatingCount) : undefined,
+          reviewCount: schemaReviewCount ? parseInt(schemaReviewCount) : undefined
+        };
+        // Remove undefined values
+        Object.keys(serviceSchemaData).forEach(key => {
+          if (serviceSchemaData[key] === undefined) {
+            delete serviceSchemaData[key];
+          }
+        });
+        if (Object.keys(serviceSchemaData).length > 0) {
+          updateServiceSchemaData(serviceId, serviceSchemaData);
+        }
+      }
+
       toast({
         title: "Success!",
         description: editingServiceId ? "Service updated successfully" : "Service added successfully",
@@ -397,6 +443,47 @@ const AdminPage = () => {
       setServiceForm(initialServiceState);
       setEditingServiceId(null);
       setTimeout(() => window.location.reload(), 800);
+    } else {
+      toast({
+        title: "Error",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Service Order Management Functions
+  const moveServiceUp = (index) => {
+    if (index === 0) return;
+    const newOrder = [...serviceOrderList];
+    [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+    newOrder.forEach((item, idx) => {
+      item.order = idx + 1;
+    });
+    setServiceOrderList(newOrder);
+  };
+
+  const moveServiceDown = (index) => {
+    if (index === serviceOrderList.length - 1) return;
+    const newOrder = [...serviceOrderList];
+    [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+    newOrder.forEach((item, idx) => {
+      item.order = idx + 1;
+    });
+    setServiceOrderList(newOrder);
+  };
+
+  const handleSaveServiceOrder = () => {
+    const result = updateServiceOrder(serviceOrderList);
+    if (result.success) {
+      toast({
+        title: "Success!",
+        description: "Service order updated successfully. Please refresh the page to see changes.",
+        variant: "success"
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } else {
       toast({
         title: "Error",
@@ -538,6 +625,17 @@ const AdminPage = () => {
             >
               <Settings className="w-5 h-5 mr-2" />
               Services
+            </button>
+            <button
+              onClick={() => setActiveTab('serviceOrder')}
+              className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                activeTab === 'serviceOrder'
+                  ? 'bg-teal-600 text-white shadow-lg shadow-teal-500/20'
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <GripVertical className="w-5 h-5 mr-2" />
+              Service Order
             </button>
             <button
               onClick={() => setActiveTab('schema')}
@@ -1229,6 +1327,72 @@ const AdminPage = () => {
                         />
                       </div>
                     </div>
+
+                    {/* Service-Specific Schema Section */}
+                    <div className="pt-6 border-t border-white/10">
+                      <h3 className="text-lg font-semibold text-white mb-4">Service Schema Rating (Optional)</h3>
+                      <p className="text-sm text-gray-400 mb-4">Set custom schema ratings for this service. If left empty, global schema values will be used.</p>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Rating Value</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="1"
+                            max="5"
+                            value={serviceForm.schemaRatingValue}
+                            onChange={(e) => setServiceForm({ ...serviceForm, schemaRatingValue: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="e.g., 4.5"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Best Rating</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            value={serviceForm.schemaBestRating}
+                            onChange={(e) => setServiceForm({ ...serviceForm, schemaBestRating: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="e.g., 5"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Worst Rating</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            value={serviceForm.schemaWorstRating}
+                            onChange={(e) => setServiceForm({ ...serviceForm, schemaWorstRating: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="e.g., 1"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Rating Count</label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={serviceForm.schemaRatingCount}
+                            onChange={(e) => setServiceForm({ ...serviceForm, schemaRatingCount: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="e.g., 100"
+                          />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <label className="text-sm font-medium text-gray-300">Review Count</label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={serviceForm.schemaReviewCount}
+                            onChange={(e) => setServiceForm({ ...serviceForm, schemaReviewCount: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="e.g., 85"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white">
                       {editingServiceId ? 'Update Service' : 'Add Service'}
                     </Button>
@@ -1250,6 +1414,7 @@ const AdminPage = () => {
                               type="button"
                               onClick={() => {
                                 setEditingServiceId(service.id);
+                                const serviceSchema = getServiceSchemaData(service.id);
                                 setServiceForm({
                                   name: service.name || '',
                                   description: service.description || '',
@@ -1258,7 +1423,12 @@ const AdminPage = () => {
                                   features: service.features || [''],
                                   addOns: service.addOns || [{ name: '', price: '' }],
                                   membershipPrice: service.membershipPrice || '',
-                                  generalPrice: service.generalPrice || ''
+                                  generalPrice: service.generalPrice || '',
+                                  schemaRatingValue: serviceSchema.ratingValue || '',
+                                  schemaBestRating: serviceSchema.bestRating || '',
+                                  schemaWorstRating: serviceSchema.worstRating || '',
+                                  schemaRatingCount: serviceSchema.ratingCount || '',
+                                  schemaReviewCount: serviceSchema.reviewCount || ''
                                 });
                               }}
                               className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
@@ -1282,6 +1452,105 @@ const AdminPage = () => {
                       ))}
                     </div>
                   </div>
+                </motion.div>
+              )}
+              {activeTab === 'serviceOrder' && (
+                <motion.div
+                  key="service-order"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-6"
+                >
+                  <h2 className="text-2xl font-bold text-white mb-4">Manage Service Order</h2>
+                  <p className="text-gray-400 mb-6">
+                    Drag services up or down to reorder them. Services will be displayed in this order on the services page.
+                  </p>
+                  {serviceOrderList.length > 0 ? (
+                    <>
+                      <div className="space-y-3">
+                        {serviceOrderList.map((service, index) => (
+                          <div
+                            key={service.id}
+                            className="flex items-center gap-4 p-4 rounded-lg bg-black/20 border border-white/10"
+                          >
+                            <div className="flex items-center gap-3 flex-1">
+                              <GripVertical className="w-5 h-5 text-gray-500" />
+                              <span className="w-8 h-8 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-sm font-bold">
+                                {service.order}
+                              </span>
+                              <div className="flex-1">
+                                <p className="text-white font-medium">{service.name}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => moveServiceUp(index)}
+                                disabled={index === 0}
+                                className={`p-2 rounded-lg transition-all ${
+                                  index === 0
+                                    ? 'bg-white/5 text-gray-600 cursor-not-allowed'
+                                    : 'bg-teal-500/20 text-teal-400 hover:bg-teal-500/30'
+                                }`}
+                                title="Move up"
+                              >
+                                <ArrowUp className="w-4 h-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => moveServiceDown(index)}
+                                disabled={index === serviceOrderList.length - 1}
+                                className={`p-2 rounded-lg transition-all ${
+                                  index === serviceOrderList.length - 1
+                                    ? 'bg-white/5 text-gray-600 cursor-not-allowed'
+                                    : 'bg-teal-500/20 text-teal-400 hover:bg-teal-500/30'
+                                }`}
+                                title="Move down"
+                              >
+                                <ArrowDown className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex gap-4 pt-4 border-t border-white/10">
+                        <Button
+                          onClick={handleSaveServiceOrder}
+                          className="flex-1 bg-teal-600 hover:bg-teal-700 text-white"
+                        >
+                          <Save className="w-4 h-4 mr-2" />
+                          Save Order
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            const orderMap = getServiceOrder();
+                            setServiceOrderList(allServices.map(service => ({
+                              id: service.id,
+                              name: service.name,
+                              order: orderMap[service.id] || 999
+                            })).sort((a, b) => a.order - b.order));
+                            toast({
+                              title: "Reset",
+                              description: "Order reset to original",
+                              variant: "default"
+                            });
+                          }}
+                          className="border-white/20 text-white hover:bg-white/10"
+                        >
+                          Reset
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center py-12 bg-white/5 rounded-lg border border-white/10">
+                      <p className="text-gray-400">No services available to order</p>
+                    </div>
+                  )}
                 </motion.div>
               )}
               {activeTab === 'schema' && (

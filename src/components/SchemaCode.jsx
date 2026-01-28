@@ -15,11 +15,25 @@ const SchemaCode = ({
   price = null,
   priceCurrency = 'USD',
   availability = 'https://schema.org/InStock',
-  serviceType = null
+  serviceType = null,
+  serviceId = null // Add serviceId to support per-service schema
 }) => {
   // Get schema values from localStorage (backend editable)
+  // First check for service-specific schema, then fall back to global schema
   const getSchemaValue = (key, defaultValue) => {
     try {
+      // Check for service-specific schema first
+      if (serviceId) {
+        const serviceSchemaData = localStorage.getItem('serviceSchemaData');
+        if (serviceSchemaData) {
+          const serviceSchemas = JSON.parse(serviceSchemaData);
+          if (serviceSchemas[serviceId] && serviceSchemas[serviceId][key] !== undefined) {
+            return serviceSchemas[serviceId][key];
+          }
+        }
+      }
+      
+      // Fall back to global schema
       const schemaData = localStorage.getItem('schemaData');
       if (schemaData) {
         const data = JSON.parse(schemaData);

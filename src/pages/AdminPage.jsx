@@ -1164,11 +1164,31 @@ const AdminPage = () => {
                         <input
                           type="text"
                           value={serviceForm.name}
-                          onChange={(e) => setServiceForm({ ...serviceForm, name: e.target.value })}
+                          onChange={(e) => {
+                            const newName = e.target.value;
+                            // Auto-generate slug from name if slug is empty or matches old name
+                            const newSlug = serviceForm.slug && serviceForm.slug === generateSlug(serviceForm.name)
+                              ? generateSlug(newName)
+                              : (serviceForm.slug || generateSlug(newName));
+                            setServiceForm({ ...serviceForm, name: newName, slug: newSlug });
+                          }}
                           className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
                           required
                         />
                       </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">URL Slug (SEO-friendly)</label>
+                        <input
+                          type="text"
+                          value={serviceForm.slug}
+                          onChange={(e) => setServiceForm({ ...serviceForm, slug: generateSlug(e.target.value) || e.target.value })}
+                          className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                          placeholder="Auto-generated from name"
+                        />
+                        <p className="text-xs text-gray-400">URL: /services/{serviceForm.slug || 'service-slug'}</p>
+                      </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Category</label>
                         <select
@@ -1455,6 +1475,7 @@ const AdminPage = () => {
 
                                 setServiceForm({
                                   name: service.name || '',
+                                  slug: service.slug || generateSlug(service.name || ''),
                                   description: service.description || '',
                                   category: service.category || 'Graphic Design',
                                   featuredImage: service.featuredImage || '',

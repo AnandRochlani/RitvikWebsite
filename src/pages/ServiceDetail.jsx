@@ -74,7 +74,7 @@ const ServiceDetail = () => {
   }
 
   const handleAddToCart = (addOn) => {
-    addToCart(service.id, addOn);
+    addToCart(service.id, addOn, service.slug);
   };
 
   const handleRemoveFromCart = (addOnId) => {

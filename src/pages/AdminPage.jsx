@@ -1096,6 +1096,119 @@ const AdminPage = () => {
                         className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
                       />
                     </div>
+                    {/* Features Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-300">Features</label>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm({
+                              ...serviceForm,
+                              features: [...serviceForm.features, '']
+                            });
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="text-green-400 border-green-400/50 hover:bg-green-500/10"
+                        >
+                          <Plus className="w-4 h-4 mr-1" /> Add Feature
+                        </Button>
+                      </div>
+                      <div className="space-y-2">
+                        {serviceForm.features.map((feature, index) => (
+                          <div key={index} className="flex gap-2 items-center">
+                            <input
+                              type="text"
+                              value={feature}
+                              onChange={(e) => {
+                                const newFeatures = [...serviceForm.features];
+                                newFeatures[index] = e.target.value;
+                                setServiceForm({ ...serviceForm, features: newFeatures });
+                              }}
+                              className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                              placeholder={`Feature ${index + 1}`}
+                            />
+                            {serviceForm.features.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newFeatures = serviceForm.features.filter((_, i) => i !== index);
+                                  setServiceForm({ ...serviceForm, features: newFeatures });
+                                }}
+                                className="p-2 text-red-400 hover:text-red-300"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Add-ons Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-300">Add-ons</label>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm({
+                              ...serviceForm,
+                              addOns: [...serviceForm.addOns, { name: '', price: '' }]
+                            });
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="text-green-400 border-green-400/50 hover:bg-green-500/10"
+                        >
+                          <Plus className="w-4 h-4 mr-1" /> Add Add-on
+                        </Button>
+                      </div>
+                      <div className="space-y-3">
+                        {serviceForm.addOns.map((addOn, index) => (
+                          <div key={index} className="flex gap-2 items-center bg-black/20 p-3 rounded-lg border border-white/10">
+                            <input
+                              type="text"
+                              value={addOn.name}
+                              onChange={(e) => {
+                                const newAddOns = [...serviceForm.addOns];
+                                newAddOns[index] = { ...newAddOns[index], name: e.target.value };
+                                setServiceForm({ ...serviceForm, addOns: newAddOns });
+                              }}
+                              className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                              placeholder="Add-on Name"
+                            />
+                            <input
+                              type="number"
+                              value={addOn.price}
+                              onChange={(e) => {
+                                const newAddOns = [...serviceForm.addOns];
+                                newAddOns[index] = { ...newAddOns[index], price: e.target.value };
+                                setServiceForm({ ...serviceForm, addOns: newAddOns });
+                              }}
+                              className="w-32 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                              placeholder="Price"
+                              step="0.01"
+                              min="0"
+                            />
+                            {serviceForm.addOns.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newAddOns = serviceForm.addOns.filter((_, i) => i !== index);
+                                  setServiceForm({ ...serviceForm, addOns: newAddOns });
+                                }}
+                                className="p-2 text-red-400 hover:text-red-300"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Membership Price (Optional)</label>

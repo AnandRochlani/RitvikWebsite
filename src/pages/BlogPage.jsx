@@ -225,7 +225,12 @@ const BlogPage = () => {
                       <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors duration-300">
                         {featuredPost.title}
                       </h2>
-                      <p className="text-gray-300 mb-6 line-clamp-3">{featuredPost.description}</p>
+                      <div className="mb-6">
+                        <h3 className="text-sm font-semibold text-purple-400 mb-2 uppercase tracking-wide">
+                          Summary
+                        </h3>
+                        <p className="text-gray-200 text-lg leading-relaxed line-clamp-3">{featuredPost.description}</p>
+                      </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4 text-sm text-gray-400">
                           <span className="flex items-center">
@@ -328,11 +333,16 @@ const BlogPage = () => {
                         </h3>
                       </div>
                       {post.series && (
-                        <p className="text-xs text-purple-400 mb-2 font-medium">{post.series}</p>
+                        <p className="text-xs text-purple-400 mb-3 font-medium">{post.series}</p>
                       )}
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-3">
-                        {post.description}
-                      </p>
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold text-purple-400 mb-2 uppercase tracking-wide">
+                          Overview
+                        </h4>
+                        <p className="text-gray-300 text-base leading-relaxed line-clamp-3">
+                          {post.description}
+                        </p>
+                      </div>
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span className="flex items-center">
                           <Calendar className="w-3 h-3 mr-1" />

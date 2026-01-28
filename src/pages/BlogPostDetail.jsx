@@ -6,6 +6,7 @@ import { getAllBlogPosts } from '@/data/blogPosts';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import SEOHead from '@/components/SEOHead';
+import SchemaCode from '@/components/SchemaCode';
 import { optimizeImageUrl, generateImageSrcset } from '@/lib/utils';
 
 const BlogPostDetail = () => {
@@ -17,7 +18,19 @@ const BlogPostDetail = () => {
   const allBlogPosts = useMemo(() => getAllBlogPosts(), []);
   const post = useMemo(() => {
     if (!id) return null;
-    return allBlogPosts.find(p => p.id === parseInt(id));
+    // Try both parseInt and string comparison to handle different ID formats
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) return null;
+    
+    const foundPost = allBlogPosts.find(p => {
+      // Try multiple matching strategies
+      return p.id === numericId || 
+             p.id === id || 
+             String(p.id) === String(id) ||
+             String(p.id) === String(numericId);
+    });
+    
+    return foundPost;
   }, [allBlogPosts, id]);
 
   if (!post) {
@@ -137,8 +150,16 @@ const BlogPostDetail = () => {
         description={post.description}
         image={post.featuredImage}
         keywords={`react hooks, useState hook, useEffect hook, custom hooks, functional components, learn how to use react hooks, react hooks tutorial, ${post.category}, ${post.title}, tech blog, programming tutorial, web development, ${post.author}`}
-        canonical={`https://www.anandrochlani.com/blog/${post.id}`}
+        canonical={`https://www.ritvikwebsite.com/blog/${post.id}`}
         type="article"
+      />
+
+      <SchemaCode
+        type="Article"
+        name={post.title}
+        description={post.description}
+        url={`https://www.ritvikwebsite.com/blog/${post.id}`}
+        image={post.featuredImage}
       />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 pt-24 pb-16">
@@ -250,6 +271,7 @@ const BlogPostDetail = () => {
             <span className="inline-block px-4 py-1 rounded-full bg-purple-500/20 text-purple-400 text-sm font-medium mb-4">
               {post.category}
             </span>
+            {/* H1 in content */}
             <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
               {post.title}
             </h1>

@@ -14,10 +14,11 @@ export const preloadCriticalResources = () => {
   // Prefetch routes on idle (non-blocking)
   schedulePrefetch(() => {
     try {
-      // Dynamically get blog posts and prefetch their routes
-      let blogPostRoutes = ['/courses', '/blog'];
+      // Core routes to prefetch
+      const coreRoutes = ['/services', '/blog'];
+      const routesToPrefetch = [...coreRoutes];
       
-      // Try to get blog posts from localStorage (includes custom posts)
+      // Prefetch top blog posts
       try {
         const localPosts = localStorage.getItem('customBlogPosts');
         const defaultPosts = [
@@ -38,13 +39,37 @@ export const preloadCriticalResources = () => {
         
         // Prefetch first 3 blog post routes (most likely to be visited)
         const topPosts = allPostIds.slice(0, 3);
-        blogPostRoutes = [...blogPostRoutes, ...topPosts.map(id => `/blog/${id}`)];
+        routesToPrefetch.push(...topPosts.map(id => `/blog/${id}`));
       } catch (e) {
         // If localStorage access fails, just prefetch first blog post
-        blogPostRoutes.push('/blog/1');
+        routesToPrefetch.push('/blog/1');
       }
       
-      blogPostRoutes.forEach(route => {
+      // Prefetch top services (featured services)
+      try {
+        const localServices = localStorage.getItem('customServices');
+        const defaultServiceIds = Array.from({ length: 46 }, (_, i) => i + 1);
+        
+        let allServiceIds = defaultServiceIds;
+        if (localServices) {
+          try {
+            const customServices = JSON.parse(localServices);
+            const customIds = customServices.map(s => s.id);
+            allServiceIds = [...allServiceIds, ...customIds];
+          } catch (e) {
+            // If parsing fails, use default services only
+          }
+        }
+        
+        // Prefetch first 3 featured services (most likely to be visited)
+        const topServices = allServiceIds.slice(0, 3);
+        routesToPrefetch.push(...topServices.map(id => `/services/${id}`));
+      } catch (e) {
+        // If localStorage access fails, skip service prefetching
+      }
+      
+      // Prefetch routes with deduplication
+      routesToPrefetch.forEach(route => {
         try {
           // Only prefetch if not already in cache
           // Check if sessionStorage is available (may not be in private browsing)

@@ -1,24 +1,24 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Code2, Github, Twitter, Linkedin, Mail, Youtube } from 'lucide-react';
 import NewsletterSignup from '@/components/NewsletterSignup';
 
-const Footer = () => {
+const Footer = React.memo(() => {
 
-  const socialLinks = [
+  const socialLinks = useMemo(() => [
     { icon: Youtube, href: 'https://www.youtube.com/@anandrochlani5226', label: 'YouTube', target: '_blank', rel: 'noopener noreferrer' },
     { icon: Linkedin, href: 'https://in.linkedin.com/in/anand-rochlani', label: 'LinkedIn', target: '_blank', rel: 'noopener noreferrer' },
     { icon: Github, href: '#', label: 'GitHub' },
     { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Mail, href: '#', label: 'Email' }
-  ];
+  ], []);
 
-  const quickLinks = [
+  const quickLinks = useMemo(() => [
     { name: 'Home', path: '/' },
     { name: 'Blog', path: '/blog' },
     { name: 'Services', path: '/services' },
     { name: 'About', path: '#' }
-  ];
+  ], []);
 
   return (
     <footer className="bg-slate-900 border-t border-white/10">
@@ -91,6 +91,8 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
 
 export default Footer;

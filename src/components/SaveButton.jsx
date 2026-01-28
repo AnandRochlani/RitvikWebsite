@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Heart } from 'lucide-react';
 import { useSavedCourses } from '@/context/SavedCoursesContext';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-const SaveButton = ({ courseId, className, showText = false, onSave }) => {
+const SaveButton = React.memo(({ courseId, className, showText = false, onSave }) => {
   const { isSaved, toggleSave } = useSavedCourses();
-  const saved = isSaved(courseId);
+  const saved = useMemo(() => isSaved(courseId), [isSaved, courseId]);
 
-  const handleClick = (e) => {
+  const handleClick = useCallback((e) => {
     e.preventDefault(); // Prevent link navigation if inside a Link
     e.stopPropagation();
     toggleSave(courseId);
     if (onSave) onSave(courseId);
-  };
+  }, [courseId, toggleSave, onSave]);
 
   return (
     <button
@@ -49,6 +49,8 @@ const SaveButton = ({ courseId, className, showText = false, onSave }) => {
       )}
     </button>
   );
-};
+});
+
+SaveButton.displayName = 'SaveButton';
 
 export default SaveButton;

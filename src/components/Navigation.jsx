@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Code2, Heart, Shield, LogOut, LogIn, ShoppingCart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/components/ui/use-toast';
 
-const Navigation = () => {
+const Navigation = React.memo(() => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,20 +16,20 @@ const Navigation = () => {
   const { getCartItemsCount } = useCart();
   const { toast } = useToast();
 
-  const navLinks = [
+  const navLinks = useMemo(() => [
     { name: 'Home', path: '/' },
     { name: 'Blog', path: '/blog' },
     { name: 'Services', path: '/services' }
-  ];
+  ], []);
 
-  const isActive = (path) => {
+  const isActive = useCallback((path) => {
     if (path === '/') {
       return location.pathname === '/';
     }
     return location.pathname.startsWith(path);
-  };
+  }, [location.pathname]);
 
-  const handleLogout = (e) => {
+  const handleLogout = useCallback((e) => {
     e.preventDefault();
     if (window.confirm("Are you sure you want to logout?")) {
       logout();
@@ -41,7 +41,7 @@ const Navigation = () => {
         description: "You have been successfully logged out.",
       });
     }
-  };
+  }, [logout, navigate, toast]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-white/10">
@@ -287,6 +287,8 @@ const Navigation = () => {
       </AnimatePresence>
     </nav>
   );
-};
+});
+
+Navigation.displayName = 'Navigation';
 
 export default Navigation;

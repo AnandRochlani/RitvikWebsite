@@ -20,6 +20,12 @@ const CartPage = lazy(() => import('@/pages/CartPage'));
 const SavedCoursesPage = lazy(() => import('@/pages/SavedCoursesPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
 const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
+const TermsAndConditions = lazy(() => import('@/pages/TermsAndConditions'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const CitiesPage = lazy(() => import('@/pages/CitiesPage'));
+const PortfolioPage = lazy(() => import('@/pages/PortfolioPage'));
+const PricingPage = lazy(() => import('@/pages/PricingPage'));
+const FAQPage = lazy(() => import('@/pages/FAQPage'));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -46,6 +52,12 @@ function App() {
                     <Route path="/services/:slug" element={<ServiceDetail />} />
                     <Route path="/cart" element={<CartPage />} />
                     <Route path="/saved-courses" element={<SavedCoursesPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/cities" element={<CitiesPage />} />
+                    <Route path="/portfolio" element={<PortfolioPage />} />
+                    <Route path="/pricing" element={<PricingPage />} />
+                    <Route path="/faq" element={<FAQPage />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                     <Route path="/admin/login" element={<AdminLoginPage />} />
                     <Route 
                       path="/admin" 

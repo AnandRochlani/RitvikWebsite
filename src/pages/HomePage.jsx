@@ -26,7 +26,7 @@ const HomePage = () => {
       link.rel = 'preload';
       link.as = 'image';
       link.href = optimizedHeroImage;
-      link.fetchPriority = 'high';
+      link.fetchpriority = 'high';
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
     }
@@ -35,16 +35,16 @@ const HomePage = () => {
   return (
     <>
       <SEOHead 
-        title="Professional Services - Graphic Design, Web Development & More"
-        description="Professional services for graphic design, website design, web development, digital marketing, and mobile app development. Get custom quotes for your business needs."
-        keywords="graphic design services, website design, web development, digital marketing, mobile app development, professional services, custom quotes"
+        title="The Tech Genius - The Best Digital Marketing Company in India"
+        description="Welcome to The Tech Genius - The Best Digital Marketing Company in India. Premier Internet Marketing Service in India providing innovative digital marketing strategies, unmatched expertise, and ROI-focused solutions."
+        keywords="digital marketing company india, internet marketing service india, digital marketing services india, digital marketing consultancy india, best digital marketing company, online marketing services"
         canonical="https://www.ritvikwebsite.com/"
       />
 
       <SchemaCode
         type="WebSite"
-        name="RitvikWebsite - Professional Services"
-        description="Professional services for graphic design, website design, web development, digital marketing, and mobile app development"
+        name="The Tech Genius - The Best Digital Marketing Company in India"
+        description="Premier Internet Marketing Service in India providing innovative digital marketing strategies, unmatched expertise, and ROI-focused solutions"
         url="https://www.ritvikwebsite.com"
         image="https://www.ritvikwebsite.com/og-image.jpg"
       />
@@ -68,7 +68,7 @@ const HomePage = () => {
               srcSet={generateImageSrcset(heroImageUrl, true)}
               sizes="100vw"
               alt="Learning Background"
-              fetchPriority="high"
+              fetchpriority="high"
               loading="eager"
               decoding="async"
               className="w-full h-full object-cover"
@@ -96,18 +96,18 @@ const HomePage = () => {
                 className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
               >
                 <Sparkles className="w-4 h-4 text-yellow-400" />
-                <span className="text-sm text-gray-200">Welcome to the future of learning</span>
+                <span className="text-sm text-gray-200">Welcome to The Tech Genius</span>
               </motion.div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                Professional Services & 
+                The Best Digital Marketing
                 <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                  Expert Solutions
+                  Company in India
                 </span>
               </h1>
 
               <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto">
-                Discover our comprehensive range of professional services including graphic design, web development, digital marketing, and mobile app development. Get custom quotes tailored to your business needs.
+                In a world where being online is more important than ever, your digital presence can make or break your business. That's where we come in. As the premier Internet Marketing Service in India, we at The Tech Genius provide the key to unlocking your digital potential.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -189,9 +189,9 @@ const HomePage = () => {
                 <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-sm border border-white/10 p-8 hover:border-pink-500/50 transition-all duration-300">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-500/20 to-transparent rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
                   <GraduationCap className="w-12 h-12 text-pink-400 mb-4" />
-                  <h2 className="text-2xl font-bold text-white mb-3">Professional Services</h2>
+                  <h2 className="text-2xl font-bold text-white mb-3">Digital Marketing Services</h2>
                   <p className="text-gray-300 mb-4">
-                    Explore our comprehensive range of professional services including graphic design, website design, web development, digital marketing, and mobile app development. Get custom quotes tailored to your business needs.
+                    As the premier Internet Marketing Service in India, we provide comprehensive digital marketing solutions including SEO, social media marketing, PPC campaigns, and content marketing to help your business thrive online.
                   </p>
                   <span className="inline-flex items-center text-pink-400 font-medium group-hover:gap-2 transition-all duration-300">
                     View All Services
@@ -203,37 +203,40 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Additional Content Section for SEO */}
+        {/* Why Choose Us Section */}
         <section className="py-16 bg-slate-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-white mb-6">Why Choose Our Services?</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">Why Choose Us?</h2>
+              <p className="text-xl text-gray-300 mb-8">
+                When it comes to Digital Marketing Services in India, we are second to none. With a proven track record, we deliver results that are not just impressive but consistently so.
+              </p>
               <div className="grid md:grid-cols-3 gap-8 text-left mt-8">
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">Professional Quality</h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Innovative Strategies</h3>
                   <p className="text-gray-300">
-                    Our services are delivered by experienced professionals using the latest tools and technologies. We ensure high-quality results that meet your business objectives.
+                    Stay ahead with pioneering digital marketing techniques that keep you at the forefront of your industry.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">Custom Solutions</h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Unmatched Expertise</h3>
                   <p className="text-gray-300">
-                    Every project is tailored to your specific needs. We work closely with you to understand your requirements and deliver solutions that exceed expectations.
+                    As a leading Digital Marketing Consultancy in India, we have the know-how to make your brand shine.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">Competitive Pricing</h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">ROI-Focused Solutions</h3>
                   <p className="text-gray-300">
-                    Get custom quotes for all our services. We offer competitive pricing with flexible options including membership plans for regular clients.
+                    We deliver measurable results that positively impact your bottom line.
                   </p>
                 </div>
               </div>
-              <div className="mt-12 text-gray-300 space-y-4">
+              <div className="mt-12 text-gray-300 space-y-4 text-left">
                 <p>
-                  We offer comprehensive professional services including graphic design, website design, web development, digital marketing, and mobile app development. Whether you need a custom website, mobile app, or digital marketing campaign, we have the expertise to help your business succeed.
+                  In a world where being online is more important than ever, your digital presence can make or break your business. That's where we come in. As the premier Internet Marketing Service in India, we at The Tech Genius provide the key to unlocking your digital potential.
                 </p>
                 <p>
-                  Our team combines creative design with technical expertise to deliver solutions that drive results. Contact us today for a custom quote tailored to your specific needs and budget.
+                  When it comes to Digital Marketing Services in India, we are second to none. With a proven track record, we deliver results that are not just impressive but consistently so. Choose us for innovative strategies, unmatched expertise, and ROI-focused solutions that positively impact your bottom line.
                 </p>
               </div>
             </div>

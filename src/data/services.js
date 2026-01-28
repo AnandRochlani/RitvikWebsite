@@ -14,6 +14,32 @@ export const defaultServices = [
       "Print-ready files",
       "Source files included"
     ],
+    process: [
+      "Initial consultation to understand your requirements and brand identity",
+      "Concept development with multiple design options",
+      "Client feedback and revision rounds",
+      "Final design approval and file delivery"
+    ],
+    caseStudies: [
+      {
+        title: "Music Festival Poster Campaign",
+        description: "Created a vibrant poster series for a major music festival that increased ticket sales by 35%.",
+        results: [
+          "35% increase in ticket sales",
+          "Won design award for best promotional material",
+          "Used across multiple marketing channels"
+        ]
+      }
+    ],
+    maintenanceSupport: {
+      description: "Ongoing support for poster updates, seasonal variations, and multi-format adaptations.",
+      features: [
+        "Monthly design updates",
+        "Format conversions (print to digital)",
+        "Brand consistency checks",
+        "Priority support for urgent requests"
+      ]
+    },
     addOns: [
       { id: 1, name: "Rush Delivery (24-48 hours)", price: 50 },
       { id: 2, name: "Additional Concepts", price: 30 },

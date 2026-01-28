@@ -55,6 +55,54 @@ const generateSitemap = () => {
     <priority>0.3</priority>
   </url>
   
+  <!-- Portfolio Page -->
+  <url>
+    <loc>${SITE_URL}/portfolio</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Pricing Page -->
+  <url>
+    <loc>${SITE_URL}/pricing</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Cities Page -->
+  <url>
+    <loc>${SITE_URL}/cities</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>${SITE_URL}/contact</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- FAQ Page -->
+  <url>
+    <loc>${SITE_URL}/faq</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Terms and Conditions Page -->
+  <url>
+    <loc>${SITE_URL}/terms-and-conditions</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
   <!-- Service Detail Pages -->
 `;
 

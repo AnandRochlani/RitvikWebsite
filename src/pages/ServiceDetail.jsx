@@ -100,7 +100,7 @@ const ServiceDetail = () => {
         link.rel = 'preload';
         link.as = 'image';
         link.href = optimizedImage;
-        link.fetchPriority = 'high';
+        link.fetchpriority = 'high';
         link.crossOrigin = 'anonymous';
         document.head.appendChild(link);
       }
@@ -175,7 +175,7 @@ const ServiceDetail = () => {
                   srcSet={generateImageSrcset(service.featuredImage)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                   alt={getImageAlt(service.featuredImage, service.name)}
-                  fetchPriority="high"
+                  fetchpriority="high"
                   loading="eager"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -229,7 +229,7 @@ const ServiceDetail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              {/* Features */}
+              {/* Website Features */}
               {service.features && service.features.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -240,7 +240,7 @@ const ServiceDetail = () => {
                 >
                   <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
                     <CheckCircle className="w-6 h-6 mr-2 text-purple-400" />
-                    What's Included
+                    Website Features
                   </h2>
                   <div className="grid md:grid-cols-1 gap-4">
                     {service.features.map((feature, idx) => (
@@ -250,6 +250,144 @@ const ServiceDetail = () => {
                       </div>
                     ))}
                   </div>
+                </motion.div>
+              )}
+
+              {/* Process Section */}
+              {service.process && service.process.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="rounded-2xl backdrop-blur-sm border p-8 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-white/10"
+                >
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                    <span className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center mr-3 text-purple-400 font-bold">1</span>
+                    Process
+                  </h2>
+                  <div className="space-y-4">
+                    {service.process.map((step, idx) => (
+                      <div key={idx} className="flex items-start">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center mr-4 mt-0.5">
+                          <span className="text-purple-400 font-semibold text-sm">{idx + 1}</span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-gray-300 leading-relaxed">{step}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Pricing or Quote CTA Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="rounded-2xl backdrop-blur-sm border p-8 bg-gradient-to-br from-pink-500/10 to-purple-500/10 border-white/10"
+              >
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                  <span className="w-8 h-8 rounded-full bg-pink-500/20 flex items-center justify-center mr-3 text-pink-400 font-bold">2</span>
+                  Pricing or Quote CTA
+                </h2>
+                <div className="text-center py-6">
+                  <p className="text-gray-300 mb-6 text-lg">
+                    Get a custom quote tailored to your specific needs and requirements.
+                  </p>
+                  <Button
+                    onClick={() => setShowQuoteForm(!showQuoteForm)}
+                    className="px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  >
+                    {showQuoteForm ? 'Close Quote Form' : 'Get a Custom Quote'}
+                  </Button>
+                  {showQuoteForm && (
+                    <div className="mt-6">
+                      <GetQuoteForm 
+                        serviceId={service.id}
+                        serviceName={service.name}
+                        onClose={() => setShowQuoteForm(false)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+
+              {/* Case Studies Section */}
+              {service.caseStudies && service.caseStudies.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="rounded-2xl backdrop-blur-sm border p-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-white/10"
+                >
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                    <span className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3 text-blue-400 font-bold">3</span>
+                    Case Studies
+                  </h2>
+                  <div className="space-y-6">
+                    {service.caseStudies.map((caseStudy, idx) => (
+                      <div key={idx} className="p-6 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                        {caseStudy.title && (
+                          <h3 className="text-xl font-semibold text-white mb-3">{caseStudy.title}</h3>
+                        )}
+                        {caseStudy.description && (
+                          <p className="text-gray-300 mb-4 leading-relaxed">{caseStudy.description}</p>
+                        )}
+                        {caseStudy.results && caseStudy.results.length > 0 && (
+                          <div className="mt-4">
+                            <h4 className="text-sm font-semibold text-gray-400 mb-2">Key Results:</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                              {caseStudy.results.map((result, resultIdx) => (
+                                <li key={resultIdx} className="text-gray-300 text-sm">{result}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Website Maintenance & Support Section */}
+              {service.maintenanceSupport && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="rounded-2xl backdrop-blur-sm border p-8 bg-gradient-to-br from-green-500/10 to-blue-500/10 border-white/10"
+                >
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                    <span className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center mr-3 text-green-400 font-bold">4</span>
+                    Website Maintenance & Support
+                  </h2>
+                  {typeof service.maintenanceSupport === 'string' ? (
+                    <p className="text-gray-300 leading-relaxed">{service.maintenanceSupport}</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {service.maintenanceSupport.features && service.maintenanceSupport.features.length > 0 && (
+                        <div>
+                          <h3 className="text-lg font-semibold text-white mb-3">What's Included:</h3>
+                          <ul className="space-y-2">
+                            {service.maintenanceSupport.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start">
+                                <CheckCircle className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-green-400" />
+                                <span className="text-gray-300">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {service.maintenanceSupport.description && (
+                        <p className="text-gray-300 leading-relaxed">{service.maintenanceSupport.description}</p>
+                      )}
+                    </div>
+                  )}
                 </motion.div>
               )}
 

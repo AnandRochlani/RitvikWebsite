@@ -1,25 +1,27 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { useLocation } from 'react-router-dom';
 
 const SEOHead = ({ 
   title, 
   description, 
-  image = 'https://www.anandrochlani.com/og-image.jpg',
+  image = 'https://www.ritvikwebsite.com/og-image.jpg',
   type = 'website',
   canonical,
   keywords
 }) => {
-  const location = useLocation();
   const siteUrl = 'https://www.ritvikwebsite.com';
+  
+  // Use window.location directly (all pages are client-side rendered)
+  // This avoids React Router hook context issues
+  const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '/';
   
   // Build canonical URL - always match the current page to prevent SEO errors
   // Normalize pathname: remove trailing slash except for root
-  let pathname = location.pathname;
-  if (pathname !== '/' && pathname.endsWith('/')) {
-    pathname = pathname.slice(0, -1);
+  let normalizedPathname = currentPathname;
+  if (normalizedPathname !== '/' && normalizedPathname.endsWith('/')) {
+    normalizedPathname = normalizedPathname.slice(0, -1);
   }
-  const currentUrl = `${siteUrl}${pathname}`;
+  const currentUrl = `${siteUrl}${normalizedPathname}`;
   
   // Use canonical if provided, but ensure it matches current page
   // If canonical points to a different page, use current URL instead
@@ -44,8 +46,8 @@ const SEOHead = ({
   }
   // Only append brand name if title doesn't already contain it
   const fullTitle = title 
-    ? (title.includes('RitvikWebsite') ? title : `${title} | RitvikWebsite`)
-    : 'Professional Services & Solutions | RitvikWebsite';
+    ? (title.includes('The Tech Genius') || title.includes('RitvikWebsite') ? title : `${title} | The Tech Genius`)
+    : 'The Tech Genius - The Best Digital Marketing Company in India';
   const fullDescription = description || 'Professional services for graphic design, website design, web development, digital marketing, and mobile app development. Get custom quotes tailored to your business needs.';
 
   return (
@@ -66,7 +68,7 @@ const SEOHead = ({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={fullDescription} />
       <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="RitvikWebsite" />
+      <meta property="og:site_name" content="The Tech Genius" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter Card */}
@@ -87,7 +89,7 @@ const SEOHead = ({
           "image": image,
           "publisher": {
             "@type": "Organization",
-            "name": "RitvikWebsite",
+            "name": "The Tech Genius",
             "logo": {
               "@type": "ImageObject",
               "url": "https://www.ritvikwebsite.com/logo.png"

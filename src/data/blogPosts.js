@@ -111,7 +111,7 @@ export const defaultBlogPosts = [
     `,
     author: "Design Team",
     date: "2026-01-28",
-    category: "Graphic Design",
+    category: "Tech Trends",
     readTime: "8 min read",
     featuredImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5",
     featured: true
@@ -266,7 +266,7 @@ export const defaultBlogPosts = [
     `,
     author: "Web Design Team",
     date: "2026-01-27",
-    category: "Website Design",
+    category: "Web Development",
     readTime: "10 min read",
     featuredImage: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d",
     featured: false
@@ -472,7 +472,7 @@ export const defaultBlogPosts = [
     `,
     author: "SEO Team",
     date: "2026-01-26",
-    category: "Digital Marketing",
+    category: "SEO Tips",
     readTime: "12 min read",
     featuredImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
     featured: false
@@ -943,7 +943,7 @@ export const defaultBlogPosts = [
     `,
     author: "Mobile Development Team",
     date: "2026-01-24",
-    category: "Mobile App Development",
+    category: "App Development",
     readTime: "14 min read",
     featuredImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c",
     featured: false
@@ -1108,7 +1108,7 @@ export const defaultBlogPosts = [
     `,
     author: "Marketing Team",
     date: "2026-01-23",
-    category: "Digital Marketing",
+    category: "SEO Tips",
     readTime: "11 min read",
     featuredImage: "https://images.unsplash.com/photo-1611162617474-5b21e879e113",
     featured: false
@@ -1299,7 +1299,7 @@ export const defaultBlogPosts = [
     `,
     author: "Marketing Team",
     date: "2026-01-22",
-    category: "Digital Marketing",
+    category: "SEO Tips",
     readTime: "9 min read",
     featuredImage: "https://images.unsplash.com/photo-1586953208448-b95a79798f07",
     featured: false

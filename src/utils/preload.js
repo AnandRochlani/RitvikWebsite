@@ -12,7 +12,7 @@ export const preloadCriticalResources = () => {
   };
 
   // Prefetch routes on idle (non-blocking)
-  schedulePrefetch(() => {
+  schedulePrefetch(async () => {
     try {
       // Core routes to prefetch
       const coreRoutes = ['/services', '/blog'];
@@ -54,16 +54,16 @@ export const preloadCriticalResources = () => {
         routesToPrefetch.push('/blog/ultimate-guide-professional-poster-design-tips-creating-eye-catching-marketing-materials');
       }
       
-        // Prefetch top services (featured services)
-        try {
-          // Import getAllServices to get slugs
-          const { getAllServices } = await import('../data/services');
-          const allServices = getAllServices();
-          const topServices = allServices.slice(0, 3);
-          routesToPrefetch.push(...topServices.map(service => `/services/${service.slug || service.id}`));
-        } catch (e) {
-          // If import fails, skip service prefetching
-        }
+      // Prefetch top services (featured services)
+      try {
+        // Import getAllServices to get slugs
+        const { getAllServices } = await import('../data/services');
+        const allServices = getAllServices();
+        const topServices = allServices.slice(0, 3);
+        routesToPrefetch.push(...topServices.map(service => `/services/${service.slug || service.id}`));
+      } catch (e) {
+        // If import fails, skip service prefetching
+      }
       
       // Prefetch routes with deduplication
       routesToPrefetch.forEach(route => {

@@ -24,20 +24,8 @@ const BlogPage = () => {
       ? allBlogPosts 
       : allBlogPosts.filter(post => post.category === selectedCategory);
 
-    // For System Design category, sort by order if available, otherwise by date
-    if (selectedCategory === 'System Design') {
-      posts = [...posts].sort((a, b) => {
-        // If both have order, sort by order
-        if (a.order !== undefined && b.order !== undefined) {
-          return a.order - b.order;
-        }
-        // If only one has order, prioritize it
-        if (a.order !== undefined) return -1;
-        if (b.order !== undefined) return 1;
-        // Otherwise sort by date
-        return new Date(b.date) - new Date(a.date);
-      });
-    } else if (sortBy === 'date') {
+    // Sort by date for all categories
+    if (sortBy === 'date') {
       posts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
@@ -91,7 +79,7 @@ const BlogPage = () => {
         link.rel = 'preload';
         link.as = 'image';
         link.href = optimizedImage;
-        link.fetchPriority = 'high';
+        link.fetchpriority = 'high';
         link.crossOrigin = 'anonymous';
         document.head.appendChild(link);
       }
@@ -204,7 +192,7 @@ const BlogPage = () => {
                         srcSet={generateImageSrcset(featuredPost.featuredImage)}
                         sizes="(max-width: 768px) 100vw, 50vw"
                         alt={featuredPost.title}
-                        fetchPriority="high"
+                        fetchpriority="high"
                         loading="eager"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />

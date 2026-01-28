@@ -18,8 +18,13 @@ const Navigation = React.memo(() => {
 
   const navLinks = useMemo(() => [
     { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
     { name: 'Blog', path: '/blog' },
-    { name: 'Services', path: '/services' }
+    { name: 'Portfolio', path: '/portfolio' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'Cities', path: '/cities' },
+    { name: 'FAQ', path: '/faq' },
+    { name: 'Contact', path: '/contact' }
   ], []);
 
   const isActive = useCallback((path) => {
@@ -53,7 +58,7 @@ const Navigation = React.memo(() => {
               <Code2 className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              RitvikWebsite
+              The Tech Genius
             </span>
           </Link>
 

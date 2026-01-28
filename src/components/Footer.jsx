@@ -15,9 +15,14 @@ const Footer = React.memo(() => {
 
   const quickLinks = useMemo(() => [
     { name: 'Home', path: '/' },
-    { name: 'Blog', path: '/blog' },
     { name: 'Services', path: '/services' },
-    { name: 'About', path: '#' }
+    { name: 'Blog', path: '/blog' },
+    { name: 'Portfolio', path: '/portfolio' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'Cities', path: '/cities' },
+    { name: 'FAQ', path: '/faq' },
+    { name: 'Contact', path: '/contact' },
+    { name: 'Terms & Conditions', path: '/terms-and-conditions' }
   ], []);
 
   return (
@@ -31,11 +36,11 @@ const Footer = React.memo(() => {
                 <Code2 className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                RitvikWebsite
+                The Tech Genius
               </span>
             </div>
             <p className="text-gray-400 text-sm">
-              Professional services for graphic design, web development, digital marketing, and mobile app development.
+              The Best Digital Marketing Company in India. Premier Internet Marketing Service providing innovative strategies and ROI-focused solutions.
             </p>
           </div>
 
@@ -84,9 +89,19 @@ const Footer = React.memo(() => {
 
         {/* Copyright */}
         <div className="pt-8 border-t border-white/10">
-          <p className="text-center text-gray-400 text-sm">
-            © 2026 RitvikWebsite. All rights reserved. Built with React and TailwindCSS.
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-center md:text-left text-gray-400 text-sm">
+            © 2026 The Tech Genius - Digital Marketing Store. All rights reserved. Built with React and TailwindCSS.
           </p>
+            <div className="flex gap-4 text-sm">
+              <Link
+                to="/terms-and-conditions"
+                className="text-gray-400 hover:text-purple-400 transition-colors duration-300"
+              >
+                Terms & Conditions
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

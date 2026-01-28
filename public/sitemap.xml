@@ -36,6 +36,54 @@
     <priority>0.3</priority>
   </url>
   
+  <!-- Portfolio Page -->
+  <url>
+    <loc>https://www.ritvikwebsite.com/portfolio</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Pricing Page -->
+  <url>
+    <loc>https://www.ritvikwebsite.com/pricing</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Cities Page -->
+  <url>
+    <loc>https://www.ritvikwebsite.com/cities</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://www.ritvikwebsite.com/contact</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- FAQ Page -->
+  <url>
+    <loc>https://www.ritvikwebsite.com/faq</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Terms and Conditions Page -->
+  <url>
+    <loc>https://www.ritvikwebsite.com/terms-and-conditions</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
   <!-- Service Detail Pages -->
   <url>
     <loc>https://www.ritvikwebsite.com/services/poster-design</loc>

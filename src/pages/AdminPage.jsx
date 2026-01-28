@@ -86,6 +86,9 @@ const AdminPage = () => {
   };
   const [blogForm, setBlogForm] = useState(initialBlogState);
 
+  // Blog categories list
+  const blogCategories = ['Web Development', 'App Development', 'SEO Tips', 'Business Growth', 'Tech Trends'];
+
   // Service Form State
   const initialServiceState = {
     name: '',
@@ -94,6 +97,9 @@ const AdminPage = () => {
     category: 'Graphic Design',
     featuredImage: '',
     features: [''],
+    process: [''],
+    caseStudies: [{ title: '', description: '', results: [''] }],
+    maintenanceSupport: { description: '', features: [''] },
     addOns: [{ name: '', price: '' }],
     membershipPrice: '',
     generalPrice: '',
@@ -409,6 +415,22 @@ const AdminPage = () => {
           price: parseFloat(addOn.price) || 0
         })),
       features: serviceForm.features.filter(f => f.trim() !== ''),
+      process: serviceForm.process ? serviceForm.process.filter(p => p.trim() !== '') : [],
+      caseStudies: serviceForm.caseStudies ? serviceForm.caseStudies
+        .filter(cs => cs.title || cs.description)
+        .map(cs => ({
+          title: cs.title || '',
+          description: cs.description || '',
+          results: cs.results ? cs.results.filter(r => r.trim() !== '') : []
+        })) : [],
+      maintenanceSupport: serviceForm.maintenanceSupport && 
+        (serviceForm.maintenanceSupport.description || 
+         (serviceForm.maintenanceSupport.features && serviceForm.maintenanceSupport.features.some(f => f.trim() !== '')))
+        ? {
+            description: serviceForm.maintenanceSupport.description || '',
+            features: serviceForm.maintenanceSupport.features ? serviceForm.maintenanceSupport.features.filter(f => f.trim() !== '') : []
+          }
+        : undefined,
       membershipPrice: serviceForm.membershipPrice ? parseFloat(serviceForm.membershipPrice) : null,
       generalPrice: serviceForm.generalPrice ? parseFloat(serviceForm.generalPrice) : null
     };
@@ -976,9 +998,10 @@ const AdminPage = () => {
                       className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none"
                     >
                       <option value="Web Development">Web Development</option>
-                      <option value="Design">Design</option>
-                      <option value="Data Science">Data Science</option>
-                      <option value="System Design">System Design</option>
+                      <option value="App Development">App Development</option>
+                      <option value="SEO Tips">SEO Tips</option>
+                      <option value="Business Growth">Business Growth</option>
+                      <option value="Tech Trends">Tech Trends</option>
                     </select>
                   </div>
 
@@ -1293,8 +1316,248 @@ const AdminPage = () => {
                       </div>
                     </div>
 
+                    {/* Process Section */}
+                    <div className="space-y-4 pt-4 border-t border-white/10">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-300">1. Process</label>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm({
+                              ...serviceForm,
+                              process: [...(serviceForm.process || []), '']
+                            });
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="text-purple-400 border-purple-400/50 hover:bg-purple-500/10"
+                        >
+                          <Plus className="w-4 h-4 mr-1" /> Add Step
+                        </Button>
+                      </div>
+                      <div className="space-y-2">
+                        {(serviceForm.process || ['']).map((step, index) => (
+                          <div key={index} className="flex gap-2 items-center">
+                            <span className="text-purple-400 font-semibold w-6">{index + 1}.</span>
+                            <input
+                              type="text"
+                              value={step}
+                              onChange={(e) => {
+                                const newProcess = [...(serviceForm.process || [])];
+                                newProcess[index] = e.target.value;
+                                setServiceForm({ ...serviceForm, process: newProcess });
+                              }}
+                              className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                              placeholder={`Process step ${index + 1}`}
+                            />
+                            {(serviceForm.process || []).length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newProcess = (serviceForm.process || []).filter((_, i) => i !== index);
+                                  setServiceForm({ ...serviceForm, process: newProcess });
+                                }}
+                                className="p-2 text-red-400 hover:text-red-300"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Case Studies Section */}
+                    <div className="space-y-4 pt-4 border-t border-white/10">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-300">3. Case Studies</label>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm({
+                              ...serviceForm,
+                              caseStudies: [...(serviceForm.caseStudies || []), { title: '', description: '', results: [''] }]
+                            });
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="text-blue-400 border-blue-400/50 hover:bg-blue-500/10"
+                        >
+                          <Plus className="w-4 h-4 mr-1" /> Add Case Study
+                        </Button>
+                      </div>
+                      <div className="space-y-4">
+                        {(serviceForm.caseStudies || [{ title: '', description: '', results: [''] }]).map((caseStudy, csIndex) => (
+                          <div key={csIndex} className="bg-black/20 p-4 rounded-lg border border-white/10 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-blue-400 font-semibold">Case Study {csIndex + 1}</span>
+                              {(serviceForm.caseStudies || []).length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newCaseStudies = (serviceForm.caseStudies || []).filter((_, i) => i !== csIndex);
+                                    setServiceForm({ ...serviceForm, caseStudies: newCaseStudies });
+                                  }}
+                                  className="p-1 text-red-400 hover:text-red-300"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
+                            <input
+                              type="text"
+                              value={caseStudy.title || ''}
+                              onChange={(e) => {
+                                const newCaseStudies = [...(serviceForm.caseStudies || [])];
+                                newCaseStudies[csIndex] = { ...newCaseStudies[csIndex], title: e.target.value };
+                                setServiceForm({ ...serviceForm, caseStudies: newCaseStudies });
+                              }}
+                              className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                              placeholder="Case Study Title"
+                            />
+                            <textarea
+                              value={caseStudy.description || ''}
+                              onChange={(e) => {
+                                const newCaseStudies = [...(serviceForm.caseStudies || [])];
+                                newCaseStudies[csIndex] = { ...newCaseStudies[csIndex], description: e.target.value };
+                                setServiceForm({ ...serviceForm, caseStudies: newCaseStudies });
+                              }}
+                              className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none h-20"
+                              placeholder="Case Study Description"
+                            />
+                            <div className="space-y-2">
+                              <label className="text-xs text-gray-400">Key Results</label>
+                              {(caseStudy.results || ['']).map((result, resultIndex) => (
+                                <div key={resultIndex} className="flex gap-2">
+                                  <input
+                                    type="text"
+                                    value={result}
+                                    onChange={(e) => {
+                                      const newCaseStudies = [...(serviceForm.caseStudies || [])];
+                                      const newResults = [...(newCaseStudies[csIndex].results || [])];
+                                      newResults[resultIndex] = e.target.value;
+                                      newCaseStudies[csIndex] = { ...newCaseStudies[csIndex], results: newResults };
+                                      setServiceForm({ ...serviceForm, caseStudies: newCaseStudies });
+                                    }}
+                                    className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                                    placeholder={`Result ${resultIndex + 1}`}
+                                  />
+                                  {(caseStudy.results || []).length > 1 && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const newCaseStudies = [...(serviceForm.caseStudies || [])];
+                                        const newResults = (newCaseStudies[csIndex].results || []).filter((_, i) => i !== resultIndex);
+                                        newCaseStudies[csIndex] = { ...newCaseStudies[csIndex], results: newResults };
+                                        setServiceForm({ ...serviceForm, caseStudies: newCaseStudies });
+                                      }}
+                                      className="p-2 text-red-400 hover:text-red-300"
+                                    >
+                                      <Trash2 className="w-3 h-3" />
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <Button
+                                type="button"
+                                onClick={() => {
+                                  const newCaseStudies = [...(serviceForm.caseStudies || [])];
+                                  const newResults = [...(newCaseStudies[csIndex].results || []), ''];
+                                  newCaseStudies[csIndex] = { ...newCaseStudies[csIndex], results: newResults };
+                                  setServiceForm({ ...serviceForm, caseStudies: newCaseStudies });
+                                }}
+                                variant="outline"
+                                size="sm"
+                                className="text-xs text-blue-400 border-blue-400/50 hover:bg-blue-500/10"
+                              >
+                                <Plus className="w-3 h-3 mr-1" /> Add Result
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Website Maintenance & Support Section */}
+                    <div className="space-y-4 pt-4 border-t border-white/10">
+                      <label className="text-sm font-medium text-gray-300">4. Website Maintenance & Support</label>
+                      <textarea
+                        value={serviceForm.maintenanceSupport?.description || ''}
+                        onChange={(e) => {
+                          setServiceForm({
+                            ...serviceForm,
+                            maintenanceSupport: {
+                              ...(serviceForm.maintenanceSupport || { description: '', features: [''] }),
+                              description: e.target.value
+                            }
+                          });
+                        }}
+                        className="w-full px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none h-24"
+                        placeholder="Maintenance & Support Description"
+                      />
+                      <div className="space-y-2">
+                        <label className="text-xs text-gray-400">Support Features</label>
+                        {(serviceForm.maintenanceSupport?.features || ['']).map((feature, index) => (
+                          <div key={index} className="flex gap-2 items-center">
+                            <input
+                              type="text"
+                              value={feature}
+                              onChange={(e) => {
+                                const newFeatures = [...(serviceForm.maintenanceSupport?.features || [])];
+                                newFeatures[index] = e.target.value;
+                                setServiceForm({
+                                  ...serviceForm,
+                                  maintenanceSupport: {
+                                    ...(serviceForm.maintenanceSupport || { description: '', features: [''] }),
+                                    features: newFeatures
+                                  }
+                                });
+                              }}
+                              className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-white/10 text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                              placeholder={`Support feature ${index + 1}`}
+                            />
+                            {(serviceForm.maintenanceSupport?.features || []).length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newFeatures = (serviceForm.maintenanceSupport?.features || []).filter((_, i) => i !== index);
+                                  setServiceForm({
+                                    ...serviceForm,
+                                    maintenanceSupport: {
+                                      ...(serviceForm.maintenanceSupport || { description: '', features: [''] }),
+                                      features: newFeatures
+                                    }
+                                  });
+                                }}
+                                className="p-2 text-red-400 hover:text-red-300"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm({
+                              ...serviceForm,
+                              maintenanceSupport: {
+                                ...(serviceForm.maintenanceSupport || { description: '', features: [''] }),
+                                features: [...(serviceForm.maintenanceSupport?.features || []), '']
+                              }
+                            });
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="text-green-400 border-green-400/50 hover:bg-green-500/10"
+                        >
+                          <Plus className="w-4 h-4 mr-1" /> Add Feature
+                        </Button>
+                      </div>
+                    </div>
+
                     {/* Add-ons Section */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 pt-4 border-t border-white/10">
                       <div className="flex items-center justify-between">
                         <label className="text-sm font-medium text-gray-300">Add-ons</label>
                         <Button
@@ -1494,6 +1757,30 @@ const AdminPage = () => {
                                   ? service.features
                                   : [''];
 
+                                // Format process array
+                                const formattedProcess = service.process && service.process.length > 0
+                                  ? service.process
+                                  : [''];
+
+                                // Format case studies
+                                const formattedCaseStudies = service.caseStudies && service.caseStudies.length > 0
+                                  ? service.caseStudies.map(cs => ({
+                                      title: cs.title || '',
+                                      description: cs.description || '',
+                                      results: cs.results && cs.results.length > 0 ? cs.results : ['']
+                                    }))
+                                  : [{ title: '', description: '', results: [''] }];
+
+                                // Format maintenance support
+                                const formattedMaintenanceSupport = service.maintenanceSupport
+                                  ? {
+                                      description: service.maintenanceSupport.description || '',
+                                      features: service.maintenanceSupport.features && service.maintenanceSupport.features.length > 0
+                                        ? service.maintenanceSupport.features
+                                        : ['']
+                                    }
+                                  : { description: '', features: [''] };
+
                                 setServiceForm({
                                   name: service.name || '',
                                   slug: service.slug || generateSlug(service.name || ''),
@@ -1501,6 +1788,9 @@ const AdminPage = () => {
                                   category: service.category || 'Graphic Design',
                                   featuredImage: service.featuredImage || '',
                                   features: formattedFeatures,
+                                  process: formattedProcess,
+                                  caseStudies: formattedCaseStudies,
+                                  maintenanceSupport: formattedMaintenanceSupport,
                                   addOns: formattedAddOns,
                                   membershipPrice: service.membershipPrice !== undefined && service.membershipPrice !== null ? String(service.membershipPrice) : '',
                                   generalPrice: service.generalPrice !== undefined && service.generalPrice !== null ? String(service.generalPrice) : '',

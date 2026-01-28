@@ -23,7 +23,7 @@ const SaveButton = ({ courseId, className, showText = false, onSave }) => {
         showText ? "px-4 py-2" : "p-2",
         className
       )}
-      aria-label={saved ? "Remove from saved" : "Save course"}
+      aria-label={saved ? "Remove from saved" : "Save service"}
     >
       <motion.div
         whileTap={{ scale: 0.8 }}
@@ -44,7 +44,7 @@ const SaveButton = ({ courseId, className, showText = false, onSave }) => {
           "ml-2 font-medium transition-colors duration-300",
           saved ? "text-pink-500" : "text-white group-hover:text-pink-400"
         )}>
-          {saved ? "Saved" : "Save Course"}
+          {saved ? "Saved" : "Save Service"}
         </span>
       )}
     </button>

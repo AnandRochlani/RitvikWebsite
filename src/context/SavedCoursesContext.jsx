@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { getAllCourses } from '@/data/courses';
+import { getAllServices } from '@/data/services';
 
 const SavedCoursesContext = createContext();
 
@@ -38,8 +38,8 @@ export const SavedCoursesProvider = ({ children }) => {
     if (!savedCourseIds.includes(courseId)) {
       setSavedCourseIds(prev => [...prev, courseId]);
       toast({
-        title: "Course Saved",
-        description: "This course has been added to your saved list.",
+        title: "Service Saved",
+        description: "This service has been added to your saved list.",
         className: "bg-green-600 border-green-700 text-white"
       });
     }
@@ -48,8 +48,8 @@ export const SavedCoursesProvider = ({ children }) => {
   const removeSavedCourse = (courseId) => {
     setSavedCourseIds(prev => prev.filter(id => id !== courseId));
     toast({
-      title: "Course Removed",
-      description: "This course has been removed from your saved list.",
+      title: "Service Removed",
+      description: "This service has been removed from your saved list.",
     });
   };
 
@@ -64,7 +64,7 @@ export const SavedCoursesProvider = ({ children }) => {
   const isSaved = (courseId) => savedCourseIds.includes(courseId);
 
   const getSavedCourses = () => {
-    return getAllCourses().filter(course => savedCourseIds.includes(course.id));
+    return getAllServices().filter(service => savedCourseIds.includes(service.id));
   };
 
   return (

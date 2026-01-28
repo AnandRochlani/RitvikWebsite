@@ -1147,8 +1147,14 @@ const AdminPage = () => {
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
+                  id="service-form"
                 >
-                  <h2 className="text-2xl font-bold text-white mb-4">Manage Services</h2>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-white mb-4">Manage Services</h2>
+                    {editingServiceId && (
+                      <span className="text-sm text-green-400 font-medium">Editing Service ID: {editingServiceId}</span>
+                    )}
+                  </div>
                   <form onSubmit={handleServiceSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -1393,9 +1399,25 @@ const AdminPage = () => {
                       </div>
                     </div>
 
-                    <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white">
-                      {editingServiceId ? 'Update Service' : 'Add Service'}
-                    </Button>
+                    <div className="flex gap-4">
+                      {editingServiceId && (
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm(initialServiceState);
+                            setEditingServiceId(null);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          variant="outline"
+                          className="flex-1 border-white/20 text-white hover:bg-white/10"
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                      <Button type="submit" className={`${editingServiceId ? 'flex-1' : 'w-full'} bg-green-600 hover:bg-green-700 text-white`}>
+                        {editingServiceId ? 'Update Service' : 'Add Service'}
+                      </Button>
+                    </div>
                   </form>
                   <div className="mt-8 pt-8 border-t border-white/10">
                     <h3 className="text-xl font-bold text-white mb-4">All Services</h3>
@@ -1415,21 +1437,38 @@ const AdminPage = () => {
                               onClick={() => {
                                 setEditingServiceId(service.id);
                                 const serviceSchema = getServiceSchemaData(service.id);
+                                
+                                // Convert addOns from { id, name, price } to { name, price } format
+                                const formattedAddOns = service.addOns && service.addOns.length > 0
+                                  ? service.addOns.map(addOn => ({
+                                      name: addOn.name || '',
+                                      price: addOn.price !== undefined && addOn.price !== null ? String(addOn.price) : ''
+                                    }))
+                                  : [{ name: '', price: '' }];
+                                
+                                // Ensure features array is not empty
+                                const formattedFeatures = service.features && service.features.length > 0
+                                  ? service.features
+                                  : [''];
+
                                 setServiceForm({
                                   name: service.name || '',
                                   description: service.description || '',
                                   category: service.category || 'Graphic Design',
                                   featuredImage: service.featuredImage || '',
-                                  features: service.features || [''],
-                                  addOns: service.addOns || [{ name: '', price: '' }],
-                                  membershipPrice: service.membershipPrice || '',
-                                  generalPrice: service.generalPrice || '',
-                                  schemaRatingValue: serviceSchema.ratingValue || '',
-                                  schemaBestRating: serviceSchema.bestRating || '',
-                                  schemaWorstRating: serviceSchema.worstRating || '',
-                                  schemaRatingCount: serviceSchema.ratingCount || '',
-                                  schemaReviewCount: serviceSchema.reviewCount || ''
+                                  features: formattedFeatures,
+                                  addOns: formattedAddOns,
+                                  membershipPrice: service.membershipPrice !== undefined && service.membershipPrice !== null ? String(service.membershipPrice) : '',
+                                  generalPrice: service.generalPrice !== undefined && service.generalPrice !== null ? String(service.generalPrice) : '',
+                                  schemaRatingValue: serviceSchema.ratingValue !== undefined ? String(serviceSchema.ratingValue) : '',
+                                  schemaBestRating: serviceSchema.bestRating !== undefined ? String(serviceSchema.bestRating) : '',
+                                  schemaWorstRating: serviceSchema.worstRating !== undefined ? String(serviceSchema.worstRating) : '',
+                                  schemaRatingCount: serviceSchema.ratingCount !== undefined ? String(serviceSchema.ratingCount) : '',
+                                  schemaReviewCount: serviceSchema.reviewCount !== undefined ? String(serviceSchema.reviewCount) : ''
                                 });
+                                
+                                // Scroll to form
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
                               }}
                               className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
                             >

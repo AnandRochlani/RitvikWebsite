@@ -46,7 +46,7 @@ const SEOHead = ({
   const fullTitle = title 
     ? (title.includes('RitvikWebsite') ? title : `${title} | RitvikWebsite`)
     : 'Professional Services & Solutions | RitvikWebsite';
-  const fullDescription = description || 'Master web development, design, and data science with expert-led courses and tech blog posts. Join thousands learning new skills.';
+  const fullDescription = description || 'Professional services for graphic design, website design, web development, digital marketing, and mobile app development. Get custom quotes tailored to your business needs.';
 
   return (
     <Helmet>

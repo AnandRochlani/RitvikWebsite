@@ -5,10 +5,11 @@
   "private": true,
   "scripts": {
     "dev": "vite --host :: --port 3000",
-    "build": "vite build",
+    "build": "node scripts/generate-sitemap.js && vite build",
     "preview": "vite preview --host :: --port 3000",
     "lint": "eslint . --quiet",
-    "lint:warn": "eslint ."
+    "lint:warn": "eslint .",
+    "generate-sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.4",

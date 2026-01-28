@@ -1,5 +1,5 @@
-# robots.txt for AnandRochlani
-# https://www.anandrochlani.com/robots.txt
+# robots.txt for RitvikWebsite
+# https://www.ritvikwebsite.com/robots.txt
 
 User-agent: *
 
@@ -7,5 +7,8 @@ User-agent: *
 Disallow: /admin/
 Disallow: /admin/login
 
+# Allow all other pages
+Allow: /
+
 # Sitemap location
-Sitemap: https://www.anandrochlani.com/sitemap.xml
+Sitemap: https://www.ritvikwebsite.com/sitemap.xml
